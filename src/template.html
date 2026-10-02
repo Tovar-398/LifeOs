@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>LifeOS 🎮 — Modo Jugador</title>
+<meta name="description" content="Finanzas, hábitos, mente, cuerpo y coach IA en una sola app. Todos tus datos se guardan en tu dispositivo.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LifeOS">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🧬</text></svg>">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:#000;min-height:100%;overscroll-behavior:none}
+#root{min-height:100vh}
+.boot{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:12px;color:#00FF87;font-family:system-ui,sans-serif;font-size:14px}
+</style>
+</head>
+<body>
+<div id="root"><div class="boot"><div style="font-size:44px">🧬</div>Cargando LifeOS...</div></div>
+<script>
+/*__BUNDLE__*/
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
