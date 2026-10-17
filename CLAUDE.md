@@ -1,6 +1,8 @@
 # LifeOS — contexto para el agente
 
-App personal de Eduardo: PWA instalable para controlar día a día (entrenos, comidas, hábitos, finanzas).
+App personal de Eduardo: PWA instalable para gimnasio, nutrición y hábitos de salud.
+
+**Alcance (desde oct 2026):** LifeOS es la app secundaria de gym y nutrición. Finanzas, tareas, ahorros, estudio y seguimiento diario viven en el asistente personal y su Centro de Control (Notion + dashboard). No volver a agregar esas áreas aquí.
 Publicada con GitHub Pages y usada desde el celular como app instalada.
 
 ## Reglas importantes
@@ -22,11 +24,11 @@ Un solo archivo React (`src/LifeOS.jsx`, sin router, sin librerías externas). T
 - Al agregar un estado nuevo hay que tocar **5 lugares**: `useState`, la carga en `loadMain`, los 3 constructores de payload (`data`, `flushRef.current`, `exportData`), `importData`, y el objeto `ctx`.
 
 ### Pantallas (constante `MODS`, navegación inferior)
-- `HoyModule` — agenda del día: comidas, entreno, hábitos, tareas, próxima comida
-- `CuerpoModule` — `GymEntrenar` / `GymHistorial` / `GymPlanes`
+- `HoyModule` — agenda del día: próxima comida, entreno, comidas, hábitos de salud, check-in (sueño, energía, peso) y enlace al Centro de Control
+- `CuerpoModule` — `GymEntrenar` / `GymHistorial` / `GymPlanes` / `HabHabitos` (hábitos de salud)
 - `ComidasModule` — `CuerpoNutricion` (contador de macros) / `ShoppingList` / `PesoTab`
-- `FinModule` — `QuickAdd`, `FinResumen`, gastos, tarjetas, ahorros
-- `MasModule` — hábitos y tareas, revisión semanal, perfil con nivel y logros
+
+Retirados de la navegación en oct 2026 (el código y el estado siguen para no perder datos guardados): `FinModule`, `MasModule`, tareas, revisión semanal, perfil con nivel/XP/logros, Score de Vida, avisos de subida de nivel y la consulta de tipo de cambio/cripto.
 
 ### Datos sembrados
 - `SEED_PLANS`: rutinas de gimnasio. **Para actualizar una rutina, sube su `seedV`**; al abrir la app reemplaza la versión vieja. Si no lo subes, no se actualiza.

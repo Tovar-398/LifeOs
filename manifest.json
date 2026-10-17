@@ -1,7 +1,7 @@
 {
-  "name": "LifeOS — Modo Jugador",
+  "name": "LifeOS — Gym y nutrición",
   "short_name": "LifeOS",
-  "description": "Tu sistema para controlar y mejorar tu vida: finanzas, hábitos, cuerpo y misiones diarias.",
+  "description": "Gimnasio, nutrición y hábitos de salud.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

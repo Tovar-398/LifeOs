@@ -269,7 +269,11 @@ const finTips=({cards,expenses,budgets,recurring,savings,totSav,mInc,mExp,savGoa
   if(tips.length===0)tips.push({t:"✨",c:"#00FF87",x:"Todo en orden: sin vencimientos cercanos, sin excesos. Sigue así."});
   return tips.slice(0,8);
 };
-const MODS=[{id:"hoy",icon:"☀️",label:"Hoy",color:"#64b4f6"},{id:"cuerpo",icon:"💪",label:"Cuerpo",color:"#ff9f45"},{id:"comidas",icon:"🍽️",label:"Comidas",color:"#30d158"},{id:"dinero",icon:"💰",label:"Dinero",color:"#64b4f6"},{id:"mas",icon:"⋯",label:"Más",color:"#b388f5"}];
+// Desde oct 2026 LifeOS es solo gimnasio, nutrición y hábitos de salud.
+// Finanzas, tareas, ahorros y estudio viven en el Centro de Control del asistente personal.
+// El estado de los módulos retirados se sigue cargando y guardando para no perder el historial.
+const MODS=[{id:"hoy",icon:"☀️",label:"Hoy",color:"#64b4f6"},{id:"cuerpo",icon:"💪",label:"Cuerpo",color:"#ff9f45"},{id:"comidas",icon:"🍽️",label:"Comidas",color:"#30d158"}];
+const CENTRO_URL="https://claude.ai/artifact/V6j6ACdu8cpLzicd6MUgrP";
 
 const CSS=`@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}@keyframes floatUp{0%{opacity:0;transform:translateY(6px)}25%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0)}100%{transform:translateY(110vh) rotate(720deg)}}@keyframes levelPop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
 .card{background:#121316;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:15px;animation:fadeUp .2s ease}
@@ -362,8 +366,8 @@ export default function LifeOS() {
       setBackendName(storageLabel());
       setReady(true);
     })();
-    loadMarket();const ti=setInterval(()=>setNow(new Date()),30000);const tm=setInterval(loadMarket,120000);
-    return()=>{clearInterval(ti);clearInterval(tm)};
+    const ti=setInterval(()=>setNow(new Date()),30000);
+    return()=>{clearInterval(ti)};
   },[]);
 
   const loadMarket=async()=>{
@@ -445,16 +449,6 @@ export default function LifeOS() {
     }catch{return false}
   };
   importRef.current=importData;
-  const gameXpInfo=calcXp({habits,comp,tasks,wkLogs,checkins,reviews,saleTx,savGoals});
-  const gameLvl=lvlFromXp(gameXpInfo.xp);
-  const prevLvl=useRef(null);
-  const[levelUp,setLevelUp]=useState(null);
-  useEffect(()=>{
-    if(!ready)return;
-    if(prevLvl.current===null){prevLvl.current=gameLvl;return}
-    if(gameLvl>prevLvl.current){setLevelUp(gameLvl);if(soundOn)playFanfare();}
-    prevLvl.current=gameLvl;
-  },[gameLvl,ready]);
   const syncFromRemote=async(manual)=>{
     try{
       const ct=await cloudMetaT();
@@ -506,14 +500,11 @@ export default function LifeOS() {
       </div>}
       {syncMsg&&<div style={{padding:"8px 16px",background:"rgba(48,209,88,.1)",fontSize:12,color:"#30d158",textAlign:"center"}}>{syncMsg}</div>}
       {ready&&!introSeen&&habits.length===0&&expenses.length===0&&wkLogs.length===0&&<IntroOverlay onStart={()=>setIntroSeen(true)}/>}
-      {levelUp&&<LevelUpModal lvl={levelUp} name={playerName} onClose={()=>setLevelUp(null)}/>}
       {showData&&<DataPanel backendName={backendName} saveState={saveState} onRetry={()=>setForceSave(n=>n+1)} onSync={()=>syncFromRemote(true)} exportData={exportData} importData={importData} onClose={()=>setShowData(false)}/>}
       <div style={{padding:"14px 14px 20px",maxWidth:760,margin:"0 auto"}}>
         {mod==="hoy"     && <HoyModule     ctx={ctx}/>}
         {mod==="cuerpo"  && <CuerpoModule  ctx={ctx}/>}
         {mod==="comidas" && <ComidasModule ctx={ctx}/>}
-        {mod==="dinero"  && <FinModule     ctx={ctx}/>}
-        {mod==="mas"     && <MasModule     ctx={ctx}/>}
       </div>
       <div className="navb">
         {MODS.map(m=>(
@@ -539,10 +530,8 @@ function HoyModule({ctx}){
   const plan=plans.find(p=>p.id===activePlanId);
   const trainedToday=wkLogs.some(w=>w.date===tod);
   const ckToday=checkins.find(c=>c.date===tod);
-  const activeRev=reviews.find(r=>r.targetWeek===wk);
   const mealsDone=NUTRI_MEALS.filter(m=>(nutriLog[tod]||{})[m.id]).length;
   const habDone=habits.filter(h=>(comp[h.id]||{})[tod]).length;
-  const pend=tasks.filter(t=>!t.completed);
   // progreso del día
   const total=NUTRI_MEALS.length+habits.length+1+(plan?1:0);
   const done=mealsDone+habDone+(ckToday?1:0)+(plan&&trainedToday?1:0);
@@ -554,7 +543,6 @@ function HoyModule({ctx}){
   const minsTo=nextMeal?toMin(nextMeal.time)-nowMin:0;
   const toggleMeal=(id)=>{const was=(nutriLog[tod]||{})[id];setNutriLog(p=>({...p,[tod]:{...(p[tod]||{}),[id]:!was}}));if(!was)ping("🍽️ Comida registrada")};
   const toggleHab=(h)=>{const was=(comp[h.id]||{})[tod];setComp(p=>({...p,[h.id]:{...(p[h.id]||{}),[tod]:!was}}));if(!was)ping("✓ "+h.name)};
-  const toggleTask=(t)=>{setTasks(p=>p.map(x=>x.id===t.id?{...x,completed:!x.completed,completedAt:!x.completed?td():null}:x));if(!t.completed)ping("✓ Tarea lista")};
   const Chk=({on})=><div className={"chk"+(on?" on":"")}>{on?"✓":""}</div>;
   return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
     {toast&&<div className="xpToast" style={{color:"#30d158"}}>{toast}</div>}
@@ -607,7 +595,7 @@ function HoyModule({ctx}){
 
     {/* Hábitos */}
     {habits.length>0&&<div className="card">
-      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Hábitos</span><span style={{color:"#6e727a",fontWeight:500}}>{habDone}/{habits.length}</span></div>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Hábitos de salud</span><span style={{color:"#6e727a",fontWeight:500}}>{habDone}/{habits.length}</span></div>
       {habits.map(h=>{const on=!!(comp[h.id]||{})[tod];const st=getStreak(comp,h.id);return(
         <div key={h.id} className="row" onClick={()=>toggleHab(h)}>
           <Chk on={on}/>
@@ -626,28 +614,12 @@ function HoyModule({ctx}){
     </div>}
     {(showCk||ckToday)&&<CheckinCard ctx={ctx}/>}
 
-    {/* Tareas */}
-    {pend.length>0&&<div className="card">
-      <div className="sect" style={{justifyContent:"space-between"}}><span>✅ Tareas</span><span onClick={()=>setMod("mas")} style={{color:"#64b4f6",fontWeight:500,cursor:"pointer"}}>ver todas</span></div>
-      {pend.slice(0,4).map(t=>(
-        <div key={t.id} className="row" onClick={()=>toggleTask(t)}>
-          <Chk on={false}/>
-          <div style={{flex:1,minWidth:0,fontSize:14}}>{t.text}</div>
-          {t.priority==="alta"&&<span className="ltg ltgr" style={{flexShrink:0}}>alta</span>}
-        </div>
-      ))}
-    </div>}
-
-    {/* Prioridades de la semana */}
-    {activeRev&&activeRev.priorities.length>0&&<div className="card">
-      <div className="sect">🎯 Prioridades de la semana</div>
-      {activeRev.priorities.map((pr,i)=>(
-        <div key={i} className="row" onClick={()=>ctx.setReviews(p=>p.map(r=>r.id===activeRev.id?{...r,priorities:r.priorities.map((x,j)=>j===i?{...x,done:!x.done}:x)}:r))}>
-          <Chk on={pr.done}/>
-          <div style={{flex:1,fontSize:14,textDecoration:pr.done?"line-through":"none",opacity:pr.done?.55:1}}>{pr.text}</div>
-        </div>
-      ))}
-    </div>}
+    {/* Lo demás vive en el Centro de Control */}
+    <a href={CENTRO_URL} target="_blank" rel="noopener noreferrer" className="card" style={{display:"flex",alignItems:"center",gap:12,textDecoration:"none",color:"inherit"}}>
+      <span style={{fontSize:20}}>🧭</span>
+      <div style={{flex:1}}><div style={{fontSize:14,fontWeight:600}}>Tareas, finanzas, ahorros y estudio</div><div style={{fontSize:11,color:"#8b8f96",marginTop:2}}>Ahora viven en tu Centro de Control</div></div>
+      <span style={{color:"#6e727a"}}>›</span>
+    </a>
   </div>);
 }
 
@@ -1762,7 +1734,7 @@ function HabHabitos({ctx}){
   const save=()=>{if(!form?.name?.trim())return;const h={...form,id:form.id||Date.now(),createdAt:form.createdAt||tod};setHabits(p=>form.id?p.map(x=>x.id===h.id?h:x):[...p,h]);setForm(null);setShowE(false)};
   return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-      <div style={{fontSize:13,fontWeight:700}}>🔥 {habits.length} hábitos</div>
+      <div style={{fontSize:13,fontWeight:700}}>🔥 {habits.length} {habits.length===1?"hábito":"hábitos"} de salud</div>
       <button className="lbp" onClick={()=>setForm(E)}><span>+</span> Nuevo</button>
     </div>
     {form&&<div className="lc" style={{borderColor:"rgba(0,255,135,.3)"}}>
@@ -1784,7 +1756,7 @@ function HabHabitos({ctx}){
         {form.id&&<button className="lbd" style={{marginLeft:"auto"}} onClick={()=>{setHabits(p=>p.filter(x=>x.id!==form.id));setForm(null)}}><span>🗑</span></button>}
       </div>
     </div>}
-    {habits.length===0&&!form&&<Mpty msg="Sin hábitos" sub="Los hábitos son la base del éxito"/>}
+    {habits.length===0&&!form&&<Mpty msg="Sin hábitos de salud" sub="Ejemplos: tomar 2 L de agua, dormir 7 h, 8,000 pasos, estirar 10 min"/>}
     {habits.map(h=>{
       const d2=(comp[h.id]||{})[tod];const streak=getStreak(comp,h.id);const last28=getLast28();const cmap=comp[h.id]||{};const r28=last28.filter(d=>cmap[d]).length;
       return(<div key={h.id} className="lc" style={{borderColor:d2?"rgba(0,255,135,.2)":"rgba(255,255,255,.06)"}}>
@@ -2042,13 +2014,14 @@ function CuerpoModule({ctx}){
   const[tab,setTab]=useState("entrenar");
   return(<div style={{display:"flex",flexDirection:"column",gap:14}}>
     <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:2}}>
-      {[["entrenar","Entrenar"],["historial","Historial"],["planes","Mis planes"]].map(([id,l])=>(
+      {[["entrenar","Entrenar"],["historial","Historial"],["planes","Mis planes"],["habitos","Hábitos"]].map(([id,l])=>(
         <button key={id} className={"pill"+(tab===id?" on":"")} onClick={()=>setTab(id)}>{l}</button>
       ))}
     </div>
     {tab==="entrenar" && <GymEntrenar ctx={ctx}/>}
     {tab==="historial"&& <GymHistorial ctx={ctx}/>}
     {tab==="planes"   && <GymPlanes ctx={ctx}/>}
+    {tab==="habitos"  && <HabHabitos ctx={ctx}/>}
   </div>);
 }
 
@@ -3442,7 +3415,7 @@ function CheckinCard({ctx}){
   if(!todayCk&&!edit)return(
     <div onClick={()=>setEdit(true)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",background:"rgba(126,216,246,.05)",border:".5px solid rgba(126,216,246,.3)",borderRadius:11,cursor:"pointer"}}>
       <span style={{fontSize:20}}>🌅</span>
-      <div style={{flex:1}}><div style={{fontSize:13,fontWeight:700,color:"#7ED8F6"}}>Check-in diario</div><div style={{fontSize:10,color:"#555"}}>2 minutos: sueño, energía y peso — alimenta tu Score de Vida</div></div>
+      <div style={{flex:1}}><div style={{fontSize:13,fontWeight:700,color:"#7ED8F6"}}>Check-in diario</div><div style={{fontSize:10,color:"#555"}}>1 minuto: sueño, energía y peso</div></div>
       <span style={{fontSize:14,color:"#7ED8F6"}}>▶</span>
     </div>
   );
@@ -3546,17 +3519,15 @@ function ScoreVida({ctx}){
 /* ── Bienvenida primera vez ── */
 function IntroOverlay({onStart}){
   const ITEMS=[
-    ["☀️","Hoy","Tu día en una pantalla: comidas, entreno, hábitos"],
-    ["💪","Cuerpo","Entrena y guarda tus pesos, con historial de cada ejercicio"],
+    ["☀️","Hoy","Tu día en una pantalla: comidas, entreno, hábitos de salud y check-in"],
+    ["💪","Cuerpo","Entrena, guarda tus pesos y lleva tus hábitos de salud"],
     ["🍽️","Comidas","Tu plan de comidas, lista de compras y control de peso"],
-    ["💰","Dinero","Gastos, tarjetas, metas de ahorro y análisis"],
-    ["⋯","Más","Hábitos, tareas, tu semana y tu perfil"],
   ];
   return(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.92)",zIndex:100,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
     <div style={{maxWidth:400,width:"100%",background:"#0f0f0f",border:".5px solid rgba(0,255,135,.3)",borderRadius:18,padding:"26px 22px",textAlign:"center"}}>
       <div style={{fontSize:44}}>🧬</div>
       <div style={{fontSize:20,fontWeight:800,marginTop:8}}>Bienvenido a LifeOS</div>
-      <div style={{fontSize:12,color:"#999",marginTop:6,lineHeight:1.6}}>Tu sistema para controlar y mejorar tu vida.<br/>Todo medible, todo en un lugar.</div>
+      <div style={{fontSize:12,color:"#999",marginTop:6,lineHeight:1.6}}>Tu gimnasio y tu nutrición.<br/>Todo medible, todo en un lugar.</div>
       <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:18,textAlign:"left"}}>
         {ITEMS.map(([e,t,d])=>(
           <div key={t} style={{display:"flex",gap:11,alignItems:"center",padding:"9px 12px",background:"#080808",borderRadius:11}}>

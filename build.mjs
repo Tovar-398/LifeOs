@@ -18,7 +18,8 @@ const result = await build({
 const js = result.outputFiles[0].text.replace(/<\/script>/g, "<\\/script>");
 const tpl = readFileSync("src/template.html", "utf8");
 if (!tpl.includes("/*__BUNDLE__*/")) throw new Error("src/template.html no tiene el marcador /*__BUNDLE__*/");
-writeFileSync("index.html", tpl.replace("/*__BUNDLE__*/", js));
+// Se usa una función como reemplazo: con un texto, String.replace interpreta "$&" y "$$" del bundle y lo corrompe
+writeFileSync("index.html", tpl.replace("/*__BUNDLE__*/", () => js));
 
 // Sube la versión de caché para que la actualización llegue a los celulares
 const sw = readFileSync("sw.js", "utf8");
