@@ -32,7 +32,7 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 
 ### Datos sembrados
 - `SEED_PLANS`: rutinas de gimnasio. **Para actualizar una rutina, sube su `seedV`**; al abrir la app reemplaza la versión vieja. Si no lo subes, no se actualiza.
-- Conserva el **nombre exacto** de los ejercicios que se repiten entre versiones: el historial de pesos se busca por nombre (`lastSetsFor`). Cambiar el nombre = empezar ese ejercicio de cero.
+- El historial de pesos se busca por nombre (`findLast` en `GymEntrenar`). Si renombras un ejercicio que ya tiene pesos, agrega `hist:"<nombre viejo>"`: la sesión se guarda y se busca con ese nombre, así no se pierde nada. Si no lo pones, el buscador de parecidos (`exScore`/`sameEx`: ignora acentos, plurales, sinónimos y veta polea↔mancuerna, inclinado↔plano, sentado↔de pie, "A o B" vs simple) intenta ligarlo, pero `hist` es lo seguro.
 - `NUTRI_TARGET` y `NUTRI_MEALS`: plan de comidas con macros por comida (`kcal`, `p`, `c`, `f`). La suma de las comidas debe cuadrar con el objetivo.
 - `SHOP_BASE`: básicos de la lista de compras, acordes a la dieta vigente.
 
@@ -43,6 +43,7 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 Tema oscuro y tranquilo: sin animaciones llamativas ni brillos. Clases en `CSS`: `.card`, `.sect`, `.row`, `.chk`, `.pill`, `.bar`, `.lfi`, `.lbp`, `.lbs`. Español mexicano en toda la interfaz.
 
 ## Pedidos típicos
-- "Actualiza la rutina" → pegar texto, editar `SEED_PLANS`, subir `seedV`, conservar nombres repetidos.
+- "Actualiza la rutina" → pegar texto, editar `SEED_PLANS`, subir `seedV`, conservar nombres repetidos o poner `hist`.
+- Importador en la app (`parseRoutineText`): separa varias rutinas pegadas juntas en planes distintos (corta en encabezados "OPCIÓN 1", "Rutina de N días", "Día 1" que reinicia, o cuando la semana vuelve a empezar) y liga cada ejercicio a su historial con `findHistMatch`.
 - "Cambia la dieta" → `NUTRI_TARGET`, `NUTRI_MEALS`, `SHOP_BASE`; verificar que los macros sumen.
 - "Agrega X" → componente nuevo + estado (los 5 lugares) + render en el módulo que corresponda.

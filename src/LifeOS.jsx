@@ -138,81 +138,90 @@ const reviewStreak=(reviews)=>{
   while(keys.has(k)){s++;const d=new Date(k+"T12:00:00");d.setDate(d.getDate()-7);k=ds(d)}
   return s;
 };
+// Rutinas oficiales. "hist" = nombre con el que ya hay pesos guardados (el ejercicio se renombró, el historial se conserva).
 const SEED_PLANS=[
- {id:900001,seedV:4,name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
+ {id:900001,seedV:5,name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
   {label:"Día 1",name:"UPPER · Torso Completo (Lunes)",exercises:[
    {id:5131,name:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
-   {id:5132,name:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
-   {id:5133,name:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:5132,name:"Jalón al pecho en polea (agarre neutro)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
+   {id:5133,name:"Press plano en máquina o barra",hist:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:5134,name:"Remo T-Bar o remo en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:5135,name:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
+   {id:5137,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:5136,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 2",name:"LOWER · Pierna Cuádriceps (Martes)",exercises:[
-   {id:5231,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-10",rest:"2.5 min"},
-   {id:5232,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
+  {label:"Día 2",name:"LOWER · Cuádriceps, Abductores e Isquios (Martes)",exercises:[
+   {id:5231,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-10",rest:"2.5 min · pesada"},
    {id:5233,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"90 seg"},
-   {id:5234,name:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg"},
+   {id:5237,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
+   {id:5232,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:5234,name:"Elevación de pantorrillas de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg"},
    {id:5235,name:"Vacíos abdominales (Vacuum) o crunch en polea",muscle:"Core",emoji:"🔥",tSets:3,tReps:"15",rest:"60 seg"},
    {id:5236,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
   {label:"Día 3",name:"PUSH · Pecho / Hombro Lateral / Tríceps (Miércoles)",exercises:[
-   {id:5331,name:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
-   {id:5332,name:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
+   {id:5331,name:"Press inclinado en Smith o máquina",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
+   {id:5332,name:"Cruce de poleas (aperturas en polea baja/media)",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
    {id:5333,name:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
-   {id:5334,name:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:4,tReps:"10-12",rest:"90 seg"},
-   {id:5335,name:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
+   {id:5334,name:"Extensión de tríceps en polea alta con cuerda",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:4,tReps:"10-12",rest:"90 seg"},
+   {id:5335,name:"Press francés o fondos en máquina",hist:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:5336,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 4",name:"PULL · Espalda / Deltoide Post. / Bíceps (Jueves)",exercises:[
-   {id:5431,name:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
-   {id:5432,name:"Remo unilateral en polea o mancuerna",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
-   {id:5433,name:"Pull-over polea alta (cuerda)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
-   {id:5434,name:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
+  {label:"Día 4",name:"PULL · Espalda / Deltoide Post. / Trapecio / Bíceps (Jueves)",exercises:[
+   {id:5431,name:"Jalón al pecho en polea (agarre neutro)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
+   {id:5432,name:"Remo con mancuerna unilateral",hist:"Remo unilateral en polea o mancuerna",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:5433,name:"Pullover en polea alta con cuerda",hist:"Pull-over polea alta (cuerda)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
+   {id:5434,name:"Face pulls o pájaros en máquina (posterior)",hist:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
+   {id:5438,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:5435,name:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:4,tReps:"10-12",rest:"90 seg"},
    {id:5436,name:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:5437,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 5",name:"LEGS · Isquios y Glúteo (Viernes)",exercises:[
+  {label:"Día 5",name:"LEGS · Isquios, Glúteo, Abductores y Cuádriceps (Viernes)",exercises:[
    {id:5531,name:"Hip Thrust o peso muerto rumano pesado",muscle:"Glúteos",emoji:"🍑",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:5532,name:"Sentadilla búlgara",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12 x pierna",rest:"2 min"},
-   {id:5533,name:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
-   {id:5534,name:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
+   {id:5533,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
+   {id:5536,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
+   {id:5534,name:"Elevación de pantorrillas sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
    {id:5535,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]}
  ]},
- {id:900002,seedV:4,name:"⚔️ 4 Días · Torso/Pierna (Mar-Vie)",daysPerWeek:4,days:[
-  {label:"Día 1",name:"TORSO A · Pecho Superior y Espalda (Martes)",exercises:[
+ {id:900002,seedV:5,name:"⚔️ 4 Días · Torso/Pierna (Mar-Vie)",daysPerWeek:4,days:[
+  {label:"Día 1",name:"TORSO A · Pecho Superior, Espalda y Hombro Lateral (Martes)",exercises:[
    {id:4141,name:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min · RIR 1-2, pausa 1s"},
-   {id:4142,name:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
-   {id:4143,name:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
-   {id:4144,name:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:4142,name:"Jalón al pecho en polea (agarre neutro o prono)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
+   {id:4143,name:"Press plano con mancuernas o en máquina",hist:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:4144,name:"Remo Gironda o remo con apoyo en pecho",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:4145,name:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
    {id:4146,name:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10",rest:"superserie ↓"},
    {id:4147,name:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"12",rest:"90 seg"},
    {id:4148,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 2",name:"PIERNA A · Dominante Cuádriceps (Miércoles)",exercises:[
+  {label:"Día 2",name:"PIERNA A · Cuádriceps, Abductores e Isquios (Miércoles)",exercises:[
    {id:4241,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-10",rest:"2.5 min"},
-   {id:4242,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:4243,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12-15",rest:"90 seg · dropset final"},
-   {id:4244,name:"Curl de pierna acostado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"90 seg"},
-   {id:4245,name:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg · pausa 2s"},
+   {id:4248,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
+   {id:4242,name:"Peso muerto rumano con mancuernas",hist:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
+   {id:4244,name:"Curl femoral acostado o sentado",hist:"Curl de pierna acostado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"90 seg"},
+   {id:4245,name:"Elevación de pantorrillas de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg · pausa 2s"},
    {id:4246,name:"Vacíos abdominales (Vacuum) o crunch en polea",muscle:"Core",emoji:"🔥",tSets:3,tReps:"15",rest:"60 seg"},
    {id:4247,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 3",name:"TORSO B · Hombro Lateral/Posterior (Jueves)",exercises:[
-   {id:4341,name:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
+  {label:"Día 3",name:"TORSO B · Hombro, Pecho/Espalda y Trapecio (Jueves)",exercises:[
+   {id:4341,name:"Press inclinado en Smith o máquina articulada",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:4342,name:"Remo con barra o mancuerna a una mano",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
-   {id:4343,name:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
+   {id:4343,name:"Aperturas / cruce de poleas en banco inclinado",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
    {id:4344,name:"Jalón unilateral en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:4345,name:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
-   {id:4346,name:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
+   {id:4346,name:"Pájaros / deltoides posterior en máquina o polea",hist:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
+   {id:4350,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:4347,name:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10",rest:"superserie ↓"},
-   {id:4348,name:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10",rest:"90 seg"},
+   {id:4348,name:"Press francés o fondos en máquina",hist:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10",rest:"90 seg"},
    {id:4349,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
-  {label:"Día 4",name:"PIERNA B · Isquios, Glúteo y Pantorrilla (Viernes)",exercises:[
+  {label:"Día 4",name:"PIERNA B · Isquios, Glúteo, Abductores y Pantorrilla (Viernes)",exercises:[
    {id:4441,name:"Hip Thrust o sentadilla búlgara",muscle:"Glúteos",emoji:"🍑",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:4442,name:"Prensa de piernas (pies altos y abiertos)",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
-   {id:4443,name:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
-   {id:4444,name:"Zancadas caminando",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12 pasos x pierna",rest:"90 seg"},
-   {id:4445,name:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
+   {id:4447,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
+   {id:4443,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
+   {id:4444,name:"Zancadas / lunges caminando",hist:"Zancadas caminando",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12 pasos x pierna",rest:"90 seg"},
+   {id:4445,name:"Elevación de pantorrillas sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
    {id:4446,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]}
  ]}
 ];
+const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
 const NUTRI_TARGET={kcal:2030,protein:150,carbs:200,fat:65};
 const NUTRI_MEALS=[
  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["3 huevos enteros + 2 claras (revueltos o estrellados)","Bowl: 150 g de fruta (sandía, melón o mango) + 100 g de yogur griego natural sin azúcar + 30 g de granola","2 tortillas de maíz o 2 rebanadas de pan integral"]},
@@ -2028,11 +2037,11 @@ function CuerpoModule({ctx}){
 /* ── Importar rutina pegando texto ── */
 const MUSCLE_KW=[
   ["Pecho",/press\s+(inclinad|plano|banca|pecho)|apertura|cruce de polea|pec\s*deck(?!\s*invertid)|pullover en banca|fondos?\s+(de\s+)?pecho/i],
-  ["Espalda",/jal[oó]n|remo|dominada|pull[\s-]*over|pullover|dorsal|t-?bar|gironda/i],
+  ["Espalda",/jal[oó]n|remo|dominada|pull[\s-]*over|pullover|dorsal|t-?bar|gironda|encogimiento|trapecio/i],
   ["Hombros",/elevaci[oó]n(es)?\s+lateral|p[aá]jaro|deltoid|press\s+militar|face\s*pull|pec\s*deck\s*invertid|posterior/i],
   ["Bíceps",/curl(?!\s*(de\s*)?(pierna|femoral))/i],
   ["Tríceps",/tr[ií]ceps|press\s+franc[eé]s|fondos|extensi[oó]n\s+de\s+tr/i],
-  ["Glúteos",/hip\s*thrust|gl[uú]teo|patada/i],
+  ["Glúteos",/hip\s*thrust|gl[uú]teo|patada|abductor/i],
   ["Piernas",/sentadilla|prensa|cu[aá]driceps|femoral|peso\s+muerto|zancada|lunge|pantorrilla|talones|b[uú]lgara|curl\s+(de\s+)?pierna|extensi[oó]n\s+de\s+cu/i],
   ["Core",/abdomen|abdominal|crunch|plancha|vacuum|vac[ií]o|ab\s*wheel|rueda|elevaci[oó]n\s+de\s+piernas/i],
   ["Cardio",/cardio|liss|caminadora|cuerda|trote|correr|bici|el[ií]ptica/i],
@@ -2040,9 +2049,70 @@ const MUSCLE_KW=[
 const EMOJI_BY={Pecho:"💪",Espalda:"💪",Hombros:"💪",Bíceps:"💪",Tríceps:"💪",Glúteos:"🍑",Piernas:"🦵",Core:"🔥",Cardio:"🏃"};
 const guessMuscle=n=>{for(const[m,re]of MUSCLE_KW)if(re.test(n))return m;return "Otro"};
 const DAY_RE=/(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)/i;
+const WD_IDX={lunes:0,martes:1,miercoles:2,jueves:3,viernes:4,sabado:5,domingo:6};
+const wdIndex=s=>{const m=String(s||"").match(DAY_RE);if(!m)return null;const k=m[1].toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");return WD_IDX[k]??null};
+
+/* ── Vincular ejercicios con su historial aunque el nombre cambie un poco ──
+   Normaliza (acentos, mayúsculas, plurales, sinónimos) y compara palabras.
+   Vetos: si ambos nombres dicen implemento/ángulo/posición y no coinciden, NO son el mismo ejercicio. */
+const EX_STOP=new Set(["de","del","la","el","lo","los","las","con","en","a","al","o","y","u","e","por","para","un","una","tipo","reps","rep"]);
+const EX_SYN={pantorrilla:"talon",gemelo:"talon",femoral:"pierna",multipower:"smith",articulada:"hammer",lunge:"zancada",tumbado:"acostado",parado:"pie",prensa:"prensa",dorsal:"dorsal"};
+const EX_IMPL=new Set(["polea","mancuerna","barra","maquina","smith","hammer","pecdeck"]);
+const EX_ANGLE=new Set(["inclinado","plano","declinado"]);
+const EX_POS=new Set(["sentado","pie","acostado"]);
+const exTokCache=new Map();
+const exTokens=name=>{
+  const k=String(name||"");if(exTokCache.has(k))return exTokCache.get(k);
+  let s=k.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  s=s.replace(/pull[\s-]*over/g,"pullover").replace(/pec[\s-]*deck/g,"pecdeck maquina").replace(/face[\s-]*pulls?/g,"facepull").replace(/hip[\s-]*thrust/g,"hipthrust").replace(/t[\s-]*bar/g,"tbar").replace(/a una mano|una mano|un brazo/g,"unilateral").replace(/de pie/g,"pie");
+  const out=new Set();
+  for(let w of s.replace(/[^a-z0-9]+/g," ").split(" ")){
+    if(!w||EX_STOP.has(w))continue;
+    if(w.length>4&&/[^aeiou]es$/.test(w))w=w.slice(0,-2);else if(w.length>3&&w.endsWith("s"))w=w.slice(0,-1);
+    w=EX_SYN[w]||w;
+    if(!EX_STOP.has(w))out.add(w);
+  }
+  exTokCache.set(k,out);return out;
+};
+const exKey=name=>[...exTokens(name)].sort().join(" ");
+const EX_ALT_RE=/\s(?:o|\/)\s/i;
+const exCompound=name=>EX_ALT_RE.test(" "+String(name||"").replace(/[()]/g," ")+" ");
+const exFirstAlt=name=>(" "+String(name||"").replace(/[()]/g," ")+" ").split(EX_ALT_RE)[0];
+const exScore=(a,b)=>{
+  if(!a||!b)return 0;if(a===b)return 1;
+  const A=exTokens(a),B=exTokens(b);if(!A.size||!B.size)return 0;
+  const veto=set=>{const x=[...A].filter(t=>set.has(t)),y=[...B].filter(t=>set.has(t));return x.length&&y.length&&!x.some(t=>y.includes(t))};
+  if(veto(EX_IMPL)||veto(EX_ANGLE)||veto(EX_POS))return 0;
+  if(A.has("unilateral")!==B.has("unilateral"))return 0;
+  // "A o B": un nombre con alternativas solo empata con uno simple si éste cubre la PRIMERA opción
+  const ca=exCompound(a),cb=exCompound(b);
+  if(ca!==cb){const F=exTokens(exFirstAlt(ca?a:b)),S=ca?B:A;for(const t of F)if(!EX_IMPL.has(t)&&!S.has(t))return 0}
+  else if(ca&&cb){const fa=[...exTokens(exFirstAlt(a))].filter(t=>EX_IMPL.has(t)),fb=[...exTokens(exFirstAlt(b))].filter(t=>EX_IMPL.has(t));if(fa.length&&fb.length&&!fa.some(t=>fb.includes(t)))return 0}
+  let inter=0;A.forEach(t=>{if(B.has(t))inter++});
+  return 2*inter/(A.size+B.size);
+};
+const EX_MATCH=0.7;
+const sameEx=(a,b)=>a===b||exScore(a,b)>=EX_MATCH;
+// Nombre con el que se guarda y se busca el historial de un ejercicio del plan
+const exHistName=ex=>ex?.hist||ex?.name||"";
+// Busca el mejor nombre ya conocido (historial primero, luego planes) para un ejercicio nuevo
+const findHistMatch=(name,{logNames=[],planNames=[]}={})=>{
+  let best=null,bs=0;
+  const consider=(cand,bonus)=>{if(!cand)return;const s=exScore(name,cand);if(s>=EX_MATCH&&(s+bonus)>bs){bs=s+bonus;best=cand}};
+  logNames.forEach(n=>consider(n,0.01));
+  planNames.forEach(n=>consider(n,0));
+  return best&&best!==name?best:null;
+};
+
+/* ── Importar: separa automáticamente varias rutinas pegadas juntas ──
+   Corta en: encabezados ("OPCIÓN 1", "Rutina de 4 días", "Plan B"…), "Día 1" que reinicia,
+   o cuando la semana vuelve a empezar (Viernes → Lunes, o un día repetido). */
+const PLAN_HDR_RE=/^(opci[oó]n|rutina|plan|programa|propuesta|versi[oó]n|alternativa)\b|\b\d+\s*d[ií]as\b/i;
+const NOT_HDR_RE=/^(descanso|nota|recordatorio|objetivo|esquema|tip|consejo)/i;
 const parseRoutineText=(text)=>{
-  const lines=String(text||"").replace(/\u200b/g,"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  const days=[];let planName="";let idc=Date.now();
+  const lines=String(text||"").replace(/​/g,"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const blocks=[];let cur=null;let idc=Date.now();let looseName="";
+  const newBlock=name=>{cur={name:name||"",days:[],lastWd:null};blocks.push(cur);return cur};
   const mkEx=(rawName,sets,reps,rest)=>{
     let name=rawName.replace(/^[\s\-•*–—]*\d+[.)]\s*/,"").replace(/^[\s\-•*–—]+/,"").replace(/[.:;]+$/,"").trim();
     name=name.replace(/\s{2,}/g," ");
@@ -2051,29 +2121,41 @@ const parseRoutineText=(text)=>{
     const muscle=guessMuscle(name);
     return{id:idc++,name,muscle,emoji:EMOJI_BY[muscle]||"💪",tSets:sets||3,tReps:reps||"10",rest:rest||""};
   };
+  const curDay=()=>{if(!cur)newBlock(looseName);if(!cur.days.length)cur.days.push({label:"Día 1",name:"Día 1",exercises:[]});return cur.days[cur.days.length-1]};
   for(const raw of lines){
-    const line=raw.replace(/^[📌🗓️🔥🏃‍♂️🏃⚔️•\s]+/,"").trim();
+    const line=raw.replace(/^[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9(]+/,"").trim();
     if(!line)continue;
     const hasSpec=/\d+\s*series?\s*[x×]/i.test(line)||/\(\s*\d+\s*[x×]\s*\d/i.test(line)||/:\s*\d+\s*[x×]\s*\d/.test(line);
+    // 1) Encabezado de rutina → bloque nuevo
+    if(!hasSpec&&PLAN_HDR_RE.test(line)&&!NOT_HDR_RE.test(line)&&!/^(d[ií]a|day)\s*\d/i.test(line)&&line.length<110){
+      const nm=line.replace(/^(opci[oó]n|alternativa|propuesta|versi[oó]n)\s*[\w\d]*\s*[:.\-–—]\s*/i,"").trim()||line;
+      if(cur&&!cur.days.some(d=>d.exercises.length))cur.name=nm;else newBlock(nm);
+      continue;
+    }
     const isDay=!hasSpec&&(DAY_RE.test(line)||/^(d[ií]a|day)\s*\d/i.test(line))&&line.length<90;
     if(isDay){
-      let nm=line.replace(/^.*?:\s*/,m=>/^(d[ií]a\s*\d+|lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\s*:/i.test(m)?"":m).trim();
-      nm=line.includes(":")?line.split(":").slice(1).join(":").trim()||line.trim():line.trim();
+      const wd=wdIndex(line);
+      const restart=/^(d[ií]a|day)\s*1\b/i.test(line);
+      const hasWork=cur&&cur.days.some(d=>d.exercises.length);
+      // 2) La semana reinicia → otra rutina
+      if(hasWork&&(restart||(wd!==null&&cur.lastWd!==null&&wd<=cur.lastWd)))newBlock("");
+      if(!cur)newBlock(looseName);
+      const nm=line.includes(":")?line.split(":").slice(1).join(":").trim()||line.trim():line.trim();
       const dayWord=(line.match(DAY_RE)||[])[0];
-      days.push({label:"Día "+(days.length+1),name:(nm+(dayWord&&!nm.toLowerCase().includes(dayWord.toLowerCase())?" ("+dayWord.charAt(0).toUpperCase()+dayWord.slice(1).toLowerCase()+")":"")).replace(/\s{2,}/g," ").trim(),exercises:[]});
+      cur.days.push({label:"Día "+(cur.days.length+1),name:(nm+(dayWord&&!nm.toLowerCase().includes(dayWord.toLowerCase())?" ("+dayWord.charAt(0).toUpperCase()+dayWord.slice(1).toLowerCase()+")":"")).replace(/\s{2,}/g," ").trim(),exercises:[]});
+      if(wd!==null)cur.lastWd=wd;
       continue;
     }
     if(!hasSpec){
       // Cardio sin series: "Cardio LISS: 15 min en caminadora"
-      if(/cardio|liss|caminadora/i.test(line)&&days.length){
+      if(/cardio|liss|caminadora/i.test(line)&&cur&&cur.days.length){
         const mins=(line.match(/(\d+)\s*min/i)||[])[1];
         const ex=mkEx(line.split(":")[0],1,(mins||"15")+" min",(line.match(/\(([^)]*bpm[^)]*)\)/i)||[])[1]||"");
-        if(ex)days[days.length-1].exercises.push(ex);
-      }else if(!days.length&&!planName&&line.length<70&&!/^(esquema|objetivo|descanso|recordatorio|opci[oó]n)/i.test(line))planName=line;
+        if(ex)cur.days[cur.days.length-1].exercises.push(ex);
+      }else if(!cur&&!looseName&&line.length<70&&!/^(esquema|objetivo|descanso|recordatorio|nota)/i.test(line))looseName=line;
       continue;
     }
-    if(!days.length)days.push({label:"Día 1",name:"Día 1",exercises:[]});
-    const day=days[days.length-1];
+    const day=curDay();
     // Superseries: "A (3x10) + B (3x12)"
     const parts=/\)\s*\+\s*/.test(line)?line.split(/\s*\+\s*(?=[A-ZÁÉÍÓÚÑa-z])/):[line];
     for(const part0 of parts){
@@ -2081,7 +2163,7 @@ const parseRoutineText=(text)=>{
       part=part.replace(/^superserie[^:]*:\s*/i,"");
       const spec=part.match(/(\d+)\s*series?\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/\(\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/:\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/);
       if(!spec)continue;
-      const sets=+spec[1];const reps=spec[2].replace(/\s*[-–]\s*/,"-");
+      const sets=+spec[1];const tail=part.slice(spec.index+spec[0].length,spec.index+spec[0].length+30);const reps=spec[2].replace(/\s*[-–]\s*/,"-")+(/^\s*pasos/i.test(tail)?" pasos":"")+(/^\s*(reps?\s*|pasos\s*)?(por|x)\s*pierna/i.test(tail)?" x pierna":"");
       let name=part.slice(0,spec.index);
       if(name.includes(":")){
         const segs=name.split(":");
@@ -2098,69 +2180,86 @@ const parseRoutineText=(text)=>{
       if(ex)day.exercises.push(ex);
     }
   }
-  const valid=days.filter(d=>d.exercises.length>0).map((d,i)=>({...d,label:"Día "+(i+1)}));
-  return{name:planName||"Rutina importada",daysPerWeek:valid.length,days:valid};
+  const plans=blocks.map(b=>{
+    const days=b.days.filter(d=>d.exercises.length>0).map((d,i)=>({...d,label:"Día "+(i+1)}));
+    return{name:b.name||"",daysPerWeek:days.length,days};
+  }).filter(p=>p.days.length>0);
+  plans.forEach((p,i)=>{if(!p.name)p.name=(plans.length===1&&looseName)?looseName:"Rutina importada"+(plans.length>1?" "+(i+1):"")+" ("+p.daysPerWeek+" días)"});
+  const first=plans[0]||{name:"Rutina importada",daysPerWeek:0,days:[]};
+  return{...first,plans};
 };
 
 /* ── PLANES: 5 o 4 días por semana ── */
 function RoutineImport({ctx,onImported}){
+  const{wkLogs,plans}=ctx;
   const[open,setOpen]=useState(false);
   const[txt,setTxt]=useState("");
-  const[prev,setPrev]=useState(null);
+  const[prev,setPrev]=useState(null); // lista de planes detectados
   const[err,setErr]=useState("");
-  const[name,setName]=useState("");
   const analizar=()=>{
     const r=parseRoutineText(txt);
-    if(!r.days.length){setErr("No reconocí ejercicios. Asegúrate de que cada ejercicio traiga algo como \"3 series x 8-10\" y que los días digan \"Lunes:\", \"Día 1:\", etc.");setPrev(null);return}
-    setErr("");setName(r.name);setPrev(r);
+    if(!r.plans.length){setErr("No reconocí ejercicios. Asegúrate de que cada ejercicio traiga algo como \"3 series x 8-10\" y que los días digan \"Lunes:\", \"Día 1:\", etc.");setPrev(null);return}
+    // Liga cada ejercicio con el nombre que ya tiene historial de pesos
+    const logNames=[...new Set((wkLogs||[]).flatMap(w=>(w.exercises||[]).filter(e=>(e.sets||[]).some(x=>x.weight||x.reps)).map(e=>e.name)))];
+    const planNames=[...new Set([...SEED_PLANS,...(plans||[])].flatMap(p=>p.days.flatMap(d=>d.exercises.map(exHistName))))];
+    const linked=r.plans.map(p=>({...p,days:p.days.map(d=>({...d,exercises:d.exercises.map(ex=>{const h=findHistMatch(ex.name,{logNames,planNames});return h?{...ex,hist:h}:ex})}))}));
+    setErr("");setPrev(linked);
   };
   const guardar=()=>{
     if(!prev)return;
-    const pl={id:Date.now(),seedV:99,name:(name.trim()||prev.name),daysPerWeek:prev.daysPerWeek,days:prev.days};
-    onImported(pl);
-    setOpen(false);setTxt("");setPrev(null);setName("");
+    const base=Date.now();
+    onImported(prev.map((p,i)=>({id:base+i,seedV:99,name:(p.name.trim()||"Rutina importada"),daysPerWeek:p.daysPerWeek,days:p.days})));
+    setOpen(false);setTxt("");setPrev(null);
   };
   if(!open)return(
     <div className="card" onClick={()=>setOpen(true)} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:12}}>
       <span style={{fontSize:22}}>📋</span>
       <div style={{flex:1}}>
         <div style={{fontSize:14,fontWeight:600}}>Importar rutina pegando texto</div>
-        <div style={{fontSize:11,color:"#8b8f96",marginTop:2}}>Pega la rutina que te pasen y la convierto en un plan</div>
+        <div style={{fontSize:11,color:"#8b8f96",marginTop:2}}>Pega una o varias rutinas y las convierto en planes</div>
       </div>
       <span style={{color:"#6e727a"}}>›</span>
     </div>
   );
+  const nEx=prev?prev.reduce((a,p)=>a+p.days.reduce((b,d)=>b+d.exercises.length,0),0):0;
+  const nLinked=prev?prev.reduce((a,p)=>a+p.days.reduce((b,d)=>b+d.exercises.filter(e=>e.hist).length,0),0):0;
   return(<div className="card" style={{borderColor:"rgba(255,159,69,.35)"}}>
     <div className="sect" style={{justifyContent:"space-between"}}><span>📋 Importar rutina</span><button className="lbs" style={{padding:"3px 9px",fontSize:11}} onClick={()=>{setOpen(false);setPrev(null);setErr("")}}>✕</button></div>
     {!prev?<>
-      <div style={{fontSize:11,color:"#8b8f96",marginBottom:8,lineHeight:1.6}}>Pega el texto tal cual. Reconoce formatos como:<br/><span style={{color:"#6e727a"}}>📌 Martes: Torso A<br/>Press inclinado con mancuernas: 4 series x 8-10 reps (Descanso: 2 min)</span></div>
+      <div style={{fontSize:11,color:"#8b8f96",marginBottom:8,lineHeight:1.6}}>Pega el texto tal cual. Si pegas varias rutinas juntas (ej. "OPCIÓN 1… OPCIÓN 2…"), las separo en planes distintos.<br/><span style={{color:"#6e727a"}}>📌 Martes: Torso A<br/>Press inclinado con mancuernas: 4 series x 8-10 reps</span></div>
       <textarea className="lfi" value={txt} onChange={e=>setTxt(e.target.value)} placeholder="Pega aquí tu rutina completa..." style={{height:170,fontSize:13,lineHeight:1.5,resize:"vertical"}}/>
       {err&&<div style={{fontSize:11,color:"#ff6b6b",marginTop:8,lineHeight:1.5}}>{err}</div>}
       <button className="lbp" style={{marginTop:10,width:"100%",justifyContent:"center",background:"#ff9f45"}} onClick={analizar} disabled={!txt.trim()}>Analizar rutina</button>
     </>:<>
-      <div style={{marginBottom:10}}>
-        <label className="lfl">Nombre del plan</label>
-        <input className="lfi" value={name} onChange={e=>setName(e.target.value)} placeholder="Mi rutina"/>
-      </div>
-      <div style={{fontSize:12,color:"#30d158",marginBottom:10}}>✓ Encontré {prev.daysPerWeek} días y {prev.days.reduce((a,d)=>a+d.exercises.length,0)} ejercicios</div>
-      <div style={{display:"flex",flexDirection:"column",gap:9,maxHeight:320,overflowY:"auto"}}>
-        {prev.days.map((d,di)=>(
-          <div key={di} style={{background:"#0b0c0e",borderRadius:11,padding:"10px 12px"}}>
-            <div style={{fontSize:12,fontWeight:700,color:"#ff9f45",marginBottom:6}}>{d.label} · {d.name}</div>
-            {d.exercises.map((ex,i)=>(
-              <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
-                <span style={{fontSize:13}}>{ex.emoji}</span>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.name}</div>
-                  <div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{ex.tSets}×{ex.tReps}{ex.rest?" · "+ex.rest:""} · {ex.muscle}</div>
+      <div style={{fontSize:12,color:"#30d158",marginBottom:4}}>✓ Encontré {prev.length===1?"1 rutina":prev.length+" rutinas separadas"} · {nEx} ejercicios</div>
+      {nLinked>0&&<div style={{fontSize:11,color:"#FFB800",marginBottom:10}}>🔗 {nLinked} ejercicios ligados a tu historial — tus pesos anteriores aparecerán al entrenar</div>}
+      <div style={{display:"flex",flexDirection:"column",gap:12,maxHeight:380,overflowY:"auto"}}>
+        {prev.map((p,pi)=>(
+          <div key={pi} style={{border:"1px solid rgba(255,159,69,.25)",borderRadius:12,padding:10}}>
+            <label className="lfl">Plan {pi+1} · {p.daysPerWeek} días{p.daysPerWeek>7?" ⚠️ más de 7 días":""}</label>
+            <input className="lfi" value={p.name} onChange={e=>setPrev(ps=>ps.map((x,i)=>i===pi?{...x,name:e.target.value}:x))} placeholder="Mi rutina" style={{marginBottom:8}}/>
+            <div style={{display:"flex",flexDirection:"column",gap:8}}>
+              {p.days.map((d,di)=>(
+                <div key={di} style={{background:"#0b0c0e",borderRadius:11,padding:"10px 12px"}}>
+                  <div style={{fontSize:12,fontWeight:700,color:"#ff9f45",marginBottom:6}}>{d.label} · {d.name}</div>
+                  {d.exercises.map((ex,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
+                      <span style={{fontSize:13}}>{ex.emoji}</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.name}</div>
+                        <div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{ex.tSets}×{ex.tReps}{ex.rest?" · "+ex.rest:""} · {ex.muscle}</div>
+                        {ex.hist&&<div style={{fontSize:10,color:"#FFB800",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>🔗 historial: {ex.hist}</div>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         ))}
       </div>
       <div style={{display:"flex",gap:8,marginTop:12}}>
-        <button className="lbp" style={{flex:1,justifyContent:"center",background:"#ff9f45"}} onClick={guardar}>✓ Guardar como plan</button>
+        <button className="lbp" style={{flex:1,justifyContent:"center",background:"#ff9f45"}} onClick={guardar}>✓ Guardar {prev.length>1?prev.length+" planes":"como plan"}</button>
         <button className="lbs" onClick={()=>setPrev(null)}>Volver</button>
       </div>
       <div style={{fontSize:10,color:"#6e727a",marginTop:8}}>Después puedes reordenar o corregir ejercicios editando el plan.</div>
@@ -2211,7 +2310,7 @@ function GymPlanes({ctx}){
 
   return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
     {/* Importar rutina pegando texto */}
-    {!form&&<RoutineImport ctx={ctx} onImported={pl=>{setPlans(prev=>[...prev,pl]);if(!activePlanId)setActivePlanId(pl.id)}}/>}
+    {!form&&<RoutineImport ctx={ctx} onImported={pls=>{setPlans(prev=>[...prev,...pls]);if(!activePlanId&&pls[0])setActivePlanId(pls[0].id)}}/>}
 
     {/* Crear nuevo plan según días */}
     {!form&&<div className="lc" style={{borderColor:"rgba(249,115,22,.2)"}}>
@@ -2349,26 +2448,32 @@ function GymEntrenar({ctx}){
   },[dayIdx,sets]);
 
   // Buscar el último registro de cada ejercicio para mostrar referencia
-  const lastFor=(exName)=>{
-    for(let i=wkLogs.length-1;i>=0;i--){
-      const found=(wkLogs[i].exercises||[]).find(e=>e.name===exName&&e.sets?.length>0);
-      if(found){const best=found.sets.reduce((a,s)=>(+s.weight||0)>(+a.weight||0)?s:a,found.sets[0]);return{date:wkLogs[i].date,reps:best.reps,weight:best.weight}}
-    }
+  // Encuentra el ejercicio en una sesión guardada aunque el nombre haya cambiado un poco (o tenga "hist")
+  // El registro MÁS RECIENTE del mismo ejercicio: nombre exacto, su "hist", o un nombre parecido
+  // (p. ej. pegado con otra redacción). Nunca toma el nombre oficial de OTRO ejercicio.
+  const hasW=e=>(e.sets||[]).some(s=>s.weight||s.reps);
+  const findLast=(ex)=>{
+    const h=exHistName(ex);
+    const bestSeed=SEED_HIST_NAMES.has(h)?h:findHistMatch(h,{planNames:[...SEED_HIST_NAMES]});
+    const isSame=e=>e.name===h||e.name===ex.name||(SEED_HIST_NAMES.has(e.name)?e.name===bestSeed:(sameEx(e.name,h)||(!!ex.hist&&sameEx(e.name,ex.name))));
+    for(let i=wkLogs.length-1;i>=0;i--){const f=(wkLogs[i].exercises||[]).find(e=>isSame(e)&&hasW(e));if(f)return{log:wkLogs[i],ex:f}}
     return null;
   };
+  const lastFor=(ex)=>{
+    const r=findLast(ex);if(!r)return null;
+    const best=r.ex.sets.reduce((a,s)=>(+s.weight||0)>(+a.weight||0)?s:a,r.ex.sets[0]);
+    return{date:r.log.date,reps:best.reps,weight:best.weight};
+  };
 
-  const lastSetsFor=(name)=>{
-    for(let i=wkLogs.length-1;i>=0;i--){
-      const ex=(wkLogs[i].exercises||[]).find(e=>e.name===name&&(e.sets||[]).some(s=>s.weight||s.reps));
-      if(ex)return ex.sets.filter(s=>s.weight||s.reps).map(s=>({reps:s.reps||"",weight:s.weight||"",done:false}));
-    }
-    return null;
+  const lastSetsFor=(pex)=>{
+    const ex=findLast(pex)?.ex;
+    return ex?ex.sets.filter(s=>s.weight||s.reps).map(s=>({reps:s.reps||"",weight:s.weight||"",done:false})):null;
   };
   const start=(di)=>{
     setDayIdx(di);
     const init={};
     plan.days[di].exercises.forEach((ex,i)=>{
-      const last=lastSetsFor(ex.name);
+      const last=lastSetsFor(ex);
       const n=Math.max(ex.tSets||1,last?last.length:0);
       const fallback=last&&last.length>0?last[last.length-1]:null;
       init[i]=Array.from({length:n},(_,j)=>
@@ -2384,7 +2489,7 @@ function GymEntrenar({ctx}){
   const finish=()=>{
     const day=plan.days[dayIdx];
     const totalSets=Object.values(sets).reduce((a,arr)=>a+arr.filter(s=>s.done).length,0);
-    const log={id:Date.now(),name:plan.name+" · "+day.label+(day.name?" ("+day.name+")":""),planId:plan.id,dayLabel:day.label,dayName:day.name,date:td(),exercises:day.exercises.map((ex,i)=>({name:ex.name,muscle:ex.muscle,sets:(sets[i]||[]).filter(s=>s.done)})),totalSets};
+    const log={id:Date.now(),name:plan.name+" · "+day.label+(day.name?" ("+day.name+")":""),planId:plan.id,dayLabel:day.label,dayName:day.name,date:td(),exercises:day.exercises.map((ex,i)=>({name:exHistName(ex),muscle:ex.muscle,sets:(sets[i]||[]).filter(s=>s.done)})),totalSets};
     setWkLogs(p=>[...p,log]);
     setDayIdx(null);setSets({});setGymDraft(null);
   };
@@ -2434,7 +2539,7 @@ function GymEntrenar({ctx}){
     </div>
     {day.exercises.map((ex,i)=>{
       const exSets=sets[i]||[];const anyD=exSets.some(s=>s.done);
-      const last=lastFor(ex.name);
+      const last=lastFor(ex);
       return(<div key={i} className="lc" style={{borderColor:anyD?"rgba(249,115,22,.3)":"rgba(255,255,255,.06)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>{ex.emoji||"💪"}</span><div><div style={{fontSize:13,fontWeight:700}}>{ex.name}</div><div style={{fontSize:10,color:"#555"}}>{ex.muscle}{ex.tSets?<span style={{color:"#f97316",fontWeight:700}}> · {ex.tSets}×{ex.tReps}</span>:null}{ex.rest?<span style={{color:"#444"}}> · desc {ex.rest}</span>:null}</div></div></div>
