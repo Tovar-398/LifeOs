@@ -1,4 +1,4 @@
-const CACHE = "lifeos-v13"; // subir este número en cada actualización futura fuerza la limpieza de caché vieja
+const CACHE = "lifeos-v14"; // subir este número en cada actualización futura fuerza la limpieza de caché vieja
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {
