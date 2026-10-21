@@ -37,6 +37,10 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 - Cada plan muestra su fecha de carga (`planLoadedAt`: `createdAt` al importar, `updated` en las oficiales, o el id si es marca de tiempo) y la etiqueta "MÁS RECIENTE" entre planes importados con los mismos días. Al subir `seedV`, actualiza también `updated`.
 - `NUTRI_TARGET` y `NUTRI_MEALS`: plan de comidas con macros por comida (`kcal`, `p`, `c`, `f`). La suma de las comidas debe cuadrar con el objetivo.
 - `SHOP_BASE`: básicos de la lista de compras, acordes a la dieta vigente.
+- Nutrición: `NUTRI_MENUS` (A y B, mismos ids `n1`–`n4`, horas y macros; `NUTRI_MEALS` = menú A, lo usa Hoy). `FOOD_DB` = alimentos con macros por 100 g (`pz`/`taza` = gramos por pieza/taza) y `parseFoodText` entiende "2 tortillas y 150 g de pollo". `nutriCoach` da qué falta/sobra, proyección del día y recortes concretos (`NUTRI_CUTS`) sin tocar la proteína.
+- Registro de comidas en el estado `food` = `{days:{fecha:[{id,t,meal,name,src,kcal,p,c,f}]},menu}`. `nutriLog[fecha][nX]` sigue siendo la palomita de cada comida (Hoy la usa); `dayFood` suma entradas + comidas palomeadas sin detalle (= plan tal cual).
+- Enlace `?comida=n1`…`n4` abre Comidas con esa comida lista para registrar. Los eventos diarios "🥗 Comida N" del calendario (los crea el asistente) llevan ese enlace.
+- Fechas: `td()`/`ds()` son en hora LOCAL (antes UTC y el día cambiaba a las 6 PM en México).
 
 ### Entreno en curso
 `gymDraft` guarda la sesión a medias (pesos y reps) para que no se pierda si Android cierra la app. Se limpia al terminar o cancelar.

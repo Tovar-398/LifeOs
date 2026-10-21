@@ -80,8 +80,9 @@ const M  = v => new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",m
 const M2 = v => new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(v||0);
 const U  = v => new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(v||0);
 const pc = v => `${(v||0)>=0?"+":""}${(v||0).toFixed(2)}%`;
-const td = () => new Date().toISOString().split("T")[0];
-const ds = d => d.toISOString().split("T")[0];
+// Fecha LOCAL (AAAA-MM-DD). Antes usaba UTC: en México el "día" cambiaba a las 6 PM.
+const ds = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const td = () => ds(new Date());
 const fd = d => { try { return new Date(d+"T12:00:00").toLocaleDateString("es-MX",{day:"numeric",month:"short"}); } catch { return d; } };
 const mk = d => d ? d.slice(0,7) : td().slice(0,7);
 const nm = () => td().slice(0,7);
@@ -225,12 +226,213 @@ const SEED_PLANS=[
 ];
 const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
 const NUTRI_TARGET={kcal:2030,protein:150,carbs:200,fat:65};
-const NUTRI_MEALS=[
- {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["3 huevos enteros + 2 claras (revueltos o estrellados)","Bowl: 150 g de fruta (sandía, melón o mango) + 100 g de yogur griego natural sin azúcar + 30 g de granola","2 tortillas de maíz o 2 rebanadas de pan integral"]},
- {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:550,p:42,c:50,f:16,items:["180 g de pechuga de pollo, bistec de res magro o filete de pescado","1 taza de arroz cocido o 200 g de papa/camote al horno","Ensalada o verduras al gusto + 40 g de aguacate (1/3 de pieza)"]},
- {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:710,p:46,c:72,f:20,items:["1.5 scoops de proteína Whey + 250 ml de leche entera o deslactosada","50 g de avena en hojuelas","1 plátano mediano","20 g de crema de cacahuate natural sin azúcar"]},
- {id:"n4",time:"08:30 PM",title:"Cena",kcal:250,p:28,c:18,f:7,items:["1 lata de atún en agua (o 130 g de pechuga de pollo)","Ensalada verde libre (espinaca, pepino, jitomate) + 1 cdta de aceite de oliva","2 tostadas horneadas de maíz"]},
+// Menús de la dieta vigente (mismos ids, horas y macros; cambian los alimentos). NUTRI_MEALS = menú A (lo usan Hoy y los avisos).
+const NUTRI_MENUS={
+ A:{label:"Opción A · Práctica y clásica",meals:[
+  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["3 huevos enteros + 2 claras (revueltos con jitomate/cebolla o a la mexicana) + 2 tortillas de maíz","Bowl: 150 g de fruta (papaya o melón) + 100 g de yogur natural/griego sin azúcar + 30 g de granola"]},
+  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:550,p:42,c:50,f:16,items:["180 g de pechuga de pollo a la plancha + 1 taza de arroz blanco/integral (de tus porciones ya cocidas)","Ensalada o verduras al gusto (pepino, lechuga) + 40 g de aguacate (1/3 de pieza)"]},
+  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:710,p:46,c:72,f:20,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche entera o deslactosada","50 g de avena en hojuelas + 1 plátano mediano + 20 g de crema de cacahuate natural"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:250,p:28,c:18,f:7,items:["1 lata de atún en agua (escurrido) con 1 cda de mayonesa baja en grasa o 1 cdita de aceite de oliva","2 tostadas horneadas de maíz + jitomate y pepino picado"]},
+ ]},
+ B:{label:"Opción B · Económica y variada",meals:[
+  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["Omelette de 3 huevos + 2 claras (con champiñones o espinacas) + 2 rebanadas de pan integral","1 plátano o manzana picada con 100 g de yogur natural sin azúcar + 30 g de granola"]},
+  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:550,p:42,c:50,f:16,items:["180 g de bistec/filete de cerdo magro (lomo o pulpa) o pescado (tilapia/basa) a la plancha","200 g de papa cocida o al horno (o 1 taza de arroz) + ensalada verde con 1 cdita de aceite de oliva"]},
+  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:710,p:46,c:72,f:20,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche","50 g de avena + 150 g de fresas/frutos rojos (pueden ser congelados) + 20 g de crema de cacahuate"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:250,p:28,c:18,f:7,items:["Tacos de pollo: 130 g de pechuga deshebrada o en fajitas + 2 tortillas de maíz","Salsa casera libre y verdura al gusto"]},
+ ]},
+};
+const NUTRI_MEALS=NUTRI_MENUS.A.meals;
+const NUTRI_ZERO={kcal:0,p:0,c:0,f:0};
+const addM=(a,b,k=1)=>({kcal:a.kcal+(b.kcal||0)*k,p:a.p+(b.p||0)*k,c:a.c+(b.c||0)*k,f:a.f+(b.f||0)*k});
+const roundM=m=>({kcal:Math.round(m.kcal),p:Math.round(m.p),c:Math.round(m.c),f:Math.round(m.f)});
+
+/* ── Base de alimentos (macros aprox. por 100 g o 100 ml; pz/taza = gramos de una pieza/taza) ── */
+const FOOD_DB=[
+ {n:"Huevo entero",kw:"huevo|huevos",k:143,p:12.6,c:0.7,f:9.5,pz:50,def:[2,"pz"]},
+ {n:"Clara de huevo",kw:"clara|claras",k:52,p:10.9,c:0.7,f:0.2,pz:33,def:[3,"pz"]},
+ {n:"Pechuga de pollo",kw:"pechuga|pollo",k:165,p:31,c:0,f:3.6,def:[150,"g"]},
+ {n:"Bistec de res magro",kw:"bistec|res|filete de res|arrachera",k:190,p:29,c:0,f:7.5,def:[150,"g"]},
+ {n:"Lomo/pulpa de cerdo",kw:"cerdo|lomo|pulpa",k:170,p:28,c:0,f:6,def:[150,"g"]},
+ {n:"Pescado blanco (tilapia/basa)",kw:"pescado|tilapia|basa|filete de pescado",k:128,p:26,c:0,f:2.7,def:[150,"g"]},
+ {n:"Atún en agua (lata escurrida)",kw:"at[uú]n",k:116,p:25.5,c:0,f:0.8,pz:100,pzN:"lata",def:[1,"pz"]},
+ {n:"Carne molida 90/10",kw:"molida|picadillo",k:217,p:26,c:0,f:12,def:[120,"g"]},
+ {n:"Jamón de pavo",kw:"jam[oó]n|pavo",k:104,p:16,c:3,f:3,pz:20,pzN:"rebanada",def:[3,"pz"]},
+ {n:"Queso panela",kw:"panela|queso fresco",k:260,p:18,c:3,f:20,def:[40,"g"]},
+ {n:"Yogur griego natural",kw:"yogur|yogurt",k:73,p:10,c:3.9,f:2,def:[150,"g"]},
+ {n:"Leche entera/deslactosada",kw:"leche",k:61,p:3.2,c:4.8,f:3.3,taza:250,def:[250,"g"]},
+ {n:"Proteína hidrolizada (scoop)",kw:"hidrolizada|prote[ií]na en polvo|scoop|prote[ií]na",k:380,p:87,c:5,f:2,pz:30,pzN:"scoop",def:[1,"pz"]},
+ {n:"Proteína whey (scoop)",kw:"whey",k:400,p:78,c:8,f:6,pz:30,pzN:"scoop",def:[1,"pz"]},
+ {n:"Creatina",kw:"creatina",k:0,p:0,c:0,f:0,def:[10,"g"]},
+ {n:"Avena en hojuelas",kw:"avena",k:379,p:13.2,c:67.7,f:6.5,taza:80,def:[50,"g"]},
+ {n:"Granola",kw:"granola",k:471,p:10,c:64,f:20,def:[30,"g"]},
+ {n:"Arroz cocido",kw:"arroz",k:130,p:2.7,c:28,f:0.3,taza:158,def:[1,"taza"]},
+ {n:"Papa cocida/horno",kw:"papa|papas cocidas",k:87,p:1.9,c:20,f:0.1,def:[200,"g"]},
+ {n:"Camote",kw:"camote",k:90,p:2,c:21,f:0.2,def:[200,"g"]},
+ {n:"Frijoles cocidos",kw:"frijol|frijoles",k:127,p:8.7,c:22.8,f:0.5,taza:172,def:[0.5,"taza"]},
+ {n:"Tortilla de maíz",kw:"tortilla|tortillas",k:218,p:5.7,c:44.6,f:2.9,pz:30,def:[2,"pz"]},
+ {n:"Tortilla de harina",kw:"tortilla de harina|harina",k:312,p:8,c:52,f:8,pz:40,def:[1,"pz"]},
+ {n:"Pan integral",kw:"pan integral|pan de caja|pan",k:247,p:13,c:41,f:3.4,pz:30,pzN:"rebanada",def:[2,"pz"]},
+ {n:"Tostada horneada",kw:"tostada|tostadas",k:420,p:9,c:78,f:7,pz:12,def:[2,"pz"]},
+ {n:"Plátano",kw:"pl[aá]tano|banana",k:89,p:1.1,c:22.8,f:0.3,pz:118,def:[1,"pz"]},
+ {n:"Manzana",kw:"manzana",k:52,p:0.3,c:13.8,f:0.2,pz:180,def:[1,"pz"]},
+ {n:"Papaya",kw:"papaya",k:43,p:0.5,c:10.8,f:0.3,def:[150,"g"]},
+ {n:"Melón",kw:"mel[oó]n",k:34,p:0.8,c:8.2,f:0.2,def:[150,"g"]},
+ {n:"Sandía",kw:"sand[ií]a",k:30,p:0.6,c:7.6,f:0.2,def:[200,"g"]},
+ {n:"Mango",kw:"mango",k:60,p:0.8,c:15,f:0.4,def:[150,"g"]},
+ {n:"Fresas / frutos rojos",kw:"fresa|fresas|frutos rojos|moras|ar[aá]ndanos",k:40,p:0.8,c:9,f:0.3,def:[150,"g"]},
+ {n:"Aguacate",kw:"aguacate",k:160,p:2,c:8.5,f:14.7,pz:120,def:[40,"g"]},
+ {n:"Crema de cacahuate",kw:"crema de cacahuate|crema de man[ií]|cacahuate|mantequilla de man[ií]",k:588,p:25,c:20,f:50,def:[20,"g"]},
+ {n:"Aceite de oliva",kw:"aceite",k:884,p:0,c:0,f:100,def:[1,"cdita"]},
+ {n:"Mayonesa light",kw:"mayonesa|mayo",k:260,p:0.5,c:7,f:25,def:[1,"cda"]},
+ {n:"Verduras / ensalada",kw:"verdura|verduras|ensalada|lechuga|br[oó]coli|calabaza|nopal",k:20,p:1.2,c:3.6,f:0.2,taza:60,def:[1,"taza"]},
+ {n:"Jitomate / pepino",kw:"jitomate|tomate|pepino",k:17,p:0.8,c:3.8,f:0.2,pz:120,def:[1,"pz"]},
+ {n:"Champiñones / espinaca",kw:"champi[nñ][oó]n|champi|espinaca",k:22,p:3,c:3.4,f:0.3,taza:70,def:[1,"taza"]},
+ {n:"Taco al pastor / guisado",kw:"taco|tacos|pastor|suadero|guisado",k:210,p:10,c:18,f:11,pz:90,pzN:"taco",def:[3,"pz"]},
+ {n:"Quesadilla",kw:"quesadilla",k:300,p:13,c:28,f:15,pz:100,def:[1,"pz"]},
+ {n:"Torta",kw:"torta",k:250,p:12,c:28,f:10,pz:300,def:[1,"pz"]},
+ {n:"Tamal",kw:"tamal|tamales",k:200,p:6,c:25,f:9,pz:150,def:[1,"pz"]},
+ {n:"Pizza (rebanada)",kw:"pizza",k:266,p:11,c:33,f:10,pz:107,pzN:"rebanada",def:[2,"pz"]},
+ {n:"Hamburguesa",kw:"hamburguesa",k:250,p:13,c:20,f:13,pz:220,def:[1,"pz"]},
+ {n:"Sushi (pieza)",kw:"sushi",k:150,p:5,c:28,f:2,pz:30,def:[8,"pz"]},
+ {n:"Pan dulce (concha)",kw:"pan dulce|concha|dona|cuernito",k:380,p:7,c:58,f:13,pz:80,def:[1,"pz"]},
+ {n:"Galletas",kw:"galleta|galletas",k:440,p:7,c:73,f:13,pz:8,def:[4,"pz"]},
+ {n:"Chocolate",kw:"chocolate",k:535,p:7.7,c:59,f:30,def:[40,"g"]},
+ {n:"Helado",kw:"helado|nieve",k:207,p:3.5,c:24,f:11,taza:130,def:[1,"taza"]},
+ {n:"Papas fritas (bolsa)",kw:"sabritas|papas fritas|papitas|chips",k:536,p:7,c:53,f:34,pz:45,pzN:"bolsa",def:[1,"pz"]},
+ {n:"Refresco",kw:"refresco|coca|soda",k:42,p:0,c:10.6,f:0,pz:355,pzN:"lata",def:[1,"pz"]},
+ {n:"Cerveza",kw:"cerveza|chela|chelas",k:43,p:0.5,c:3.6,f:0,pz:355,pzN:"lata",def:[1,"pz"]},
 ];
+const FOOD_RE=FOOD_DB.map(x=>({x,re:new RegExp("(^|[^a-záéíóúñ])((?:"+x.kw+")(?:es|s)?)(?=$|[^a-záéíóúñ])","i")}));
+const NUM_W={un:1,una:1,uno:1,medio:0.5,media:0.5,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10};
+const UNIT_G={cda:15,cucharada:15,cdita:5,cucharadita:5};
+// Gramos de una porción: cantidad + unidad (g, ml, pz, taza, cda, cdita)
+const foodGrams=(x,q,u)=>{
+  if(u==="g"||u==="ml")return q;
+  if(u==="taza")return q*(x.taza||240);
+  if(UNIT_G[u])return q*UNIT_G[u];
+  if(u==="pz")return q*(x.pz||100);
+  return q;
+};
+const foodMacros=(x,g)=>({kcal:x.k*g/100,p:x.p*g/100,c:x.c*g/100,f:x.f*g/100});
+const fmtQty=(x,q,u)=>{const qq=Math.round(q*10)/10;if(u==="pz")return qq+" "+(x.pzN?(x.pzN+(qq!==1?"s":"")):(qq!==1?"pzas":"pza"));if(u==="taza")return qq+" taza"+(qq!==1?"s":"");return qq+" "+u};
+// "2 tortillas, 150 g de pollo y media taza de arroz" → [{x, q, u, g, macros}]
+const parseFoodText=(text)=>{
+  const out=[];
+  const parts=String(text||"").toLowerCase().replace(/\s+/g," ").split(/\s*(?:,|;|\+|\by\b|\bcon\b|\bmas\b|\bmás\b)\s*/).map(s=>s.trim()).filter(Boolean);
+  for(const part of parts){
+    // el alimento: el que más texto coincide
+    let best=null,bl=0;
+    for(const{x,re}of FOOD_RE){const m=part.match(re);if(m&&m[2].length>bl){best=x;bl=m[2].length}}
+    if(!best)continue;
+    let q=null,u=null;
+    const mNum=part.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|gr|gramos?|ml|l|litros?|pz|pzas?|piezas?|tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|bolsas?|tacos?)?\b/i);
+    const mW=part.match(/\b(un|una|uno|medio|media|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b\s*(tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|piezas?|bolsas?)?/i);
+    let unitWord="";
+    if(mNum){q=parseFloat(mNum[1].replace(",","."));unitWord=(mNum[2]||"").toLowerCase()}
+    else if(mW){q=NUM_W[mW[1].toLowerCase()];unitWord=(mW[2]||"").toLowerCase()}
+    if(/^(kg)$/.test(unitWord)){q*=1000;u="g"}
+    else if(/^(l|litros?)$/.test(unitWord)){q*=1000;u="ml"}
+    else if(/^(g|gr|gramos?)$/.test(unitWord))u="g";
+    else if(unitWord==="ml")u="ml";
+    else if(/^taza/.test(unitWord))u="taza";
+    else if(/^(cda|cucharada)/.test(unitWord))u="cda";
+    else if(/^(cdita|cucharadita)/.test(unitWord))u="cdita";
+    else if(unitWord)u="pz";
+    if(q===null){q=best.def[0];u=best.def[1]}
+    if(!u)u=best.pz?"pz":(q>=20?"g":best.def[1]==="g"?"pz":best.def[1]);
+    if(u==="pz"&&!best.pz){ // "2 pechugas" sin tamaño de pieza → porción por defecto
+      if(best.def[1]==="g"){q=q*best.def[0];u="g"}
+    }
+    const g=foodGrams(best,q,u);
+    out.push({x:best,q,u,g,m:foodMacros(best,g),label:best.n+" · "+fmtQty(best,q,u)});
+  }
+  return out;
+};
+
+/* ── Totales del día: entradas registradas + comidas del plan palomeadas (también desde Hoy) ── */
+const dayFood=(food,nutriLog,date)=>{
+  const menu=NUTRI_MENUS[food?.menu]||NUTRI_MENUS.A;
+  const entries=(food?.days||{})[date]||[];
+  const flags=nutriLog[date]||{};
+  let tot={...NUTRI_ZERO};const bySlot={};
+  for(const e of entries){
+    if(e.meal&&!flags[e.meal])continue; // comida desmarcada (p. ej. desde Hoy): no cuenta
+    tot=addM(tot,e);(bySlot[e.meal||"x"]=bySlot[e.meal||"x"]||[]).push(e);
+  }
+  for(const m of menu.meals){if(flags[m.id]&&!bySlot[m.id])tot=addM(tot,m)} // palomeada sin detalle = plan tal cual
+  return{tot:roundM(tot),entries,bySlot,flags,menu};
+};
+const mealMin=t=>{const[hm,ap]=t.split(" ");let[h,m]=hm.split(":").map(Number);if(ap==="PM"&&h!==12)h+=12;if(ap==="AM"&&h===12)h=0;return h*60+m};
+
+/* ── Coach: qué falta, qué sobra y qué hacer ── */
+const COACH_ADD={
+  p:[{n:"1 lata de atún en agua",x:"Atún en agua (lata escurrida)",q:1,u:"pz"},{n:"1 scoop de proteína hidrolizada",x:"Proteína hidrolizada (scoop)",q:1,u:"pz"},{n:"4 claras de huevo",x:"Clara de huevo",q:4,u:"pz"},{n:"100 g de pechuga de pollo",x:"Pechuga de pollo",q:100,u:"g"},{n:"170 g de yogur griego",x:"Yogur griego natural",q:170,u:"g"}],
+  c:[{n:"1 plátano",x:"Plátano",q:1,u:"pz"},{n:"2 tortillas de maíz",x:"Tortilla de maíz",q:2,u:"pz"},{n:"½ taza de arroz",x:"Arroz cocido",q:0.5,u:"taza"},{n:"40 g de avena",x:"Avena en hojuelas",q:40,u:"g"}],
+  f:[{n:"40 g de aguacate",x:"Aguacate",q:40,u:"g"},{n:"15 g de crema de cacahuate",x:"Crema de cacahuate",q:15,u:"g"},{n:"1 cdita de aceite de oliva",x:"Aceite de oliva",q:1,u:"cdita"}],
+};
+const MAC_L={p:"proteína",c:"carbos",f:"grasa",kcal:"calorías"};
+// Qué se puede quitar de cada comida pendiente sin tocar la proteína (macros aprox. de lo que se quita)
+const NUTRI_CUTS={
+  A:{n1:[["la granola",141,3,19,6],["1 tortilla",65,2,13,1]],n2:[["½ taza de arroz",103,2,22,0],["el aguacate",64,1,3,6]],n3:[["la crema de cacahuate",118,5,4,10],["el plátano",105,1,27,0],["½ de la avena",95,3,17,2]],n4:[["las tostadas",101,2,19,2],["la mayonesa",39,0,1,4]]},
+  B:{n1:[["la granola",141,3,19,6],["1 rebanada de pan",74,4,12,1]],n2:[["½ de la papa",87,2,20,0],["el aceite",40,0,0,5]],n3:[["la crema de cacahuate",118,5,4,10],["½ de la avena",95,3,17,2]],n4:[["1 tortilla",65,2,13,1]]},
+};
+// Elige recortes de las comidas pendientes hasta cubrir el exceso, priorizando el macro que más se pasa
+const pickCuts=(menuKey,pending,over)=>{
+  const key=over.c/200>=over.f/65?"c":"f";
+  const opts=[];for(const m of pending)for(const[n,kcal,p,c,f]of((NUTRI_CUTS[menuKey]||NUTRI_CUTS.A)[m.id]||[]))opts.push({meal:m.title,n,kcal,p,c,f});
+  opts.sort((a,b)=>b[key]-a[key]||b.kcal-a.kcal);
+  const sel=[];let got=0;for(const o of opts){if(got>=over.kcal-40||sel.length>=4)break;sel.push(o);got+=o.kcal}
+  return{sel,got};
+};
+const nutriCoach=(tot,menu,flags,nowMin,menuKey="A")=>{
+  const T={kcal:NUTRI_TARGET.kcal,p:NUTRI_TARGET.protein,c:NUTRI_TARGET.carbs,f:NUTRI_TARGET.fat};
+  const pendingAll=menu.meals.filter(m=>!flags[m.id]);
+  // Una comida que pasó hace más de 90 min sin registrar se da por saltada
+  const missed=pendingAll.filter(m=>mealMin(m.time)<nowMin-90);
+  const pending=pendingAll.filter(m=>mealMin(m.time)>=nowMin-90);
+  const plannedLeft=pending.reduce((a,m)=>addM(a,m),{...NUTRI_ZERO});
+  const proj=addM(tot,plannedLeft);
+  const tips=[];const fmt=(k,v)=>Math.round(Math.abs(v))+(k==="kcal"?" kcal":" g");
+  const lbl=(k,v)=>k==="kcal"?fmt(k,v):fmt(k,v)+" de "+MAC_L[k];
+  const left=k=>T[k]-tot[k];
+  if(missed.length)tips.push({lvl:"info",t:"No has registrado "+missed.map(m=>m.title+" ("+m.time+")").join(" ni ")+".",d:"Si sí comiste, márcala abajo; si te la saltaste, el coach ya lo toma en cuenta."});
+  const overNow=["kcal","c","f"].filter(k=>tot[k]>T[k]*1.05);
+  const overProj=["kcal","c","f"].filter(k=>proj[k]>T[k]*1.08);
+  if(overNow.length||overProj.length){
+    const base=pending.length?proj:tot;const ks=pending.length?overProj:overNow;
+    const head=(pending.length&&!overNow.length?"Si sigues el plan terminarás con ":"Ya te pasaste: ")+ks.map(k=>"+"+lbl(k,base[k]-T[k])).join(", ")+".";
+    let d="Mañana sigue el plan normal; lo que cuenta es el promedio de la semana.";
+    if(pending.length){
+      const over={kcal:Math.max(0,base.kcal-T.kcal),c:Math.max(0,base.c-T.c),f:Math.max(0,base.f-T.f)};
+      const{sel,got}=pickCuts(menuKey,pending,over);
+      if(sel.length){
+        const byMeal={};sel.forEach(o=>{(byMeal[o.meal]=byMeal[o.meal]||[]).push(o.n+" (−"+o.kcal+")")});
+        d="Para cuadrar sin tocar la proteína: "+Object.entries(byMeal).map(([m,l])=>"en "+m.toLowerCase()+" quita "+l.join(" y ")).join("; ")+".";
+        if(got<over.kcal-60)d+=" Aun así quedarías ~"+Math.round(over.kcal-got)+" kcal arriba: no pasa nada si es un día aislado.";
+      }
+    }
+    tips.push({lvl:"warn",t:head,d});
+  }
+  if(pending.length){
+    if(proj.p<T.p*0.92)tips.push({lvl:"info",t:"Con lo que te queda del plan llegarías a "+Math.round(proj.p)+" g de proteína (meta "+T.p+").",d:"Agrega a "+pending[0].title.toLowerCase()+": "+pickAdd("p",T,proj).join(" o ")+"."});
+  }else{
+    if(left("p")>10)tips.push({lvl:"info",t:"Te faltan "+lbl("p",left("p"))+" para cerrar el día.",d:"Opciones que caben en tus macros: "+pickAdd("p",T,tot).join(" o ")+"."});
+    if(left("c")>25&&tot.kcal<T.kcal*0.95)tips.push({lvl:"info",t:"Te faltan "+lbl("c",left("c"))+".",d:"Si tienes hambre: "+pickAdd("c",T,tot).join(" o ")+"."});
+    if(left("f")>12&&tot.kcal<T.kcal*0.95)tips.push({lvl:"info",t:"Te faltan "+lbl("f",left("f"))+".",d:"Fácil: "+pickAdd("f",T,tot).join(" o ")+"."});
+  }
+  if(!tips.length)tips.push({lvl:"ok",t:pending.length?"Vas en línea con tu meta.":"Día cerrado dentro de tus macros. 💪",d:pending.length?"Sigue con "+pending[0].title+" a las "+pending[0].time+": te deja en "+Math.round(addM(tot,pending[0]).p)+" g de proteína.":"Proteína "+tot.p+"/"+T.p+" g · "+tot.kcal+"/"+T.kcal+" kcal."});
+  return{tips:tips.slice(0,3),proj:roundM(proj),pending,missed};
+};
+// Alimentos que suben el macro que falta sin pasarte de los otros
+const pickAdd=(k,T,base)=>{
+  const room=m=>(base.kcal+m.kcal<=T.kcal*1.05)&&(k==="f"||base.f+m.f<=T.f*1.05)&&(k==="c"||base.c+m.c<=T.c*1.05);
+  const opts=COACH_ADD[k].map(o=>{const x=FOOD_DB.find(f=>f.n===o.x);const m=foodMacros(x,foodGrams(x,o.q,o.u));return{...o,m}});
+  const fit=opts.filter(o=>room(o.m));
+  const need=Math.max(0,T[k]-base[k]);const two=(fit.length?fit:opts).slice(0,2);
+  const txt=two.map(o=>o.n+" (+"+Math.round(o.m[k])+(k==="kcal"?" kcal":" g")+")");
+  // Si una sola opción no alcanza, propone las dos juntas
+  return two.length===2&&two[0].m[k]<need*0.7?[txt.join(" + ")]:txt;
+};
 /* ── Finanzas: fechas de tarjeta y tips ── */
 const cardDates=(card,t=new Date())=>{
   if(card.kind==="prestamo"){
@@ -325,14 +527,14 @@ label.lfl{display:block;font-size:11px;color:#6e727a;margin-bottom:4px;font-weig
 `;
 
 export default function LifeOS() {
-  const[mod,setMod]=useState("hoy");const[now,setNow]=useState(new Date());const[ready,setReady]=useState(false);
+  const[mod,setMod]=useState(()=>{try{const q=new URLSearchParams(location.search).get("comida");if(q&&/^n\d$/.test(q)){window.__lifeosMeal=q;history.replaceState(null,"",location.pathname);return"comidas"}}catch{}return"hoy"});const[now,setNow]=useState(new Date());const[ready,setReady]=useState(false);
   const[expenses,setExpenses]=useState([]);const[salary,setSalary]=useState({amount:"",currency:"MXN",freq:"monthly",label:"Trabajo"});
   const[products,setProducts]=useState([]);const[saleTx,setSaleTx]=useState([]);const[savings,setSavings]=useState([]);
   const[stocks,setStocks]=useState([]);const[crypto,setCrypto]=useState([]);const[fixed,setFixed]=useState([]);
   const[cards,setCards]=useState([]);const[trading,setTrading]=useState({balance:45,currency:"USD"});const[payLog,setPayLog]=useState([]);
   const[habits,setHabits]=useState([]);const[comp,setComp]=useState({});const[tasks,setTasks]=useState([]);
   const[journal,setJournal]=useState([]);const[medSess,setMedSess]=useState([]);
-  const[routines,setRoutines]=useState([]);const[wkLogs,setWkLogs]=useState([]);const[plans,setPlans]=useState([]);const[activePlanId,setActivePlanId]=useState(null);const[savGoals,setSavGoals]=useState([]);const[checkins,setCheckins]=useState([]);const[budgets,setBudgets]=useState({});const[nwLog,setNwLog]=useState([]);const[reviews,setReviews]=useState([]);const[introSeen,setIntroSeen]=useState(false);const[hideStart,setHideStart]=useState(false);const[nutriLog,setNutriLog]=useState({});const[gymDraft,setGymDraft]=useState(null);const[shopping,setShopping]=useState([]);const[playerName,setPlayerName]=useState("Jugador");const[soundOn,setSoundOn]=useState(true);const[incomes,setIncomes]=useState([]);const[recurring,setRecurring]=useState([]);
+  const[routines,setRoutines]=useState([]);const[wkLogs,setWkLogs]=useState([]);const[plans,setPlans]=useState([]);const[activePlanId,setActivePlanId]=useState(null);const[savGoals,setSavGoals]=useState([]);const[checkins,setCheckins]=useState([]);const[budgets,setBudgets]=useState({});const[nwLog,setNwLog]=useState([]);const[reviews,setReviews]=useState([]);const[introSeen,setIntroSeen]=useState(false);const[hideStart,setHideStart]=useState(false);const[nutriLog,setNutriLog]=useState({});const[gymDraft,setGymDraft]=useState(null);const[food,setFood]=useState({days:{},menu:"A"});const[shopping,setShopping]=useState([]);const[playerName,setPlayerName]=useState("Jugador");const[soundOn,setSoundOn]=useState(true);const[incomes,setIncomes]=useState([]);const[recurring,setRecurring]=useState([]);
   const[apiKey,setApiKey]=useState("");const[rate,setRate]=useState(17.15);const[cPx,setCPx]=useState({});
 
   useEffect(()=>{
@@ -368,6 +570,7 @@ export default function LifeOS() {
       if(map.hstart)setHideStart(true);
       if(map.nutri)setNutriLog(map.nutri);
       if(map.gymd)setGymDraft(map.gymd);
+      if(map.food)setFood(map.food);
       if(map.shop)setShopping(map.shop);
       if(map.pname)setPlayerName(map.pname);
       if(map.snd===false)setSoundOn(false);
@@ -397,7 +600,7 @@ export default function LifeOS() {
     if(!ready)return;
     setSaveState("saving");
     const t=setTimeout(async()=>{
-      const data={exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey};
+      const data={exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,food,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey};
       const kb=(JSON.stringify(data).length/1024).toFixed(1);
       const ok=await saveMain(data);
       if(ok)loadedT.current=ok;
@@ -406,12 +609,12 @@ export default function LifeOS() {
       setSaveErr(ok?"":(LAST_SAVE_ERR||"sin detalle")+" · payload "+kb+"KB");
     },400);
     return()=>clearTimeout(t);
-  },[expenses,salary,products,saleTx,savings,stocks,crypto,fixed,cards,trading,payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlanId,savGoals,checkins,budgets,nwLog,reviews,introSeen,hideStart,nutriLog,gymDraft,shopping,playerName,soundOn,incomes,recurring,apiKey,ready,forceSave]);
+  },[expenses,salary,products,saleTx,savings,stocks,crypto,fixed,cards,trading,payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlanId,savGoals,checkins,budgets,nwLog,reviews,introSeen,hideStart,nutriLog,gymDraft,food,shopping,playerName,soundOn,incomes,recurring,apiKey,ready,forceSave]);
 
   // Red de seguridad: si Android oculta/mata la app, no esperamos los 400ms del debounce —
   // guardamos de inmediato en cuanto la pestaña deja de estar visible.
   const flushRef=useRef(null);
-  flushRef.current={exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey};
+  flushRef.current={exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,food,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey};
   useEffect(()=>{
     if(!ready)return;
     const flush=()=>{ if(document.visibilityState==="hidden"&&flushRef.current) saveMain(flushRef.current); };
@@ -446,7 +649,7 @@ export default function LifeOS() {
   const medThisWeek=medSess.filter(s=>(Date.now()-new Date(s.date))/86400000<=7).length;
   const lastWk=wkLogs.length>0?wkLogs[wkLogs.length-1]:null;
   const acColor=MODS.find(m=>m.id===mod)?.color||"#efefef";
-  const exportData=()=>JSON.stringify({exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey});
+  const exportData=()=>JSON.stringify({exp:expenses,sal:salary,prod:products,stx:saleTx,sav:savings,stk:stocks,cry:crypto,fix:fixed,crd:cards,trd:trading,pl:payLog,habits,comp,tasks,journal,medSess,routines,wkLogs,plans,activePlan:activePlanId,goals:savGoals,checkins,budgets,nwlog:nwLog,reviews,intro:introSeen,hstart:hideStart,nutri:nutriLog,gymd:gymDraft,food,shop:shopping,pname:playerName,snd:soundOn,inc:incomes,rec:recurring,ak:apiKey});
   const importData=(json)=>{
     try{
       const m=JSON.parse(json);
@@ -455,7 +658,7 @@ export default function LifeOS() {
       if(m.crd)setCards(m.crd);if(m.trd)setTrading(m.trd);if(m.pl)setPayLog(m.pl);if(m.habits)setHabits(m.habits);
       if(m.comp)setComp(m.comp);if(m.tasks)setTasks(m.tasks);if(m.journal)setJournal(m.journal);if(m.medSess)setMedSess(m.medSess);
       if(m.routines)setRoutines(m.routines);if(m.wkLogs)setWkLogs(m.wkLogs);if(m.plans)setPlans(m.plans);
-      if(m.activePlan)setActivePlanId(m.activePlan);if(m.goals)setSavGoals(m.goals);if(m.checkins)setCheckins(m.checkins);if(m.budgets)setBudgets(m.budgets);if(m.nwlog)setNwLog(m.nwlog);if(m.reviews)setReviews(m.reviews);if(m.inc)setIncomes(m.inc);if(m.rec)setRecurring(m.rec);if(m.nutri)setNutriLog(m.nutri);if(m.pname)setPlayerName(m.pname);if(m.gymd!==undefined)setGymDraft(m.gymd);if(m.shop)setShopping(m.shop);if(m.ak)setApiKey(m.ak);
+      if(m.activePlan)setActivePlanId(m.activePlan);if(m.goals)setSavGoals(m.goals);if(m.checkins)setCheckins(m.checkins);if(m.budgets)setBudgets(m.budgets);if(m.nwlog)setNwLog(m.nwlog);if(m.reviews)setReviews(m.reviews);if(m.inc)setIncomes(m.inc);if(m.rec)setRecurring(m.rec);if(m.nutri)setNutriLog(m.nutri);if(m.pname)setPlayerName(m.pname);if(m.gymd!==undefined)setGymDraft(m.gymd);if(m.food)setFood(m.food);if(m.shop)setShopping(m.shop);if(m.ak)setApiKey(m.ak);
       return true;
     }catch{return false}
   };
@@ -488,7 +691,7 @@ export default function LifeOS() {
     return()=>{document.removeEventListener("visibilitychange",h);window.removeEventListener("focus",h);clearInterval(iv)};
   },[ready]);
 
-  const ctx={expenses,setExpenses,salary,setSalary,products,setProducts,saleTx,setSaleTx,savings,setSavings,stocks,setStocks,crypto,setCrypto,fixed,setFixed,cards,setCards,trading,setTrading,payLog,setPayLog,habits,setHabits,comp,setComp,tasks,setTasks,journal,setJournal,medSess,setMedSess,routines,setRoutines,wkLogs,setWkLogs,plans,setPlans,activePlanId,setActivePlanId,savGoals,setSavGoals,checkins,setCheckins,budgets,setBudgets,nwLog,setNwLog,reviews,setReviews,hideStart,setHideStart,nutriLog,setNutriLog,gymDraft,setGymDraft,shopping,setShopping,playerName,setPlayerName,soundOn,setSoundOn,incomes,setIncomes,recurring,setRecurring,apiKey,setApiKey,rate,cPx,cy,sV,cV,salMXN,mExp,mInc,totSav,totPort,totDebt,tToggle,now,CRYPTOS,loadMarket,todDone,medThisWeek,lastWk,acColor,setMod,saveState};
+  const ctx={expenses,setExpenses,salary,setSalary,products,setProducts,saleTx,setSaleTx,savings,setSavings,stocks,setStocks,crypto,setCrypto,fixed,setFixed,cards,setCards,trading,setTrading,payLog,setPayLog,habits,setHabits,comp,setComp,tasks,setTasks,journal,setJournal,medSess,setMedSess,routines,setRoutines,wkLogs,setWkLogs,plans,setPlans,activePlanId,setActivePlanId,savGoals,setSavGoals,checkins,setCheckins,budgets,setBudgets,nwLog,setNwLog,reviews,setReviews,hideStart,setHideStart,nutriLog,setNutriLog,gymDraft,setGymDraft,food,setFood,shopping,setShopping,playerName,setPlayerName,soundOn,setSoundOn,incomes,setIncomes,recurring,setRecurring,apiKey,setApiKey,rate,cPx,cy,sV,cV,salMXN,mExp,mInc,totSav,totPort,totDebt,tToggle,now,CRYPTOS,loadMarket,todDone,medThisWeek,lastWk,acColor,setMod,saveState};
 
   if(!ready)return(<div style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"100vh",flexDirection:"column",gap:12,background:"#0a0b0d",color:"#eceef1"}}><style>{CSS}</style><div style={{fontSize:34}}>🧬</div><div style={{color:"#6e727a",fontSize:13}}>Cargando...</div></div>);
 
@@ -2765,11 +2968,11 @@ function GymHistorial({ctx}){
 /* ══════════ COMIDAS ══════════ */
 const SHOP_CATS=[{id:"prot",icon:"🥩",label:"Proteína"},{id:"carb",icon:"🍚",label:"Carbohidratos"},{id:"fruver",icon:"🥦",label:"Frutas y verduras"},{id:"lact",icon:"🥛",label:"Lácteos"},{id:"otro",icon:"🛒",label:"Otros"}];
 const SHOP_BASE=[
-  {name:"Huevos (2 cartones)",cat:"prot"},{name:"Claras de huevo",cat:"prot"},{name:"Pechuga de pollo 1kg",cat:"prot"},{name:"Bistec de res magro",cat:"prot"},{name:"Filete de pescado",cat:"prot"},{name:"Atún en agua (6 latas)",cat:"prot"},{name:"Proteína Whey",cat:"prot"},
-  {name:"Avena en hojuelas 1kg",cat:"carb"},{name:"Arroz 1kg",cat:"carb"},{name:"Papa / camote",cat:"carb"},{name:"Tortillas de maíz",cat:"carb"},{name:"Pan integral",cat:"carb"},{name:"Tostadas horneadas",cat:"carb"},{name:"Granola baja en azúcar",cat:"carb"},
-  {name:"Plátanos",cat:"fruver"},{name:"Fruta (sandía/melón/mango)",cat:"fruver"},{name:"Aguacate",cat:"fruver"},{name:"Ensalada verde (espinaca, lechuga)",cat:"fruver"},{name:"Jitomate y pepino",cat:"fruver"},{name:"Verduras para guarnición",cat:"fruver"},
+  {name:"Huevos (2 cartones)",cat:"prot"},{name:"Claras de huevo",cat:"prot"},{name:"Pechuga de pollo 1kg",cat:"prot"},{name:"Bistec de res magro o lomo/pulpa de cerdo",cat:"prot"},{name:"Filete de pescado (tilapia/basa)",cat:"prot"},{name:"Atún en agua (6 latas)",cat:"prot"},{name:"Proteína hidrolizada",cat:"prot"},{name:"Creatina",cat:"prot"},
+  {name:"Avena en hojuelas 1kg",cat:"carb"},{name:"Arroz 1kg",cat:"carb"},{name:"Papa",cat:"carb"},{name:"Tortillas de maíz",cat:"carb"},{name:"Pan integral",cat:"carb"},{name:"Tostadas horneadas",cat:"carb"},{name:"Granola baja en azúcar",cat:"carb"},
+  {name:"Plátanos",cat:"fruver"},{name:"Papaya o melón",cat:"fruver"},{name:"Manzanas",cat:"fruver"},{name:"Fresas/frutos rojos (congelados)",cat:"fruver"},{name:"Aguacate",cat:"fruver"},{name:"Lechuga y espinaca",cat:"fruver"},{name:"Jitomate, cebolla y pepino",cat:"fruver"},{name:"Champiñones",cat:"fruver"},
   {name:"Yogur griego natural sin azúcar",cat:"lact"},{name:"Leche entera o deslactosada",cat:"lact"},
-  {name:"Crema de cacahuate natural",cat:"otro"},{name:"Aceite de oliva",cat:"otro"},
+  {name:"Crema de cacahuate natural",cat:"otro"},{name:"Aceite de oliva",cat:"otro"},{name:"Mayonesa baja en grasa",cat:"otro"},
 ];
 function ShoppingList({ctx}){
   const{shopping,setShopping}=ctx;
@@ -2863,105 +3066,182 @@ function PesoTab({ctx}){
 }
 
 function CuerpoNutricion({ctx}){
-  const{nutriLog,setNutriLog,checkins}=ctx;
+  const{nutriLog,setNutriLog,checkins,food,setFood,now}=ctx;
   const tod=td();
-  const todayLog=nutriLog[tod]||{};
-  const toggle=(mid)=>setNutriLog(p=>({...p,[tod]:{...(p[tod]||{}),[mid]:!(p[tod]||{})[mid]}}));
-  const doneCount=NUTRI_MEALS.filter(m=>todayLog[m.id]).length;
-  const eaten=NUTRI_MEALS.filter(m=>todayLog[m.id]).reduce((a,m)=>({kcal:a.kcal+m.kcal,p:a.p+m.p,c:a.c+m.c,f:a.f+m.f}),{kcal:0,p:0,c:0,f:0});
-  const lastW=[...checkins].filter(c=>c.weight).sort((a,b)=>b.date.localeCompare(a.date))[0];
-  const weightHist=[...checkins].filter(c=>c.weight>0).sort((a,b)=>a.date.localeCompare(b.date));
-  const wMin=weightHist.length?Math.min(...weightHist.map(c=>c.weight)):0;
-  const wMax=weightHist.length?Math.max(...weightHist.map(c=>c.weight)):0;
-  const wRange=(wMax-wMin)||1;
-  const wFirst=weightHist[0],wLast=weightHist[weightHist.length-1];
-  const wDiff=weightHist.length>=2?wLast.weight-wFirst.weight:0;
+  const{tot,entries,bySlot,flags,menu}=dayFood(food,nutriLog,tod);
+  const menuKey=NUTRI_MENUS[food?.menu]?food.menu:"A";
+  const nowMin=(now||new Date()).getHours()*60+(now||new Date()).getMinutes();
+  const coach=nutriCoach(tot,menu,flags,nowMin,menuKey);
+  const[openMeal,setOpenMeal]=useState(null);   // comida con el panel de registro abierto
+  const[addFor,setAddFor]=useState(null);       // "x" = extra, "n1".."n4" = cambié esta comida
+  const[txt,setTxt]=useState("");
+  const[manual,setManual]=useState(null);
+  const[showInfo,setShowInfo]=useState(false);
+  const addRef=useRef(null);
+  // Enlace desde el aviso del asistente: ?comida=n2 abre esa comida lista para registrar
+  useEffect(()=>{try{const id=window.__lifeosMeal;if(id&&menu.meals.find(m=>m.id===id)){setOpenMeal(id);window.__lifeosMeal=null;setTimeout(()=>{const el=document.getElementById("meal-"+id);el&&el.scrollIntoView({behavior:"smooth",block:"center"})},250)}}catch{}},[]);
 
-  const MACROS=[
-    {l:"Calorías",v:NUTRI_TARGET.kcal,u:"kcal",c:"#FFB800",e:"🔥"},
-    {l:"Proteína",v:NUTRI_TARGET.protein,u:"g",c:"#00FF87",e:"🥩"},
-    {l:"Carbos",v:NUTRI_TARGET.carbs,u:"g",c:"#7ED8F6",e:"🍚"},
-    {l:"Grasas",v:NUTRI_TARGET.fat,u:"g",c:"#f97316",e:"🥑"},
-  ];
+  const T={kcal:NUTRI_TARGET.kcal,p:NUTRI_TARGET.protein,c:NUTRI_TARGET.carbs,f:NUTRI_TARGET.fat};
+  const hhmm=()=>{const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
+  const setDay=fn=>setFood(p=>{const days={...(p?.days||{})};days[tod]=fn(days[tod]||[]);return{...(p||{}),days}});
+  const setFlag=(id,v)=>setNutriLog(p=>({...p,[tod]:{...(p[tod]||{}),[id]:v}}));
+  // Registrar comida del plan con porción (1 = tal cual)
+  const logPlan=(m,k)=>{
+    setDay(list=>[...list.filter(e=>e.meal!==m.id),{id:Date.now(),t:hhmm(),meal:m.id,name:m.title+(k!==1?" ×"+k:""),src:"plan",k,...roundM({kcal:m.kcal*k,p:m.p*k,c:m.c*k,f:m.f*k})}]);
+    setFlag(m.id,true);setOpenMeal(null);
+  };
+  const unlog=m=>{setDay(list=>list.filter(e=>e.meal!==m.id));setFlag(m.id,false);setOpenMeal(null)};
+  const parsed=txt.trim()?parseFoodText(txt):[];
+  const saveFoods=()=>{
+    const items=manual?[{id:Date.now(),t:hhmm(),meal:addFor==="x"?null:addFor,name:manual.name||"Comida libre",src:"manual",kcal:+manual.kcal||0,p:+manual.p||0,c:+manual.c||0,f:+manual.f||0}]
+      :parsed.map((r,i)=>({id:Date.now()+i,t:hhmm(),meal:addFor==="x"?null:addFor,name:r.label,src:"db",...roundM(r.m)}));
+    if(!items.length)return;
+    if(addFor&&addFor!=="x"){setDay(list=>[...list.filter(e=>!(e.meal===addFor&&e.src==="plan")),...items]);setFlag(addFor,true)}
+    else setDay(list=>[...list,...items]);
+    setTxt("");setManual(null);setAddFor(null);setOpenMeal(null);
+  };
+  const delEntry=e=>{setDay(list=>list.filter(x=>x.id!==e.id));if(e.meal&&!(bySlot[e.meal]||[]).some(x=>x.id!==e.id))setFlag(e.meal,false)};
+  const openAdd=slot=>{setAddFor(slot);setTxt("");setManual(null);setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
+
+  // Últimos 7 días
+  const week=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));const k=ds(d);return{k,d,t:dayFood(food,nutriLog,k).tot}});
+  const lastW=[...checkins].filter(c=>c.weight).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  const MAC=[["p","Proteína","#64b4f6","🥩"],["c","Carbos","#FFB800","🍚"],["f","Grasas","#ff9f45","🥑"]];
+  const status=(k)=>{const r=T[k]-tot[k];if(tot[k]>T[k]*1.05)return{txt:"+"+Math.round(-r)+(k==="kcal"?"":" g")+" de más",col:"#ff6b6b"};if(r<=T[k]*0.05)return{txt:"✓ en meta",col:"#30d158"};return{txt:"faltan "+Math.round(r)+(k==="kcal"?"":" g"),col:"#8b8f96"}};
+  const kst=status("kcal");
+  const chip=(on)=>({padding:"6px 11px",borderRadius:999,border:"1px solid "+(on?"#30d158":"rgba(255,255,255,.1)"),background:on?"rgba(48,209,88,.12)":"transparent",color:on?"#30d158":"#c9ccd1",fontSize:12,cursor:"pointer",fontFamily:"inherit"});
 
   return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
     {/* Contador del día */}
     <div className="card">
-      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Calorías de hoy</span><span style={{color:"#6e727a",fontWeight:500}}>{doneCount}/{NUTRI_MEALS.length} comidas</span></div>
-      <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4}}>
-        <span className="lmn" style={{fontSize:30,fontWeight:700,color:eaten.kcal>NUTRI_TARGET.kcal?"#FFB800":"#30d158",letterSpacing:"-1px"}}>{eaten.kcal}</span>
-        <span style={{fontSize:14,color:"#6e727a"}}>/ {NUTRI_TARGET.kcal} kcal</span>
-        <span className="lmn" style={{marginLeft:"auto",fontSize:13,color:"#8b8f96"}}>{Math.max(0,NUTRI_TARGET.kcal-eaten.kcal)} restantes</span>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Macros de hoy</span><span style={{color:"#6e727a",fontWeight:500}}>{menu.meals.filter(m=>flags[m.id]).length}/{menu.meals.length} comidas{entries.filter(e=>!e.meal).length?" + "+entries.filter(e=>!e.meal).length+" extra":""}</span></div>
+      <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4,flexWrap:"wrap"}}>
+        <span className="lmn" style={{fontSize:30,fontWeight:700,color:tot.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",letterSpacing:"-1px"}}>{tot.kcal}</span>
+        <span style={{fontSize:14,color:"#6e727a"}}>/ {T.kcal} kcal</span>
+        <span className="lmn" style={{marginLeft:"auto",fontSize:13,color:kst.col}}>{kst.txt}</span>
       </div>
-      <div className="bar" style={{marginBottom:15}}><i style={{width:Math.min(100,eaten.kcal/NUTRI_TARGET.kcal*100)+"%",background:eaten.kcal>NUTRI_TARGET.kcal?"#FFB800":"#30d158"}}/></div>
+      <div className="bar" style={{marginBottom:15}}><i style={{width:Math.min(100,tot.kcal/T.kcal*100)+"%",background:tot.kcal>T.kcal*1.05?"#ff6b6b":"#30d158"}}/></div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:11}}>
-        {[["Proteína",eaten.p,NUTRI_TARGET.protein,"#64b4f6","🥩"],["Carbos",eaten.c,NUTRI_TARGET.carbs,"#FFB800","🍚"],["Grasas",eaten.f,NUTRI_TARGET.fat,"#ff9f45","🥑"]].map(([l,v,t,col,ic])=>(
-          <div key={l}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:4}}>
-              <span style={{fontSize:11,color:"#8b8f96"}}>{ic} {l}</span>
-            </div>
-            <div className="lmn" style={{fontSize:16,fontWeight:700,color:col}}>{v}<span style={{fontSize:10,color:"#6e727a",fontWeight:400}}>/{t}g</span></div>
-            <div className="bar" style={{height:5,marginTop:5}}><i style={{width:Math.min(100,v/t*100)+"%",background:col}}/></div>
-          </div>
-        ))}
+        {MAC.map(([k,l,col,ic])=>{const st=status(k);return(
+          <div key={k}>
+            <div style={{fontSize:11,color:"#8b8f96",marginBottom:4}}>{ic} {l}</div>
+            <div className="lmn" style={{fontSize:16,fontWeight:700,color:tot[k]>T[k]*1.05?"#ff6b6b":col}}>{tot[k]}<span style={{fontSize:10,color:"#6e727a",fontWeight:400}}>/{T[k]}g</span></div>
+            <div className="bar" style={{height:5,marginTop:5}}><i style={{width:Math.min(100,tot[k]/T[k]*100)+"%",background:tot[k]>T[k]*1.05?"#ff6b6b":col}}/></div>
+            <div style={{fontSize:10,color:st.col,marginTop:4}}>{st.txt}</div>
+          </div>)})}
       </div>
-      {doneCount===NUTRI_MEALS.length&&<div style={{marginTop:13,fontSize:13,color:"#30d158",fontWeight:600}}>✅ Plan del día completo · {eaten.p}g de proteína</div>}
-      {lastW&&<div style={{marginTop:13,paddingTop:12,borderTop:"1px solid rgba(255,255,255,.06)",fontSize:12,color:"#8b8f96"}}>🎯 Recomposición corporal · último peso <b style={{color:"#30d158"}}>{lastW.weight} kg</b></div>}
+      {coach.pending.length>0&&<div style={{marginTop:12,fontSize:11,color:"#6e727a"}}>Si sigues el plan cierras en <b className="lmn" style={{color:"#c9ccd1"}}>{coach.proj.kcal} kcal · {coach.proj.p}P · {coach.proj.c}C · {coach.proj.f}G</b></div>}
     </div>
 
-    <div className="lc" style={{borderColor:"rgba(255,183,0,.2)"}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-        <div style={{fontSize:12,fontWeight:700,color:"#FFB800"}}>⏰ Horario de hoy</div>
-        <div className="lmn" style={{fontSize:11,color:"#555"}}>{doneCount}/{NUTRI_MEALS.length}</div>
+    {/* Coach */}
+    <div className="card" style={{borderColor:"rgba(126,216,246,.25)"}}>
+      <div className="sect">🧠 Coach de macros</div>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {coach.tips.map((t,i)=>(
+          <div key={i} style={{display:"flex",gap:9,padding:"9px 11px",background:"#0b0c0e",borderRadius:10,borderLeft:"3px solid "+(t.lvl==="warn"?"#ff6b6b":t.lvl==="ok"?"#30d158":"#7ED8F6")}}>
+            <div><div style={{fontSize:12,fontWeight:600,color:"#eceef1",lineHeight:1.4}}>{t.t}</div><div style={{fontSize:11,color:"#8b8f96",marginTop:3,lineHeight:1.5}}>{t.d}</div></div>
+          </div>))}
       </div>
-      <div style={{height:5,background:"#161616",borderRadius:99,marginBottom:12}}><div style={{height:"100%",width:(doneCount/NUTRI_MEALS.length*100)+"%",background:"#FFB800",borderRadius:99,transition:"width .4s"}}/></div>
-      {NUTRI_MEALS.map((m,i)=>{
-        const done=!!todayLog[m.id];
-        return(<div key={m.id} style={{marginBottom:i<NUTRI_MEALS.length-1?11:0,opacity:done?.55:1}}>
-          <div onClick={()=>toggle(m.id)} style={{display:"flex",alignItems:"flex-start",gap:9,cursor:"pointer"}}>
-            <div style={{width:19,height:19,borderRadius:6,border:"2px solid "+(done?"#FFB800":"#555"),background:done?"#FFB800":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>
-              {done&&<span style={{fontSize:11,color:"#000",fontWeight:700}}>✓</span>}
-            </div>
-            <div style={{flex:1}}>
-              <div style={{display:"flex",gap:8,alignItems:"baseline"}}>
+    </div>
+
+    {/* Menú A/B + comidas del plan */}
+    <div className="card">
+      <div className="sect" style={{justifyContent:"space-between"}}><span>⏰ Plan de hoy</span></div>
+      <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
+        {Object.entries(NUTRI_MENUS).map(([k,v])=>(<button key={k} style={chip(menuKey===k)} onClick={()=>setFood(p=>({...(p||{}),menu:k}))}>{v.label}</button>))}
+      </div>
+      {menu.meals.map((m,i)=>{
+        const done=!!flags[m.id];const regs=bySlot[m.id]||[];const open=openMeal===m.id;
+        const got=done?(regs.length?roundM(regs.reduce((a,e)=>addM(a,e),{...NUTRI_ZERO})):m):null;
+        return(<div key={m.id} id={"meal-"+m.id} style={{padding:"11px 0",borderTop:i?"1px solid rgba(255,255,255,.05)":"none"}}>
+          <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+            <button onClick={()=>done?setOpenMeal(open?null:m.id):logPlan(m,1)} title={done?"Cambiar registro":"Lo comí tal cual"} style={{width:26,height:26,borderRadius:8,border:"2px solid "+(done?"#30d158":"#555"),background:done?"#30d158":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,cursor:"pointer",marginTop:1}}>{done&&<span style={{fontSize:13,color:"#000",fontWeight:700}}>✓</span>}</button>
+            <div style={{flex:1,minWidth:0}} onClick={()=>setOpenMeal(open?null:m.id)}>
+              <div style={{display:"flex",gap:8,alignItems:"baseline",flexWrap:"wrap"}}>
                 <span className="lmn" style={{fontSize:10,color:"#FFB800",fontWeight:700}}>{m.time}</span>
-                <span style={{fontSize:12,fontWeight:700,textDecoration:done?"line-through":"none"}}>{m.title}</span>
+                <span style={{fontSize:13,fontWeight:700}}>{m.title}</span>
               </div>
               <div className="lmn" style={{fontSize:10,color:"#6e727a",marginTop:3}}>{m.kcal} kcal · {m.p}P · {m.c}C · {m.f}G</div>
-              <ul style={{margin:"5px 0 0",paddingLeft:16}}>
-                {m.items.map((it,j)=><li key={j} style={{fontSize:10,color:"#999",lineHeight:1.6}}>{it}</li>)}
-              </ul>
+              {done?<div style={{fontSize:11,color:"#30d158",marginTop:4}}>✓ Registrado{regs[0]?.t?" "+regs[0].t:""}: {regs.length&&regs.some(e=>e.src!=="plan")?regs.map(e=>e.name).join(", "):(regs[0]?.k&&regs[0].k!==1?"porción ×"+regs[0].k:"tal cual el plan")} · <span className="lmn">{got.kcal} kcal · {got.p}P</span></div>
+              :<ul style={{margin:"5px 0 0",paddingLeft:16}}>{m.items.map((it,j)=><li key={j} style={{fontSize:11,color:"#999",lineHeight:1.55}}>{it}</li>)}</ul>}
             </div>
           </div>
+          {open&&<div style={{marginTop:10,marginLeft:36,display:"flex",flexDirection:"column",gap:8}}>
+            <div style={{fontSize:11,color:"#8b8f96"}}>¿Cuánto comiste?</div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+              {[[0.5,"½ porción"],[1,"Tal cual"],[1.5,"1½ porción"]].map(([k,l])=><button key={k} style={chip(done&&regs[0]?.src==="plan"&&(regs[0].k||1)===k)} onClick={()=>logPlan(m,k)}>{l}</button>)}
+              <button style={chip(false)} onClick={()=>openAdd(m.id)}>↔ Comí otra cosa</button>
+              {done&&<button style={{...chip(false),color:"#ff6b6b"}} onClick={()=>unlog(m)}>✕ No la comí</button>}
+            </div>
+          </div>}
         </div>);
       })}
     </div>
 
-    {/* Regla 80/20 */}
-    <div className="lc" style={{borderColor:"rgba(126,216,246,.2)"}}>
-      <div style={{fontSize:12,fontWeight:700,color:"#7ED8F6",marginBottom:8}}>🍦 Regla 80/20 · tu "gustito" sin culpa</div>
-      <div style={{display:"flex",flexDirection:"column",gap:7}}>
-        {[
-          ["🔄","Intercambio directo","Si vas a comer algo pesado en la noche (pizza, postre), baja el arroz de las 12pm: de 1.5 tazas a media taza."],
-          ["🏦","Banco de calorías","Deja fuera la crema de maní de la mañana y reduce tortillas en la tarde — ahorras ~200 kcal/día para el fin de semana."],
-          ["🥩","Proteína intacta","Aunque te des el gusto, cumple siempre tu cuota de pollo, huevo o proteína del día."],
-        ].map(([e,t,d])=>(
-          <div key={t} style={{display:"flex",gap:9,padding:"8px 10px",background:"#080808",borderRadius:9}}>
-            <span style={{fontSize:15}}>{e}</span>
-            <div><div style={{fontSize:11,fontWeight:700,color:"#7ED8F6"}}>{t}</div><div style={{fontSize:10,color:"#999",lineHeight:1.5,marginTop:1}}>{d}</div></div>
+    {/* Agregar comida / extra */}
+    <div className="card" ref={addRef} style={{borderColor:addFor?"rgba(48,209,88,.35)":undefined}}>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>➕ {addFor&&addFor!=="x"?"Lo que comí en "+(menu.meals.find(m=>m.id===addFor)?.title||""):"Agregar comida o extra"}</span>{addFor&&<button className="lbs" style={{padding:"3px 9px",fontSize:11}} onClick={()=>{setAddFor(null);setTxt("");setManual(null)}}>✕</button>}</div>
+      {!addFor?<button className="lbp" style={{width:"100%",justifyContent:"center",background:"#30d158",color:"#000"}} onClick={()=>openAdd("x")}>Registrar algo fuera del plan</button>:<>
+        {!manual?<>
+          <textarea className="lfi" value={txt} onChange={e=>setTxt(e.target.value)} placeholder='Escribe como hablas: "3 tacos al pastor y una coca", "2 tortillas, 150 g de pollo"' style={{height:64,fontSize:13,lineHeight:1.5,resize:"vertical"}}/>
+          {parsed.length>0&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:4}}>
+            {parsed.map((r,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:12}}><span>{r.label}</span><span className="lmn" style={{color:"#8b8f96",whiteSpace:"nowrap"}}>{Math.round(r.m.kcal)} kcal · {Math.round(r.m.p)}P · {Math.round(r.m.c)}C · {Math.round(r.m.f)}G</span></div>)}
+            {(()=>{const s=roundM(parsed.reduce((a,r)=>addM(a,r.m),{...NUTRI_ZERO}));const after=addM(tot,s);return(<div style={{fontSize:11,color:after.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",marginTop:4}}>Total {s.kcal} kcal · {s.p}P · {s.c}C · {s.f}G → quedarías en {Math.round(after.kcal)}/{T.kcal} kcal y {Math.round(after.p)}/{T.p} g de proteína</div>)})()}
+          </div>}
+          {txt.trim()&&!parsed.length&&<div style={{fontSize:11,color:"#FFB800",marginTop:8}}>No reconocí ese alimento. Escríbelo distinto o captura los macros a mano.</div>}
+          <div style={{display:"flex",gap:8,marginTop:10}}>
+            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000",opacity:parsed.length?1:.5}} disabled={!parsed.length} onClick={saveFoods}>✓ Registrar</button>
+            <button className="lbs" onClick={()=>setManual({name:txt,kcal:"",p:"",c:"",f:""})}>Macros a mano</button>
           </div>
-        ))}
-      </div>
+          <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:10}}>
+            {["1 lata de atún","1 scoop de proteína","1 plátano","2 tortillas","40 g de aguacate","3 tacos al pastor","1 cerveza"].map(q=><button key={q} style={{...chip(false),fontSize:11,padding:"4px 9px"}} onClick={()=>setTxt(t=>t.trim()?t.trim()+", "+q:q)}>{q}</button>)}
+          </div>
+        </>:<>
+          <input className="lfi" value={manual.name} onChange={e=>setManual({...manual,name:e.target.value})} placeholder="¿Qué comiste?" style={{marginBottom:8}}/>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
+            {[["kcal","kcal"],["p","Prot g"],["c","Carb g"],["f","Grasa g"]].map(([k,l])=><div key={k}><label className="lfl">{l}</label><input className="lfi" type="number" inputMode="decimal" value={manual[k]} onChange={e=>setManual({...manual,[k]:e.target.value})}/></div>)}
+          </div>
+          <div style={{display:"flex",gap:8,marginTop:10}}>
+            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000"}} onClick={saveFoods} disabled={!(+manual.kcal>0)}>✓ Registrar</button>
+            <button className="lbs" onClick={()=>setManual(null)}>Volver</button>
+          </div>
+        </>}
+      </>}
+      {entries.filter(e=>!e.meal).length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)"}}>
+        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>Extras de hoy</div>
+        {entries.filter(e=>!e.meal).map(e=><div key={e.id} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0"}}>
+          <span className="lmn" style={{fontSize:10,color:"#6e727a",width:36}}>{e.t}</span>
+          <div style={{flex:1,minWidth:0}}><div style={{fontSize:12}}>{e.name}</div><div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{e.kcal} kcal · {e.p}P · {e.c}C · {e.f}G</div></div>
+          <button className="lbd" style={{padding:"3px 7px"}} onClick={()=>delEntry(e)}>✕</button>
+        </div>)}
+      </div>}
     </div>
 
-    {/* Compra y batch cooking */}
-    <div className="lc" style={{borderColor:"rgba(249,115,22,.2)"}}>
-      <div style={{fontSize:12,fontWeight:700,color:"#f97316",marginBottom:8}}>🛒 Compra económica y batch cooking</div>
-      <div style={{fontSize:10,color:"#999",lineHeight:1.7}}>
-        <b style={{color:"#f97316"}}>Proteínas baratas:</b> pechuga y carne molida en paquete grande/mayoreo.<br/>
-        <b style={{color:"#f97316"}}>Carbos de combate:</b> arroz, avena, frijoles y tortillas de maíz — las fuentes más baratas y efectivas.<br/>
-        <b style={{color:"#f97316"}}>Cocina para 3 días:</b> 1kg de arroz + 1kg de pechuga/carne los domingos y miércoles. Tuppers listos = 2 min de microondas entre trabajo y gym.
+    {/* Semana */}
+    <div className="card">
+      <div className="sect">📅 Últimos 7 días</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:5,alignItems:"end"}}>
+        {week.map(w=>{const pk=Math.min(1.2,w.t.kcal/T.kcal);const okP=w.t.p>=T.p*0.9;const over=w.t.kcal>T.kcal*1.05;return(
+          <div key={w.k} style={{textAlign:"center"}}>
+            <div style={{height:56,display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div style={{width:"70%",height:Math.max(3,pk/1.2*56),borderRadius:4,background:w.t.kcal===0?"#222":over?"#ff6b6b":"#30d158",opacity:w.k===tod?1:.75}}/></div>
+            <div style={{fontSize:9,color:"#6e727a",marginTop:4}}>{["D","L","M","M","J","V","S"][w.d.getDay()]}</div>
+            <div style={{fontSize:9,color:okP?"#64b4f6":"#444"}}>{w.t.p?w.t.p+"P":"—"}</div>
+          </div>)})}
       </div>
+      <div style={{fontSize:10,color:"#6e727a",marginTop:8}}>Barra = calorías vs meta (rojo si te pasaste) · azul = proteína ≥ 90% de la meta</div>
+      {lastW&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)",fontSize:12,color:"#8b8f96"}}>🎯 Recomposición corporal · último peso <b style={{color:"#30d158"}}>{lastW.weight} kg</b></div>}
+    </div>
+
+    {/* Guías (plegables) */}
+    <div className="card" style={{cursor:"pointer"}} onClick={()=>setShowInfo(v=>!v)}>
+      <div className="sect" style={{justifyContent:"space-between",marginBottom:showInfo?10:0}}><span>📘 Regla 80/20 y batch cooking</span><span style={{color:"#6e727a"}}>{showInfo?"▴":"▾"}</span></div>
+      {showInfo&&<div style={{display:"flex",flexDirection:"column",gap:7}}>
+        {[["🔄","Intercambio directo","Si vas a comer algo pesado en la noche (pizza, postre), baja el arroz de las 12 pm a media taza."],["🏦","Banco de calorías","Deja fuera la crema de cacahuate del batido y una tortilla: ahorras ~200 kcal para el fin de semana."],["🥩","Proteína intacta","Aunque te des el gusto, cumple tu cuota de pollo, huevo o proteína del día."],["🍱","Batch cooking","1 kg de arroz + 1 kg de pechuga/carne los domingos y miércoles. Tuppers listos = 2 min de microondas."]].map(([e,t,d])=>(
+          <div key={t} style={{display:"flex",gap:9,padding:"8px 10px",background:"#080808",borderRadius:9}}>
+            <span style={{fontSize:15}}>{e}</span>
+            <div><div style={{fontSize:11,fontWeight:700,color:"#7ED8F6"}}>{t}</div><div style={{fontSize:11,color:"#999",lineHeight:1.5,marginTop:1}}>{d}</div></div>
+          </div>))}
+      </div>}
     </div>
   </div>);
 }
