@@ -33,6 +33,8 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 ### Datos sembrados
 - `SEED_PLANS`: rutinas de gimnasio. **Para actualizar una rutina, sube su `seedV`**; al abrir la app reemplaza la versión vieja. Si no lo subes, no se actualiza.
 - El historial de pesos se busca por nombre (`findLast` en `GymEntrenar`). Si renombras un ejercicio que ya tiene pesos, agrega `hist:"<nombre viejo>"`: la sesión se guarda y se busca con ese nombre, así no se pierde nada. Si no lo pones, el buscador de parecidos (`exScore`/`sameEx`: ignora acentos, plurales, sinónimos y veta polea↔mancuerna, inclinado↔plano, sentado↔de pie, "A o B" vs simple) intenta ligarlo, pero `hist` es lo seguro.
+- Tipos de ejercicio (`exKind`): `cardio` (minutos + bpm, sin kg), `time` (segundos, p. ej. plancha/vacuum) y `lift` (kg × reps). Se deducen del nombre/`muscle`/`tReps`, o se fijan con `kind`. Los ejercicios con `block:"abs"` o `muscle:"Core"` se agrupan bajo "Bloque de abdomen". Las series de cardio/tiempo se guardan con `unit:"min"|"s"` en `reps` (y `bpm`), nunca en `weight`; `fmtSet` las muestra.
+- Cada plan muestra su fecha de carga (`planLoadedAt`: `createdAt` al importar, `updated` en las oficiales, o el id si es marca de tiempo) y la etiqueta "MÁS RECIENTE" entre planes importados con los mismos días. Al subir `seedV`, actualiza también `updated`.
 - `NUTRI_TARGET` y `NUTRI_MEALS`: plan de comidas con macros por comida (`kcal`, `p`, `c`, `f`). La suma de las comidas debe cuadrar con el objetivo.
 - `SHOP_BASE`: básicos de la lista de compras, acordes a la dieta vigente.
 

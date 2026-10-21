@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 
 const dg = async k => { try { const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; } catch { return null; } };
 let LAST_SAVE_ERR = "";
@@ -140,7 +140,7 @@ const reviewStreak=(reviews)=>{
 };
 // Rutinas oficiales. "hist" = nombre con el que ya hay pesos guardados (el ejercicio se renombró, el historial se conserva).
 const SEED_PLANS=[
- {id:900001,seedV:5,name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
+ {id:900001,seedV:6,updated:"2026-10-21",name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
   {label:"Día 1",name:"UPPER · Torso Completo (Lunes)",exercises:[
    {id:5131,name:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:5132,name:"Jalón al pecho en polea (agarre neutro)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
@@ -148,22 +148,22 @@ const SEED_PLANS=[
    {id:5134,name:"Remo T-Bar o remo en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:5135,name:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
    {id:5137,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
-   {id:5136,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:5136,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"Zona 2: 116-135 bpm · LISS 1",kind:"cardio"}]},
   {label:"Día 2",name:"LOWER · Cuádriceps, Abductores e Isquios (Martes)",exercises:[
    {id:5231,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-10",rest:"2.5 min · pesada"},
    {id:5233,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"90 seg"},
    {id:5237,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
    {id:5232,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:5234,name:"Elevación de pantorrillas de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg"},
-   {id:5235,name:"Vacíos abdominales (Vacuum) o crunch en polea",muscle:"Core",emoji:"🔥",tSets:3,tReps:"15",rest:"60 seg"},
-   {id:5236,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:5238,name:"Vacuum abdominal",muscle:"Core",emoji:"🔥",block:"abs",kind:"time",tSets:3,tReps:"30 s",rest:"Abs 1"},
+   {id:5239,name:"Plancha frontal",muscle:"Core",emoji:"🔥",block:"abs",kind:"time",tSets:3,tReps:"45 s",rest:"Abs 1"}]},
   {label:"Día 3",name:"PUSH · Pecho / Hombro Lateral / Tríceps (Miércoles)",exercises:[
    {id:5331,name:"Press inclinado en Smith o máquina",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:5332,name:"Cruce de poleas (aperturas en polea baja/media)",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"12-15",rest:"90 seg"},
    {id:5333,name:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
    {id:5334,name:"Extensión de tríceps en polea alta con cuerda",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:4,tReps:"10-12",rest:"90 seg"},
    {id:5335,name:"Press francés o fondos en máquina",hist:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
-   {id:5336,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:5336,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"Zona 2: 116-135 bpm · LISS 2",kind:"cardio"}]},
   {label:"Día 4",name:"PULL · Espalda / Deltoide Post. / Trapecio / Bíceps (Jueves)",exercises:[
    {id:5431,name:"Jalón al pecho en polea (agarre neutro)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
    {id:5432,name:"Remo con mancuerna unilateral",hist:"Remo unilateral en polea o mancuerna",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"2 min"},
@@ -172,16 +172,17 @@ const SEED_PLANS=[
    {id:5438,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:5435,name:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:4,tReps:"10-12",rest:"90 seg"},
    {id:5436,name:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
-   {id:5437,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:5439,name:"Crunch en polea alta",muscle:"Core",emoji:"🔥",block:"abs",tSets:3,tReps:"12-15",rest:"Abs 2"},
+   {id:5440,name:"Elevación de piernas colgado",muscle:"Core",emoji:"🔥",block:"abs",tSets:3,tReps:"10-12",rest:"Abs 2"}]},
   {label:"Día 5",name:"LEGS · Isquios, Glúteo, Abductores y Cuádriceps (Viernes)",exercises:[
    {id:5531,name:"Hip Thrust o peso muerto rumano pesado",muscle:"Glúteos",emoji:"🍑",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:5532,name:"Sentadilla búlgara",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12 x pierna",rest:"2 min"},
    {id:5533,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
    {id:5536,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
    {id:5534,name:"Elevación de pantorrillas sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
-   {id:5535,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]}
+   {id:5535,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"Zona 2: 116-135 bpm · LISS 3",kind:"cardio"}]}
  ]},
- {id:900002,seedV:5,name:"⚔️ 4 Días · Torso/Pierna (Mar-Vie)",daysPerWeek:4,days:[
+ {id:900002,seedV:6,updated:"2026-10-21",name:"⚔️ 4 Días · Torso/Pierna (Mar-Vie)",daysPerWeek:4,days:[
   {label:"Día 1",name:"TORSO A · Pecho Superior, Espalda y Hombro Lateral (Martes)",exercises:[
    {id:4141,name:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min · RIR 1-2, pausa 1s"},
    {id:4142,name:"Jalón al pecho en polea (agarre neutro o prono)",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
@@ -190,7 +191,7 @@ const SEED_PLANS=[
    {id:4145,name:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-15",rest:"90 seg"},
    {id:4146,name:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10",rest:"superserie ↓"},
    {id:4147,name:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"12",rest:"90 seg"},
-   {id:4148,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:4148,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"Zona 2: 116-135 bpm · LISS 1",kind:"cardio"}]},
   {label:"Día 2",name:"PIERNA A · Cuádriceps, Abductores e Isquios (Miércoles)",exercises:[
    {id:4241,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:4243,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12-15",rest:"90 seg · dropset final"},
@@ -198,8 +199,8 @@ const SEED_PLANS=[
    {id:4242,name:"Peso muerto rumano con mancuernas",hist:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:4244,name:"Curl femoral acostado o sentado",hist:"Curl de pierna acostado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:4245,name:"Elevación de pantorrillas de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"12-15",rest:"60 seg · pausa 2s"},
-   {id:4246,name:"Vacíos abdominales (Vacuum) o crunch en polea",muscle:"Core",emoji:"🔥",tSets:3,tReps:"15",rest:"60 seg"},
-   {id:4247,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:4251,name:"Vacuum abdominal",muscle:"Core",emoji:"🔥",block:"abs",kind:"time",tSets:3,tReps:"30 s",rest:"Abs 1"},
+   {id:4252,name:"Plancha frontal",muscle:"Core",emoji:"🔥",block:"abs",kind:"time",tSets:3,tReps:"45 s",rest:"Abs 1"}]},
   {label:"Día 3",name:"TORSO B · Hombro, Pecho/Espalda y Trapecio (Jueves)",exercises:[
    {id:4341,name:"Press inclinado en Smith o máquina articulada",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:4342,name:"Remo con barra o mancuerna a una mano",muscle:"Espalda",emoji:"💪",tSets:4,tReps:"8-10",rest:"2 min"},
@@ -210,15 +211,16 @@ const SEED_PLANS=[
    {id:4350,name:"Encogimientos de hombros (trapecio)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:4347,name:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"10",rest:"superserie ↓"},
    {id:4348,name:"Press francés o fondos en máquina",hist:"Fondos en paralelas (o Press francés)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10",rest:"90 seg"},
-   {id:4349,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]},
+   {id:4349,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"Zona 2: 116-135 bpm · LISS 2",kind:"cardio"}]},
   {label:"Día 4",name:"PIERNA B · Isquios, Glúteo, Abductores y Pantorrilla (Viernes)",exercises:[
    {id:4441,name:"Hip Thrust o sentadilla búlgara",muscle:"Glúteos",emoji:"🍑",tSets:4,tReps:"8-10",rest:"2.5 min"},
    {id:4442,name:"Prensa de piernas (pies altos y abiertos)",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"2 min"},
    {id:4447,name:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"15",rest:"60 seg"},
-   {id:4443,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-12",rest:"90 seg"},
+   {id:4443,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-12",rest:"90 seg"},
    {id:4444,name:"Zancadas / lunges caminando",hist:"Zancadas caminando",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12 pasos x pierna",rest:"90 seg"},
    {id:4445,name:"Elevación de pantorrillas sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"15",rest:"60 seg"},
-   {id:4446,name:"Cardio LISS caminadora inclinada",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15 min",rest:"116-135 bpm"}]}
+   {id:4448,name:"Crunch en polea alta",muscle:"Core",emoji:"🔥",block:"abs",tSets:3,tReps:"12-15",rest:"Abs 2"},
+   {id:4449,name:"Elevación de piernas colgado",muscle:"Core",emoji:"🔥",block:"abs",tSets:3,tReps:"10-12",rest:"Abs 2"}]}
  ]}
 ];
 const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
@@ -2093,6 +2095,17 @@ const exScore=(a,b)=>{
 };
 const EX_MATCH=0.7;
 const sameEx=(a,b)=>a===b||exScore(a,b)>=EX_MATCH;
+// Tipo de ejercicio: "cardio" (minutos + bpm), "time" (segundos, p. ej. plancha) o "lift" (kg × reps).
+// Se deduce del nombre/objetivo, así funciona también con planes ya guardados en el celular.
+const exKind=ex=>{if(ex?.kind)return ex.kind;const n=ex?.name||"";if(ex?.muscle==="Cardio"||/cardio|liss|caminadora|el[ií]ptica|bicicleta/i.test(n))return"cardio";if(/^\s*\d+(\s*[-–]\s*\d+)?\s*(s|seg|segundos?)\b/i.test(ex?.tReps||""))return"time";return"lift"};
+const isAbsEx=ex=>ex?.block==="abs"||ex?.muscle==="Core";
+const firstNum=t=>(String(t||"").match(/\d+/)||[""])[0];
+const fmtSet=s=>s.unit==="min"?(s.reps||"?")+" min"+(s.bpm?" · "+s.bpm+" bpm":""):s.unit==="s"?(s.reps||"?")+" s":(s.weight||"?")+"kg × "+(s.reps||"?");
+const MN3S=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+// Fecha en que se cargó un plan: createdAt (nuevo), id con marca de tiempo (importados antes) o "updated" de la rutina oficial
+const planLoadedAt=p=>{const v=p?.createdAt||p?.updated||(p?.id>1e12?p.id:null);if(!v)return null;const d=new Date(typeof v==="string"&&v.length===10?v+"T12:00:00":v);return isNaN(d)?null:d};
+const isImportedPlan=p=>!!(p?.createdAt||(p?.id>1e12&&!p?.updated));
+const fmtLoaded=(d,time=true)=>d?d.getDate()+" "+MN3S[d.getMonth()]+" "+d.getFullYear()+(time?", "+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0"):""):"";
 // Nombre con el que se guarda y se busca el historial de un ejercicio del plan
 const exHistName=ex=>ex?.hist||ex?.name||"";
 // Busca el mejor nombre ya conocido (historial primero, luego planes) para un ejercicio nuevo
@@ -2123,8 +2136,21 @@ const parseRoutineText=(text)=>{
   };
   const curDay=()=>{if(!cur)newBlock(looseName);if(!cur.days.length)cur.days.push({label:"Día 1",name:"Día 1",exercises:[]});return cur.days[cur.days.length-1]};
   for(const raw of lines){
-    const line=raw.replace(/^[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9(]+/,"").trim();
+    const line=raw.replace(/^[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9(]+/,"").replace(/^finalizador\s*[:\-–—]\s*/i,"").trim();
     if(!line)continue;
+    const nthDay=(line.match(/d[ií]a\s*(\d+)\s*de\s*(liss|abs|abdomen|cardio)/i)||[]);
+    // Bloque de abdomen / core: "Bloque de Abdomen (Vacuum 3x30s + Plancha 3x45s)"
+    if(/bloque\s+de\s+(abdomen|abs|core|abdominales)/i.test(line)&&cur&&cur.days.length){
+      const inner=(line.match(/\(([^)]*\d\s*[x×]\s*\d[^)]*)\)/)||[])[1]||"";
+      for(const it of inner.split(/\s*\+\s*/)){
+        const m=it.match(/^(.*?)\s+(\d+)\s*[x×]\s*(\d+(?:\s*[-–]\s*\d+)?)\s*(s\b|seg|segundos?|min|reps?)?/i);
+        if(!m)continue;
+        const isT=/^(s|seg)/i.test(m[4]||"");
+        const ex=mkEx(m[1],+m[2],m[3].replace(/\s*[-–]\s*/,"-")+(isT?" s":""),nthDay[1]?"Abs "+nthDay[1]:"");
+        if(ex){ex.muscle="Core";ex.emoji="🔥";ex.block="abs";if(isT)ex.kind="time";cur.days[cur.days.length-1].exercises.push(ex)}
+      }
+      continue;
+    }
     const hasSpec=/\d+\s*series?\s*[x×]/i.test(line)||/\(\s*\d+\s*[x×]\s*\d/i.test(line)||/:\s*\d+\s*[x×]\s*\d/.test(line);
     // 1) Encabezado de rutina → bloque nuevo
     if(!hasSpec&&PLAN_HDR_RE.test(line)&&!NOT_HDR_RE.test(line)&&!/^(d[ií]a|day)\s*\d/i.test(line)&&line.length<110){
@@ -2150,8 +2176,10 @@ const parseRoutineText=(text)=>{
       // Cardio sin series: "Cardio LISS: 15 min en caminadora"
       if(/cardio|liss|caminadora/i.test(line)&&cur&&cur.days.length){
         const mins=(line.match(/(\d+)\s*min/i)||[])[1];
-        const ex=mkEx(line.split(":")[0],1,(mins||"15")+" min",(line.match(/\(([^)]*bpm[^)]*)\)/i)||[])[1]||"");
-        if(ex)cur.days[cur.days.length-1].exercises.push(ex);
+        const nm=/cardio|liss/i.test(line)?("Cardio"+(/liss/i.test(line)?" LISS":"")+(/caminadora/i.test(line)?" caminadora":"")+(/inclinad/i.test(line)?" inclinada":"")):line.split(/[:–—(]/)[0];
+        const bpm=((line.match(/\(([^)]*bpm[^)]*)\)/i)||[])[1]||"").trim();
+        const ex=mkEx(nm,1,(mins||"15")+" min",[bpm,nthDay[1]?"LISS "+nthDay[1]:""].filter(Boolean).join(" · "));
+        if(ex){ex.muscle="Cardio";ex.emoji="🏃";ex.kind="cardio";cur.days[cur.days.length-1].exercises.push(ex)}
       }else if(!cur&&!looseName&&line.length<70&&!/^(esquema|objetivo|descanso|recordatorio|nota)/i.test(line))looseName=line;
       continue;
     }
@@ -2208,7 +2236,7 @@ function RoutineImport({ctx,onImported}){
   const guardar=()=>{
     if(!prev)return;
     const base=Date.now();
-    onImported(prev.map((p,i)=>({id:base+i,seedV:99,name:(p.name.trim()||"Rutina importada"),daysPerWeek:p.daysPerWeek,days:p.days})));
+    onImported(prev.map((p,i)=>({id:base+i,seedV:99,createdAt:new Date(base).toISOString(),name:(p.name.trim()||"Rutina importada"),daysPerWeek:p.daysPerWeek,days:p.days})));
     setOpen(false);setTxt("");setPrev(null);
   };
   if(!open)return(
@@ -2403,14 +2431,20 @@ function GymPlanes({ctx}){
     {plans.length===0&&!form&&<Mpty msg="Sin planes aún" sub="Crea tu primer plan de 5 o 4 días"/>}
     {plans.map(p=>{
       const isActive=activePlanId===p.id;
+      const loaded=planLoadedAt(p);
+      // "Más reciente": el de fecha de carga más nueva entre los planes con los mismos días por semana
+      const twins=plans.filter(x=>x.daysPerWeek===p.daysPerWeek&&isImportedPlan(x));
+      const newest=isImportedPlan(p)&&loaded&&twins.length>1&&twins.every(x=>x.id===p.id||(planLoadedAt(x)||0)<loaded);
       return(<div key={p.id} className="lc" style={{borderColor:isActive?"rgba(249,115,22,.4)":"rgba(255,255,255,.06)",background:isActive?"rgba(249,115,22,.04)":"#0f0f0f"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
           <div>
-            <div style={{display:"flex",alignItems:"center",gap:7}}>
+            <div style={{display:"flex",alignItems:"center",gap:7,flexWrap:"wrap"}}>
               <div style={{fontSize:14,fontWeight:700}}>{p.name}</div>
               {isActive&&<span style={{fontSize:9,fontWeight:700,padding:"2px 8px",background:"#f97316",color:"#000",borderRadius:10}}>SEMANA ACTIVA</span>}
+              {newest&&<span style={{fontSize:9,fontWeight:700,padding:"2px 8px",background:"rgba(48,209,88,.15)",color:"#30d158",border:"1px solid rgba(48,209,88,.4)",borderRadius:10}}>MÁS RECIENTE</span>}
             </div>
             <div style={{fontSize:11,color:"#555",marginTop:2}}>{p.daysPerWeek} días/semana · {p.days.reduce((a,d)=>a+d.exercises.length,0)} ejercicios</div>
+            <div style={{fontSize:10,color:"#8b8f96",marginTop:2}}>📅 {loaded?(isImportedPlan(p)?"Importada el "+fmtLoaded(loaded):"Rutina oficial · actualizada "+fmtLoaded(loaded,false)):"Fecha de carga desconocida"}</div>
           </div>
           <div style={{display:"flex",gap:4}}>
             <button className="lbs" style={{padding:"3px 7px",fontSize:11}} onClick={()=>{setForm(p);setEditDay(null)}}>✏️</button>
@@ -2436,7 +2470,10 @@ function GymPlanes({ctx}){
 function GymEntrenar({ctx}){
   const{plans,activePlanId,wkLogs,setWkLogs,gymDraft,setGymDraft}=ctx;
   const plan=plans.find(p=>p.id===activePlanId);
-  const draftMatch=gymDraft&&gymDraft.planId===activePlanId?gymDraft:null;
+  // Solo recupera el entreno a medias si el día sigue teniendo los mismos ejercicios (si la rutina cambió, no mezcla pesos)
+  const draftMatch=(()=>{if(!gymDraft||gymDraft.planId!==activePlanId)return null;const d=plan?.days?.[gymDraft.dayIdx];if(!d)return null;
+    const names=d.exercises.map(e=>e.name);if(gymDraft.names)return JSON.stringify(gymDraft.names)===JSON.stringify(names)?gymDraft:null;
+    return Object.keys(gymDraft.sets||{}).length===names.length?gymDraft:null})();
   const[dayIdx,setDayIdx]=useState(draftMatch?draftMatch.dayIdx:null);
   const[sets,setSets]=useState(draftMatch?draftMatch.sets:{});
   const restored=useRef(!!draftMatch);
@@ -2444,7 +2481,7 @@ function GymEntrenar({ctx}){
   // Autoguarda el entreno en curso (peso/reps) para sobrevivir si Android cierra la app en segundo plano
   useEffect(()=>{
     if(dayIdx===null)return;
-    setGymDraft({planId:activePlanId,dayIdx,sets,ts:Date.now()});
+    setGymDraft({planId:activePlanId,dayIdx,sets,names:(plan?.days?.[dayIdx]?.exercises||[]).map(e=>e.name),ts:Date.now()});
   },[dayIdx,sets]);
 
   // Buscar el último registro de cada ejercicio para mostrar referencia
@@ -2462,17 +2499,20 @@ function GymEntrenar({ctx}){
   const lastFor=(ex)=>{
     const r=findLast(ex);if(!r)return null;
     const best=r.ex.sets.reduce((a,s)=>(+s.weight||0)>(+a.weight||0)?s:a,r.ex.sets[0]);
-    return{date:r.log.date,reps:best.reps,weight:best.weight};
+    return{date:r.log.date,reps:best.reps,weight:best.weight,unit:best.unit,bpm:best.bpm};
   };
 
   const lastSetsFor=(pex)=>{
     const ex=findLast(pex)?.ex;
-    return ex?ex.sets.filter(s=>s.weight||s.reps).map(s=>({reps:s.reps||"",weight:s.weight||"",done:false})):null;
+    return ex?ex.sets.filter(s=>s.weight||s.reps).map(s=>({reps:s.reps||"",weight:s.weight||"",...(s.unit?{unit:s.unit}:{}),done:false})):null;
   };
   const start=(di)=>{
     setDayIdx(di);
     const init={};
     plan.days[di].exercises.forEach((ex,i)=>{
+      const kind=exKind(ex);
+      if(kind==="cardio"){init[i]=[{reps:firstNum(ex.tReps)||"15",bpm:"",unit:"min",done:false}];return}
+      if(kind==="time"){const ls=lastSetsFor(ex);init[i]=Array.from({length:ex.tSets||1},(_,j)=>({reps:(ls&&ls[j]&&ls[j].reps)||firstNum(ex.tReps),weight:"",unit:"s",done:false}));return}
       const last=lastSetsFor(ex);
       const n=Math.max(ex.tSets||1,last?last.length:0);
       const fallback=last&&last.length>0?last[last.length-1]:null;
@@ -2483,7 +2523,7 @@ function GymEntrenar({ctx}){
     });
     setSets(init);
   };
-  const addSet=i=>setSets(p=>({...p,[i]:[...(p[i]||[]),{reps:"",weight:"",done:false}]}));
+  const addSet=i=>setSets(p=>{const prevS=(p[i]||[]);const u=prevS[0]?.unit;return{...p,[i]:[...prevS,u?{reps:prevS[prevS.length-1]?.reps||"",weight:"",unit:u,done:false}:{reps:"",weight:"",done:false}]}});
   const updSet=(i,si,f,v)=>setSets(p=>({...p,[i]:p[i].map((s,idx)=>idx===si?{...s,[f]:v}:s)}));
   const toggleSet=(i,si)=>setSets(p=>({...p,[i]:p[i].map((s,idx)=>idx===si?{...s,done:!s.done}:s)}));
   const finish=()=>{
@@ -2509,7 +2549,7 @@ function GymEntrenar({ctx}){
   if(dayIdx===null)return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
     <div style={{padding:"10px 14px",background:"rgba(249,115,22,.08)",border:".5px solid rgba(249,115,22,.3)",borderRadius:12}}>
       <div style={{fontSize:13,fontWeight:700,color:"#f97316"}}>📌 {plan.name}</div>
-      <div style={{fontSize:11,color:"#555",marginTop:2}}>{plan.daysPerWeek} días/semana · {doneThisWeek.length}/{plan.daysPerWeek} completados esta semana</div>
+      <div style={{fontSize:11,color:"#555",marginTop:2}}>{plan.daysPerWeek} días/semana · {doneThisWeek.length}/{plan.daysPerWeek} completados esta semana{planLoadedAt(plan)?" · "+(isImportedPlan(plan)?"importada "+fmtLoaded(planLoadedAt(plan)):"oficial "+fmtLoaded(planLoadedAt(plan),false)):""}</div>
       <div style={{height:4,background:"#161616",borderRadius:99,marginTop:8}}><div style={{height:"100%",width:`${(doneThisWeek.length/plan.daysPerWeek)*100}%`,background:"#f97316",borderRadius:99,transition:"width .5s"}}/></div>
     </div>
     <div style={{fontSize:10,color:"#444",textTransform:"uppercase",fontWeight:700}}>Elige el día de hoy</div>
@@ -2539,27 +2579,53 @@ function GymEntrenar({ctx}){
     </div>
     {day.exercises.map((ex,i)=>{
       const exSets=sets[i]||[];const anyD=exSets.some(s=>s.done);
+      const kind=exKind(ex);const abs=isAbsEx(ex);
+      const absHeader=abs&&!(i>0&&isAbsEx(day.exercises[i-1]));
+      const chk=(si,s)=>(<button onClick={()=>toggleSet(i,si)} style={{width:28,height:28,borderRadius:"50%",border:`2px solid ${s.done?"#f97316":"rgba(255,255,255,.1)"}`,background:s.done?"#f97316":"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{s.done&&<span style={{fontSize:12,color:"#000",fontWeight:700}}>✓</span>}</button>);
+      if(kind==="cardio"){const s=exSets[0]||{reps:firstNum(ex.tReps)||"15",bpm:"",unit:"min",done:false};
+        return(<div key={i} className="lc" style={{borderColor:s.done?"rgba(48,209,88,.4)":"rgba(100,180,246,.25)",background:s.done?"rgba(48,209,88,.05)":"rgba(100,180,246,.04)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <span style={{fontSize:22}}>🏃</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:10,color:"#64b4f6",fontWeight:700,textTransform:"uppercase",letterSpacing:".04em"}}>Finalizador · Cardio</div>
+              <div style={{fontSize:13,fontWeight:700}}>{ex.name}</div>
+              <div style={{fontSize:11,color:"#8b8f96",marginTop:2}}>{ex.tReps}{ex.rest?" · "+ex.rest:""}</div>
+            </div>
+            {chk(0,s)}
+          </div>
+          <div style={{display:"flex",gap:8,alignItems:"center",marginTop:10,flexWrap:"wrap"}}>
+            <input className="lfi" type="number" inputMode="numeric" value={s.reps} onChange={e=>updSet(i,0,"reps",e.target.value)} style={{width:64,fontSize:12,padding:"5px 7px"}}/><span style={{fontSize:11,color:"#8b8f96"}}>min</span>
+            <input className="lfi" type="number" inputMode="numeric" placeholder="bpm" value={s.bpm||""} onChange={e=>updSet(i,0,"bpm",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/><span style={{fontSize:11,color:"#8b8f96"}}>bpm prom. (opcional)</span>
+          </div>
+        </div>);
+      }
       const last=lastFor(ex);
-      return(<div key={i} className="lc" style={{borderColor:anyD?"rgba(249,115,22,.3)":"rgba(255,255,255,.06)"}}>
+      return(<Fragment key={i}>
+      {absHeader&&<div style={{display:"flex",alignItems:"center",gap:8,marginTop:4,fontSize:11,fontWeight:700,color:"#ff6b6b",textTransform:"uppercase",letterSpacing:".04em"}}>🔥 Bloque de abdomen · finalizador<span style={{flex:1,height:1,background:"rgba(255,107,107,.25)"}}/></div>}
+      <div className="lc" style={{borderColor:anyD?"rgba(249,115,22,.3)":abs?"rgba(255,107,107,.2)":"rgba(255,255,255,.06)",...(abs?{marginLeft:8}:{})}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-          <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>{ex.emoji||"💪"}</span><div><div style={{fontSize:13,fontWeight:700}}>{ex.name}</div><div style={{fontSize:10,color:"#555"}}>{ex.muscle}{ex.tSets?<span style={{color:"#f97316",fontWeight:700}}> · {ex.tSets}×{ex.tReps}</span>:null}{ex.rest?<span style={{color:"#444"}}> · desc {ex.rest}</span>:null}</div></div></div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>{ex.emoji||"💪"}</span><div><div style={{fontSize:13,fontWeight:700}}>{ex.name}</div><div style={{fontSize:10,color:"#555"}}>{ex.muscle}{ex.tSets?<span style={{color:"#f97316",fontWeight:700}}> · {ex.tSets}×{ex.tReps}</span>:null}{ex.rest&&!/^abs\s*\d/i.test(ex.rest)?<span style={{color:"#444"}}> · desc {ex.rest}</span>:null}</div></div></div>
           <button className="lbs" style={{fontSize:11,padding:"3px 8px"}} onClick={()=>addSet(i)}>+ Set</button>
         </div>
         {last&&<div style={{fontSize:10,color:"#FFB800",marginBottom:8,padding:"5px 9px",background:"rgba(255,183,0,.06)",borderRadius:7,border:".5px solid rgba(255,183,0,.2)"}}>
-          📈 Última vez ({fd(last.date)}): <b>{last.weight||"?"} kg × {last.reps||"?"} reps</b> — intenta superarlo
+          📈 Última vez ({fd(last.date)}): <b>{kind==="time"?(last.reps||"?")+" s":(last.weight||"?")+" kg × "+(last.reps||"?")+" reps"}</b> — intenta superarlo
         </div>}
         {exSets.map((s,si)=>(
           <div key={si} style={{display:"flex",gap:6,alignItems:"center",marginBottom:6}}>
             <div style={{fontSize:10,color:"#444",width:20,textAlign:"center",flexShrink:0}}>#{si+1}</div>
-            <input className="lfi" type="number" inputMode="decimal" placeholder="kg" value={s.weight} onChange={e=>updSet(i,si,"weight",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
-            <span style={{fontSize:10,color:"#444"}}>×</span>
-            <input className="lfi" type="number" inputMode="numeric" placeholder="reps" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
-            <button onClick={()=>toggleSet(i,si)} style={{width:28,height:28,borderRadius:"50%",border:`2px solid ${s.done?"#f97316":"rgba(255,255,255,.1)"}`,background:s.done?"#f97316":"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              {s.done&&<span style={{fontSize:12,color:"#000",fontWeight:700}}>✓</span>}
-            </button>
+            {kind==="time"?<>
+              <input className="lfi" type="number" inputMode="numeric" placeholder="seg" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
+              <span style={{fontSize:11,color:"#8b8f96",flex:1}}>segundos</span>
+            </>:<>
+              <input className="lfi" type="number" inputMode="decimal" placeholder="kg" value={s.weight} onChange={e=>updSet(i,si,"weight",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
+              <span style={{fontSize:10,color:"#444"}}>×</span>
+              <input className="lfi" type="number" inputMode="numeric" placeholder="reps" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
+            </>}
+            {chk(si,s)}
           </div>
         ))}
-      </div>);
+      </div>
+      </Fragment>);
     })}
   </div>);
 }
@@ -2573,7 +2639,7 @@ function GymHistorial({ctx}){
   const short=d=>{const x=new Date(d+"T12:00:00");return x.getDate()+" "+MN3[x.getMonth()]};
   const thisWeek=wkLogs.filter(w=>(Date.now()-new Date(w.date+"T12:00:00"))/86400000<=7).length;
   const totalSets=wkLogs.reduce((a,w)=>a+(w.totalSets||0),0);
-  const allEx=[...new Set(wkLogs.flatMap(w=>(w.exercises||[]).filter(e=>(e.sets||[]).some(s=>s.weight||s.reps)).map(e=>e.name)))].sort();
+  const allEx=[...new Set(wkLogs.flatMap(w=>(w.exercises||[]).filter(e=>(e.sets||[]).some(s=>(s.weight||s.reps)&&!s.unit)&&!/cardio|liss/i.test(e.name)).map(e=>e.name)))].sort();
 
   const series=selEx?wkLogs.filter(w=>(w.exercises||[]).find(e=>e.name===selEx&&(e.sets||[]).some(s=>s.weight||s.reps)))
     .map(w=>{const ex=w.exercises.find(e=>e.name===selEx);const ss=ex.sets.filter(s=>s.weight||s.reps);
@@ -2684,7 +2750,7 @@ function GymHistorial({ctx}){
             {exs.map((e,i)=>(
               <div key={i} style={{marginBottom:7}}>
                 <div style={{fontSize:12,fontWeight:600,color:"#eceef1"}}>{e.name}</div>
-                <div className="lmn" style={{fontSize:11,color:"#8b8f96",marginTop:2}}>{e.sets.filter(s=>s.weight||s.reps).map(s=>(s.weight||"?")+"kg × "+(s.reps||"?")).join("  ·  ")}</div>
+                <div className="lmn" style={{fontSize:11,color:"#8b8f96",marginTop:2}}>{e.sets.filter(s=>s.weight||s.reps).map(fmtSet).join("  ·  ")}</div>
               </div>
             ))}
             <button className="lbd" style={{marginTop:4}} onClick={()=>{if(confirm("¿Borrar esta sesión?"))setWkLogs(p=>p.filter(x=>x.id!==w.id))}}>🗑 Borrar sesión</button>
@@ -3077,7 +3143,7 @@ function AskIA({ctx,module}){
     const fin=()=>"FINANZAS: Ingresos mes "+M(mInc())+" | Gastos "+M(mExp())+" | Balance "+M(mInc()-mExp())+" | Patrimonio "+M(totPort)+" | Ahorros "+M(totSav)+" | Deuda "+M(totDebt)+" | Salario "+(salary.amount?M(salMXN())+"/mes":"sin configurar")+" | Vende: "+(products.map(p=>p.name).join(", ")||"nada")+" | Trading $"+trading.balance+" "+trading.currency;
     const hab=()=>"HÁBITOS: "+(habits.map(h=>h.name+" (racha "+getStreak(comp,h.id)+"d)").join(", ")||"ninguno")+" | Hoy: "+habits.filter(h=>(comp[h.id]||{})[tod]).length+"/"+habits.length+" | TAREAS pendientes: "+(tasks.filter(t=>!t.completed).map(t=>t.text+" ["+t.priority+(t.dueDate?", vence "+t.dueDate:"")+"]").slice(0,10).join("; ")||"ninguna");
     const men=()=>"MENTE: "+medSess.length+" meditaciones ("+medSess.filter(s=>(Date.now()-new Date(s.date))/86400000<=7).length+" esta semana, "+medSess.reduce((a,s)=>a+s.minutes,0)+" min totales) | Journal: "+journal.length+" entradas | Últimos ánimos: "+journal.slice(0,5).map(j=>j.mood+" "+fd(j.date)).join(", ")+" | Última reflexión: "+(journal[0]?.text?.slice(0,200)||"ninguna");
-    const cue=()=>{const plan=plans.find(p=>p.id===activePlanId);return "ENTRENAMIENTO: Plan activo: "+(plan?plan.name+" ("+plan.daysPerWeek+" días: "+plan.days.map(d=>d.label+"="+(d.name||"?")).join(", ")+")":"ninguno")+" | Últimos entrenos: "+[...wkLogs].slice(-8).map(w=>w.date+" "+w.name+" ["+(w.exercises||[]).filter(e=>e.sets?.length).map(e=>e.name+": "+e.sets.map(s=>(s.weight||"?")+"kg x"+(s.reps||"?")).join(", ")).join(" | ")+"]").join(" /// ")};
+    const cue=()=>{const plan=plans.find(p=>p.id===activePlanId);return "ENTRENAMIENTO: Plan activo: "+(plan?plan.name+" ("+plan.daysPerWeek+" días: "+plan.days.map(d=>d.label+"="+(d.name||"?")).join(", ")+")":"ninguno")+" | Últimos entrenos: "+[...wkLogs].slice(-8).map(w=>w.date+" "+w.name+" ["+(w.exercises||[]).filter(e=>e.sets?.length).map(e=>e.name+": "+e.sets.map(fmtSet).join(", ")).join(" | ")+"]").join(" /// ")};
     if(module==="fin")return fin();
     if(module==="hab")return hab();
     if(module==="mente")return men();
