@@ -39,6 +39,7 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 - `SHOP_BASE`: básicos de la lista de compras, acordes a la dieta vigente.
 - Nutrición: `NUTRI_MENUS` (A y B, mismos ids `n1`–`n4`, horas y macros; `NUTRI_MEALS` = menú A, lo usa Hoy). `FOOD_DB` = alimentos con macros por 100 g (`pz`/`taza` = gramos por pieza/taza) y `parseFoodText` entiende "2 tortillas y 150 g de pollo". `nutriCoach` da qué falta/sobra, proyección del día y recortes concretos (`NUTRI_CUTS`) sin tocar la proteína.
 - Registro de comidas en el estado `food` = `{days:{fecha:[{id,t,meal,name,src,kcal,p,c,f}]},menu}`. `nutriLog[fecha][nX]` sigue siendo la palomita de cada comida (Hoy la usa); `dayFood` suma entradas + comidas palomeadas sin detalle (= plan tal cual).
+- "Mis comidas": `food.saved` = `[{id,name,items:[{name,q,u,pzN,per}],uses}]` (per = macros de 1 unidad). Se guardan al registrar con la casilla ⭐ y se reusan desde chips. Cada alimento del borrador y cada entrada registrada guarda `q`, `u` y `per`, así los botones − + recalculan macros (`unitStep`: piezas de 1 en 1, g de 10, ml de 25, tazas/porciones de ½). Sin cantidad escrita = 1 pieza.
 - Enlace `?comida=n1`…`n4` abre Comidas con esa comida lista para registrar. Los eventos diarios "🥗 Comida N" del calendario (los crea el asistente) llevan ese enlace.
 - Fechas: `td()`/`ds()` son en hora LOCAL (antes UTC y el día cambiaba a las 6 PM en México).
 

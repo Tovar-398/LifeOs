@@ -248,15 +248,15 @@ const roundM=m=>({kcal:Math.round(m.kcal),p:Math.round(m.p),c:Math.round(m.c),f:
 
 /* ── Base de alimentos (macros aprox. por 100 g o 100 ml; pz/taza = gramos de una pieza/taza) ── */
 const FOOD_DB=[
- {n:"Huevo entero",kw:"huevo|huevos",k:143,p:12.6,c:0.7,f:9.5,pz:50,def:[2,"pz"]},
- {n:"Clara de huevo",kw:"clara|claras",k:52,p:10.9,c:0.7,f:0.2,pz:33,def:[3,"pz"]},
+ {n:"Huevo entero",kw:"huevo|huevos",k:143,p:12.6,c:0.7,f:9.5,pz:50,def:[1,"pz"]},
+ {n:"Clara de huevo",kw:"clara|claras",k:52,p:10.9,c:0.7,f:0.2,pz:33,def:[1,"pz"]},
  {n:"Pechuga de pollo",kw:"pechuga|pollo",k:165,p:31,c:0,f:3.6,def:[150,"g"]},
  {n:"Bistec de res magro",kw:"bistec|res|filete de res|arrachera",k:190,p:29,c:0,f:7.5,def:[150,"g"]},
  {n:"Lomo/pulpa de cerdo",kw:"cerdo|lomo|pulpa",k:170,p:28,c:0,f:6,def:[150,"g"]},
  {n:"Pescado blanco (tilapia/basa)",kw:"pescado|tilapia|basa|filete de pescado",k:128,p:26,c:0,f:2.7,def:[150,"g"]},
  {n:"Atún en agua (lata escurrida)",kw:"at[uú]n",k:116,p:25.5,c:0,f:0.8,pz:100,pzN:"lata",def:[1,"pz"]},
  {n:"Carne molida 90/10",kw:"molida|picadillo",k:217,p:26,c:0,f:12,def:[120,"g"]},
- {n:"Jamón de pavo",kw:"jam[oó]n|pavo",k:104,p:16,c:3,f:3,pz:20,pzN:"rebanada",def:[3,"pz"]},
+ {n:"Jamón de pavo",kw:"jam[oó]n|pavo",k:104,p:16,c:3,f:3,pz:20,pzN:"rebanada",def:[1,"pz"]},
  {n:"Queso panela",kw:"panela|queso fresco",k:260,p:18,c:3,f:20,def:[40,"g"]},
  {n:"Yogur griego natural",kw:"yogur|yogurt",k:73,p:10,c:3.9,f:2,def:[150,"g"]},
  {n:"Leche entera/deslactosada",kw:"leche",k:61,p:3.2,c:4.8,f:3.3,taza:250,def:[250,"g"]},
@@ -269,10 +269,10 @@ const FOOD_DB=[
  {n:"Papa cocida/horno",kw:"papa|papas cocidas",k:87,p:1.9,c:20,f:0.1,def:[200,"g"]},
  {n:"Camote",kw:"camote",k:90,p:2,c:21,f:0.2,def:[200,"g"]},
  {n:"Frijoles cocidos",kw:"frijol|frijoles",k:127,p:8.7,c:22.8,f:0.5,taza:172,def:[0.5,"taza"]},
- {n:"Tortilla de maíz",kw:"tortilla|tortillas",k:218,p:5.7,c:44.6,f:2.9,pz:30,def:[2,"pz"]},
+ {n:"Tortilla de maíz",kw:"tortilla|tortillas",k:218,p:5.7,c:44.6,f:2.9,pz:30,def:[1,"pz"]},
  {n:"Tortilla de harina",kw:"tortilla de harina|harina",k:312,p:8,c:52,f:8,pz:40,def:[1,"pz"]},
- {n:"Pan integral",kw:"pan integral|pan de caja|pan",k:247,p:13,c:41,f:3.4,pz:30,pzN:"rebanada",def:[2,"pz"]},
- {n:"Tostada horneada",kw:"tostada|tostadas",k:420,p:9,c:78,f:7,pz:12,def:[2,"pz"]},
+ {n:"Pan integral",kw:"pan integral|pan de caja|pan",k:247,p:13,c:41,f:3.4,pz:30,pzN:"rebanada",def:[1,"pz"]},
+ {n:"Tostada horneada",kw:"tostada|tostadas",k:420,p:9,c:78,f:7,pz:12,def:[1,"pz"]},
  {n:"Plátano",kw:"pl[aá]tano|banana",k:89,p:1.1,c:22.8,f:0.3,pz:118,def:[1,"pz"]},
  {n:"Manzana",kw:"manzana",k:52,p:0.3,c:13.8,f:0.2,pz:180,def:[1,"pz"]},
  {n:"Papaya",kw:"papaya",k:43,p:0.5,c:10.8,f:0.3,def:[150,"g"]},
@@ -287,15 +287,15 @@ const FOOD_DB=[
  {n:"Verduras / ensalada",kw:"verdura|verduras|ensalada|lechuga|br[oó]coli|calabaza|nopal",k:20,p:1.2,c:3.6,f:0.2,taza:60,def:[1,"taza"]},
  {n:"Jitomate / pepino",kw:"jitomate|tomate|pepino",k:17,p:0.8,c:3.8,f:0.2,pz:120,def:[1,"pz"]},
  {n:"Champiñones / espinaca",kw:"champi[nñ][oó]n|champi|espinaca",k:22,p:3,c:3.4,f:0.3,taza:70,def:[1,"taza"]},
- {n:"Taco al pastor / guisado",kw:"taco|tacos|pastor|suadero|guisado",k:210,p:10,c:18,f:11,pz:90,pzN:"taco",def:[3,"pz"]},
+ {n:"Taco al pastor / guisado",kw:"taco|tacos|pastor|suadero|guisado",k:210,p:10,c:18,f:11,pz:90,pzN:"taco",def:[1,"pz"]},
  {n:"Quesadilla",kw:"quesadilla",k:300,p:13,c:28,f:15,pz:100,def:[1,"pz"]},
  {n:"Torta",kw:"torta",k:250,p:12,c:28,f:10,pz:300,def:[1,"pz"]},
  {n:"Tamal",kw:"tamal|tamales",k:200,p:6,c:25,f:9,pz:150,def:[1,"pz"]},
- {n:"Pizza (rebanada)",kw:"pizza",k:266,p:11,c:33,f:10,pz:107,pzN:"rebanada",def:[2,"pz"]},
+ {n:"Pizza (rebanada)",kw:"pizza",k:266,p:11,c:33,f:10,pz:107,pzN:"rebanada",def:[1,"pz"]},
  {n:"Hamburguesa",kw:"hamburguesa",k:250,p:13,c:20,f:13,pz:220,def:[1,"pz"]},
- {n:"Sushi (pieza)",kw:"sushi",k:150,p:5,c:28,f:2,pz:30,def:[8,"pz"]},
+ {n:"Sushi (pieza)",kw:"sushi",k:150,p:5,c:28,f:2,pz:30,def:[1,"pz"]},
  {n:"Pan dulce (concha)",kw:"pan dulce|concha|dona|cuernito",k:380,p:7,c:58,f:13,pz:80,def:[1,"pz"]},
- {n:"Galletas",kw:"galleta|galletas",k:440,p:7,c:73,f:13,pz:8,def:[4,"pz"]},
+ {n:"Galletas",kw:"galleta|galletas",k:440,p:7,c:73,f:13,pz:8,def:[1,"pz"]},
  {n:"Chocolate",kw:"chocolate",k:535,p:7.7,c:59,f:30,def:[40,"g"]},
  {n:"Helado",kw:"helado|nieve",k:207,p:3.5,c:24,f:11,taza:130,def:[1,"taza"]},
  {n:"Papas fritas (bolsa)",kw:"sabritas|papas fritas|papitas|chips",k:536,p:7,c:53,f:34,pz:45,pzN:"bolsa",def:[1,"pz"]},
@@ -315,6 +315,9 @@ const foodGrams=(x,q,u)=>{
 };
 const foodMacros=(x,g)=>({kcal:x.k*g/100,p:x.p*g/100,c:x.c*g/100,f:x.f*g/100});
 const fmtQty=(x,q,u)=>{const qq=Math.round(q*10)/10;if(u==="pz")return qq+" "+(x.pzN?(x.pzN+(qq!==1?"s":"")):(qq!==1?"pzas":"pza"));if(u==="taza")return qq+" taza"+(qq!==1?"s":"");return qq+" "+u};
+// Paso del botón − + según la unidad, y texto de la cantidad
+const unitStep=(u,q,dir=1)=>u==="g"?10:u==="ml"?25:u==="taza"||u==="porción"?0.5:((dir>0?q<1:q<=1)?0.5:1);
+const fmtQ=it=>{const q=Math.round(it.q*100)/100;if(it.u==="pz")return q+" "+(it.pzN?(it.pzN+(q!==1?"s":"")):(q!==1?"pzas":"pza"));if(it.u==="porción")return q+(q!==1?" porciones":" porción");if(it.u==="taza")return q+" taza"+(q!==1?"s":"");return q+" "+it.u};
 // "2 tortillas, 150 g de pollo y media taza de arroz" → [{x, q, u, g, macros}]
 const parseFoodText=(text)=>{
   const out=[];
@@ -3065,6 +3068,14 @@ function PesoTab({ctx}){
   </div>);
 }
 
+function SaveAsRow({saveAs,setSaveAs,placeholder}){
+  return(<div style={{marginTop:10,padding:"8px 10px",background:"rgba(255,183,0,.05)",border:"1px solid rgba(255,183,0,.2)",borderRadius:10}}>
+    <label style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:"#FFB800",cursor:"pointer"}}>
+      <input type="checkbox" checked={saveAs.on} onChange={e=>setSaveAs({...saveAs,on:e.target.checked})}/> ⭐ Guardar en "Mis comidas" para repetirla
+    </label>
+    {saveAs.on&&<input className="lfi" value={saveAs.name} onChange={e=>setSaveAs({...saveAs,name:e.target.value})} placeholder={placeholder||"Nombre (ej. Sándwich de jamón)"} style={{marginTop:7,fontSize:12,padding:"6px 9px"}}/>}
+  </div>);
+}
 function CuerpoNutricion({ctx}){
   const{nutriLog,setNutriLog,checkins,food,setFood,now}=ctx;
   const tod=td();
@@ -3076,6 +3087,10 @@ function CuerpoNutricion({ctx}){
   const[addFor,setAddFor]=useState(null);       // "x" = extra, "n1".."n4" = cambié esta comida
   const[txt,setTxt]=useState("");
   const[manual,setManual]=useState(null);
+  const[qOv,setQOv]=useState({});               // cantidades ajustadas con − +
+  const[picked,setPicked]=useState([]);         // elegidos de "Mis comidas"
+  const[saveAs,setSaveAs]=useState({on:false,name:""});
+  const[sq,setSq]=useState("");const[editSaved,setEditSaved]=useState(false);
   const[showInfo,setShowInfo]=useState(false);
   const addRef=useRef(null);
   // Enlace desde el aviso del asistente: ?comida=n2 abre esa comida lista para registrar
@@ -3091,17 +3106,37 @@ function CuerpoNutricion({ctx}){
     setFlag(m.id,true);setOpenMeal(null);
   };
   const unlog=m=>{setDay(list=>list.filter(e=>e.meal!==m.id));setFlag(m.id,false);setOpenMeal(null)};
+  // ── Borrador editable: lo que escribiste + lo que elegiste de "Mis comidas", cada uno con su cantidad ──
+  const saved=food?.saved||[];
   const parsed=txt.trim()?parseFoodText(txt):[];
+  const draft=[
+    ...parsed.map((r,i)=>{const k="t"+i+"|"+r.x.n;return{k,name:r.x.n,q:qOv[k]??r.q,u:r.u,pzN:r.x.pzN,per:foodMacros(r.x,foodGrams(r.x,1,r.u))}}),
+    ...picked,
+  ].filter(it=>it.q>0);
+  const draftTot=roundM(draft.reduce((a,it)=>addM(a,it.per,it.q),{...NUTRI_ZERO}));
+  const setQ=(it,q)=>{q=Math.max(0,Math.round(q*100)/100);if(it.k.startsWith("t"))setQOv(o=>({...o,[it.k]:q}));else setPicked(ps=>ps.map(p=>p.k===it.k?{...p,q}:p).filter(p=>p.q>0))};
+  const pickSaved=s=>{const base=Date.now();setPicked(ps=>[...ps,...s.items.map((it,i)=>({...it,k:"s"+base+"-"+i}))]);setFood(p=>({...(p||{}),saved:(p?.saved||[]).map(x=>x.id===s.id?{...x,uses:(x.uses||0)+1}:x)}))};
+  const delSaved=id=>setFood(p=>({...(p||{}),saved:(p?.saved||[]).filter(x=>x.id!==id)}));
   const saveFoods=()=>{
-    const items=manual?[{id:Date.now(),t:hhmm(),meal:addFor==="x"?null:addFor,name:manual.name||"Comida libre",src:"manual",kcal:+manual.kcal||0,p:+manual.p||0,c:+manual.c||0,f:+manual.f||0}]
-      :parsed.map((r,i)=>({id:Date.now()+i,t:hhmm(),meal:addFor==="x"?null:addFor,name:r.label,src:"db",...roundM(r.m)}));
-    if(!items.length)return;
-    if(addFor&&addFor!=="x"){setDay(list=>[...list.filter(e=>!(e.meal===addFor&&e.src==="plan")),...items]);setFlag(addFor,true)}
+    const slot=addFor==="x"?null:addFor;const t=hhmm();const base=Date.now();
+    const src=manual?[{name:manual.name.trim()||"Comida libre",q:1,u:"porción",per:{kcal:+manual.kcal||0,p:+manual.p||0,c:+manual.c||0,f:+manual.f||0}}]:draft;
+    if(!src.length||(manual&&!(+manual.kcal>0)))return;
+    const items=src.map((it,i)=>({id:base+i,t,meal:slot,name:it.name+" · "+fmtQ(it),base:it.name,q:it.q,u:it.u,pzN:it.pzN,per:it.per,src:manual?"manual":"db",...roundM(addM({...NUTRI_ZERO},it.per,it.q))}));
+    if(slot){setDay(list=>[...list.filter(e=>!(e.meal===slot&&e.src==="plan")),...items]);setFlag(slot,true)}
     else setDay(list=>[...list,...items]);
-    setTxt("");setManual(null);setAddFor(null);setOpenMeal(null);
+    // Guardar en "Mis comidas" para repetirla después (mismo nombre = se actualiza)
+    if(saveAs.on){
+      const nm=(saveAs.name.trim()||(src.length===1?src[0].name:src.map(x=>x.name.split(/[ (/]/)[0]).join(" + "))).slice(0,60);
+      const rec={id:base,name:nm,items:src.map(({name,q,u,pzN,per})=>({name,q,u,pzN,per})),uses:1};
+      setFood(p=>{const list=(p?.saved||[]).filter(x=>x.name.toLowerCase()!==nm.toLowerCase());return{...(p||{}),saved:[rec,...list].slice(0,80)}});
+    }
+    resetAdd();setAddFor(null);setOpenMeal(null);
   };
+  const resetAdd=()=>{setTxt("");setManual(null);setQOv({});setPicked([]);setSaveAs({on:false,name:""});setSq("")};
+  // Ajustar cantidad de algo ya registrado (recalcula los macros)
+  const stepEntry=(e,dir)=>setDay(list=>list.map(x=>{if(x.id!==e.id||!x.per)return x;const q=Math.max(unitStep(x.u,x.q,-1),Math.round((x.q+dir*unitStep(x.u,x.q,dir))*100)/100);const it={...x,q};return{...it,name:x.base+" · "+fmtQ(it),...roundM(addM({...NUTRI_ZERO},x.per,q))}}));
   const delEntry=e=>{setDay(list=>list.filter(x=>x.id!==e.id));if(e.meal&&!(bySlot[e.meal]||[]).some(x=>x.id!==e.id))setFlag(e.meal,false)};
-  const openAdd=slot=>{setAddFor(slot);setTxt("");setManual(null);setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
+  const openAdd=slot=>{setAddFor(slot);resetAdd();setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
 
   // Últimos 7 días
   const week=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));const k=ds(d);return{k,d,t:dayFood(food,nutriLog,k).tot}});
@@ -3180,38 +3215,67 @@ function CuerpoNutricion({ctx}){
 
     {/* Agregar comida / extra */}
     <div className="card" ref={addRef} style={{borderColor:addFor?"rgba(48,209,88,.35)":undefined}}>
-      <div className="sect" style={{justifyContent:"space-between"}}><span>➕ {addFor&&addFor!=="x"?"Lo que comí en "+(menu.meals.find(m=>m.id===addFor)?.title||""):"Agregar comida o extra"}</span>{addFor&&<button className="lbs" style={{padding:"3px 9px",fontSize:11}} onClick={()=>{setAddFor(null);setTxt("");setManual(null)}}>✕</button>}</div>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>➕ {addFor&&addFor!=="x"?"Lo que comí en "+(menu.meals.find(m=>m.id===addFor)?.title||""):"Agregar comida o extra"}</span>{addFor&&<button className="lbs" style={{padding:"3px 9px",fontSize:11}} onClick={()=>{setAddFor(null);resetAdd()}}>✕</button>}</div>
       {!addFor?<button className="lbp" style={{width:"100%",justifyContent:"center",background:"#30d158",color:"#000"}} onClick={()=>openAdd("x")}>Registrar algo fuera del plan</button>:<>
         {!manual?<>
-          <textarea className="lfi" value={txt} onChange={e=>setTxt(e.target.value)} placeholder='Escribe como hablas: "3 tacos al pastor y una coca", "2 tortillas, 150 g de pollo"' style={{height:64,fontSize:13,lineHeight:1.5,resize:"vertical"}}/>
-          {parsed.length>0&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:4}}>
-            {parsed.map((r,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",gap:8,fontSize:12}}><span>{r.label}</span><span className="lmn" style={{color:"#8b8f96",whiteSpace:"nowrap"}}>{Math.round(r.m.kcal)} kcal · {Math.round(r.m.p)}P · {Math.round(r.m.c)}C · {Math.round(r.m.f)}G</span></div>)}
-            {(()=>{const s=roundM(parsed.reduce((a,r)=>addM(a,r.m),{...NUTRI_ZERO}));const after=addM(tot,s);return(<div style={{fontSize:11,color:after.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",marginTop:4}}>Total {s.kcal} kcal · {s.p}P · {s.c}C · {s.f}G → quedarías en {Math.round(after.kcal)}/{T.kcal} kcal y {Math.round(after.p)}/{T.p} g de proteína</div>)})()}
+          {/* Mis comidas guardadas */}
+          {saved.length>0&&<div style={{marginBottom:10}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <span style={{fontSize:11,color:"#FFB800",fontWeight:700}}>⭐ Mis comidas</span>
+              <button className="lbs" style={{fontSize:10,padding:"2px 8px"}} onClick={()=>setEditSaved(v=>!v)}>{editSaved?"Listo":"Editar"}</button>
+            </div>
+            {saved.length>6&&<input className="lfi" value={sq} onChange={e=>setSq(e.target.value)} placeholder="Buscar en mis comidas..." style={{fontSize:12,padding:"6px 9px",marginBottom:6}}/>}
+            <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+              {[...saved].sort((a,b)=>(b.uses||0)-(a.uses||0)).filter(s=>!sq.trim()||s.name.toLowerCase().includes(sq.trim().toLowerCase())).slice(0,sq.trim()?30:12).map(s=>{
+                const m=roundM(s.items.reduce((a,it)=>addM(a,it.per,it.q),{...NUTRI_ZERO}));
+                return(<button key={s.id} onClick={()=>editSaved?delSaved(s.id):pickSaved(s)} style={{...chip(false),fontSize:11,padding:"5px 9px",textAlign:"left",borderColor:editSaved?"rgba(255,107,107,.5)":"rgba(255,183,0,.3)"}}>
+                  {editSaved?"✕ ":"⭐ "}{s.name}<span className="lmn" style={{color:"#6e727a"}}> · {m.kcal} kcal · {m.p}P</span>
+                </button>)})}
+            </div>
           </div>}
+          <textarea className="lfi" value={txt} onChange={e=>{setTxt(e.target.value);setQOv({})}} placeholder='Escribe como hablas: "jamón y 2 tortillas", "150 g de pollo con arroz"' style={{height:60,fontSize:13,lineHeight:1.5,resize:"vertical"}}/>
           {txt.trim()&&!parsed.length&&<div style={{fontSize:11,color:"#FFB800",marginTop:8}}>No reconocí ese alimento. Escríbelo distinto o captura los macros a mano.</div>}
+          {/* Borrador con cantidades editables */}
+          {draft.length>0&&<div style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>
+            {draft.map(it=>{const m=roundM(addM({...NUTRI_ZERO},it.per,it.q));return(
+              <div key={it.k} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 9px",background:"#0b0c0e",borderRadius:9}}>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{it.name}</div>
+                  <div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{m.kcal} kcal · {m.p}P · {m.c}C · {m.f}G</div>
+                </div>
+                <button className="lbs" style={{padding:"3px 9px",fontSize:14}} onClick={()=>setQ(it,it.q-unitStep(it.u,it.q,-1))}>−</button>
+                <span className="lmn" style={{fontSize:11,minWidth:62,textAlign:"center"}}>{fmtQ(it)}</span>
+                <button className="lbs" style={{padding:"3px 9px",fontSize:14}} onClick={()=>setQ(it,it.q+unitStep(it.u,it.q,1))}>+</button>
+              </div>)})}
+            {(()=>{const after=addM(tot,draftTot);return(<div style={{fontSize:11,color:after.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",marginTop:2}}>Total {draftTot.kcal} kcal · {draftTot.p}P · {draftTot.c}C · {draftTot.f}G → quedarías en {Math.round(after.kcal)}/{T.kcal} kcal y {Math.round(after.p)}/{T.p} g de proteína</div>)})()}
+          </div>}
+          {draft.length>0&&<SaveAsRow saveAs={saveAs} setSaveAs={setSaveAs}/>}
           <div style={{display:"flex",gap:8,marginTop:10}}>
-            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000",opacity:parsed.length?1:.5}} disabled={!parsed.length} onClick={saveFoods}>✓ Registrar</button>
+            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000",opacity:draft.length?1:.5}} disabled={!draft.length} onClick={saveFoods}>✓ Registrar</button>
             <button className="lbs" onClick={()=>setManual({name:txt,kcal:"",p:"",c:"",f:""})}>Macros a mano</button>
           </div>
           <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:10}}>
-            {["1 lata de atún","1 scoop de proteína","1 plátano","2 tortillas","40 g de aguacate","3 tacos al pastor","1 cerveza"].map(q=><button key={q} style={{...chip(false),fontSize:11,padding:"4px 9px"}} onClick={()=>setTxt(t=>t.trim()?t.trim()+", "+q:q)}>{q}</button>)}
+            {["1 lata de atún","1 scoop de proteína","1 plátano","1 tortilla","1 rebanada de jamón","40 g de aguacate","1 taco al pastor"].map(q=><button key={q} style={{...chip(false),fontSize:11,padding:"4px 9px"}} onClick={()=>{setTxt(t=>t.trim()?t.trim()+", "+q:q)}}>{q}</button>)}
           </div>
         </>:<>
-          <input className="lfi" value={manual.name} onChange={e=>setManual({...manual,name:e.target.value})} placeholder="¿Qué comiste?" style={{marginBottom:8}}/>
+          <input className="lfi" value={manual.name} onChange={e=>setManual({...manual,name:e.target.value})} placeholder="¿Qué comiste? (ej. Sándwich de la oficina)" style={{marginBottom:8}}/>
+          <div style={{fontSize:10,color:"#6e727a",marginBottom:6}}>Macros de 1 porción (si guardas la comida, luego ajustas cuántas porciones)</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}}>
             {[["kcal","kcal"],["p","Prot g"],["c","Carb g"],["f","Grasa g"]].map(([k,l])=><div key={k}><label className="lfl">{l}</label><input className="lfi" type="number" inputMode="decimal" value={manual[k]} onChange={e=>setManual({...manual,[k]:e.target.value})}/></div>)}
           </div>
+          <SaveAsRow saveAs={saveAs} setSaveAs={setSaveAs} placeholder={manual.name}/>
           <div style={{display:"flex",gap:8,marginTop:10}}>
-            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000"}} onClick={saveFoods} disabled={!(+manual.kcal>0)}>✓ Registrar</button>
+            <button className="lbp" style={{flex:1,justifyContent:"center",background:"#30d158",color:"#000",opacity:+manual.kcal>0?1:.5}} onClick={saveFoods} disabled={!(+manual.kcal>0)}>✓ Registrar</button>
             <button className="lbs" onClick={()=>setManual(null)}>Volver</button>
           </div>
         </>}
       </>}
-      {entries.filter(e=>!e.meal).length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)"}}>
-        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>Extras de hoy</div>
-        {entries.filter(e=>!e.meal).map(e=><div key={e.id} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0"}}>
-          <span className="lmn" style={{fontSize:10,color:"#6e727a",width:36}}>{e.t}</span>
-          <div style={{flex:1,minWidth:0}}><div style={{fontSize:12}}>{e.name}</div><div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{e.kcal} kcal · {e.p}P · {e.c}C · {e.f}G</div></div>
+      {entries.filter(e=>e.src!=="plan"&&(!e.meal||flags[e.meal])).length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)"}}>
+        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>Registrado hoy fuera del plan · ajusta cantidades con − +</div>
+        {entries.filter(e=>e.src!=="plan"&&(!e.meal||flags[e.meal])).map(e=><div key={e.id} style={{display:"flex",alignItems:"center",gap:7,padding:"5px 0"}}>
+          <span className="lmn" style={{fontSize:10,color:"#6e727a",width:34,flexShrink:0}}>{e.t}</span>
+          <div style={{flex:1,minWidth:0}}><div style={{fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{e.name}{e.meal?<span style={{color:"#6e727a"}}> · en {(menu.meals.find(m=>m.id===e.meal)?.title||"").toLowerCase()}</span>:null}</div><div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{e.kcal} kcal · {e.p}P · {e.c}C · {e.f}G</div></div>
+          {e.per&&<><button className="lbs" style={{padding:"2px 8px",fontSize:13}} onClick={()=>stepEntry(e,-1)}>−</button><button className="lbs" style={{padding:"2px 8px",fontSize:13}} onClick={()=>stepEntry(e,1)}>+</button></>}
           <button className="lbd" style={{padding:"3px 7px"}} onClick={()=>delEntry(e)}>✕</button>
         </div>)}
       </div>}
