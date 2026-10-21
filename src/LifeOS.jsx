@@ -226,19 +226,19 @@ const SEED_PLANS=[
 ];
 const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
 const NUTRI_TARGET={kcal:2030,protein:150,carbs:200,fat:65};
-// Menús de la dieta vigente (mismos ids, horas y macros; cambian los alimentos). NUTRI_MEALS = menú A (lo usan Hoy y los avisos).
+// Menús recalibrados el 21 oct 2026: macros = suma real de cada alimento (FOOD_DB), carnes en peso cocido.
 const NUTRI_MENUS={
  A:{label:"Opción A · Práctica y clásica",meals:[
-  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["3 huevos enteros + 2 claras (revueltos con jitomate/cebolla o a la mexicana) + 2 tortillas de maíz","Bowl: 150 g de fruta (papaya o melón) + 100 g de yogur natural/griego sin azúcar + 30 g de granola"]},
-  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:550,p:42,c:50,f:16,items:["180 g de pechuga de pollo a la plancha + 1 taza de arroz blanco/integral (de tus porciones ya cocidas)","Ensalada o verduras al gusto (pepino, lechuga) + 40 g de aguacate (1/3 de pieza)"]},
-  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:710,p:46,c:72,f:20,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche entera o deslactosada","50 g de avena en hojuelas + 1 plátano mediano + 20 g de crema de cacahuate natural"]},
-  {id:"n4",time:"08:30 PM",title:"Cena",kcal:250,p:28,c:18,f:7,items:["1 lata de atún en agua (escurrido) con 1 cda de mayonesa baja en grasa o 1 cdita de aceite de oliva","2 tostadas horneadas de maíz + jitomate y pepino picado"]},
+  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:522,p:39,c:55,f:17,items:["2 huevos enteros + 3 claras (a la mexicana, con jitomate y cebolla) + 2 tortillas de maíz", "Bowl: 100 g de papaya o melón + 100 g de yogur griego natural sin azúcar + 15 g de granola"]},
+  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:556,p:43,c:52,f:19,items:["120 g de pechuga de pollo COCIDA (≈160 g en crudo) a la plancha + 1 taza de arroz cocido", "Ensalada o verduras al gusto (pepino, lechuga) + 60 g de aguacate (½ pieza chica) + 1 cdita de aceite de oliva"]},
+  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:641,p:46,c:71,f:22,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche entera o deslactosada", "40 g de avena en hojuelas + 1 plátano mediano + 20 g de crema de cacahuate natural"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:276,p:29,c:24,f:6,items:["1 lata de atún en agua (escurrido) con 1 cda de mayonesa light", "2 tostadas horneadas de maíz + jitomate y pepino picado"]},
  ]},
  B:{label:"Opción B · Económica y variada",meals:[
-  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:520,p:35,c:55,f:18,items:["Omelette de 3 huevos + 2 claras (con champiñones o espinacas) + 2 rebanadas de pan integral","1 plátano o manzana picada con 100 g de yogur natural sin azúcar + 30 g de granola"]},
-  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:550,p:42,c:50,f:16,items:["180 g de bistec/filete de cerdo magro (lomo o pulpa) o pescado (tilapia/basa) a la plancha","200 g de papa cocida o al horno (o 1 taza de arroz) + ensalada verde con 1 cdita de aceite de oliva"]},
-  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:710,p:46,c:72,f:20,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche","50 g de avena + 150 g de fresas/frutos rojos (pueden ser congelados) + 20 g de crema de cacahuate"]},
-  {id:"n4",time:"08:30 PM",title:"Cena",kcal:250,p:28,c:18,f:7,items:["Tacos de pollo: 130 g de pechuga deshebrada o en fajitas + 2 tortillas de maíz","Salsa casera libre y verdura al gusto"]},
+  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:531,p:41,c:54,f:17,items:["Omelette de 2 huevos + 2 claras (con champiñones o espinacas) + 2 rebanadas de pan integral", "½ manzana o ½ plátano picado con 100 g de yogur griego natural sin azúcar + 15 g de granola"]},
+  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:522,p:39,c:52,f:18,items:["120 g de lomo/pulpa de cerdo o bistec magro COCIDO (≈160 g crudo), o 150 g de tilapia/basa cocida", "250 g de papa cocida o al horno + ensalada verde con 2 cditas de aceite de oliva"]},
+  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:634,p:47,c:65,f:23,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche", "50 g de avena + 150 g de fresas/frutos rojos (pueden ser congelados) + 20 g de crema de cacahuate"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:300,p:26,c:30,f:9,items:["Tacos de pollo: 70 g de pechuga COCIDA deshebrada (≈95 g crudo) + 2 tortillas de maíz", "30 g de aguacate, salsa casera y verdura al gusto"]},
  ]},
 };
 const NUTRI_MEALS=NUTRI_MENUS.A.meals;
@@ -376,8 +376,8 @@ const COACH_ADD={
 const MAC_L={p:"proteína",c:"carbos",f:"grasa",kcal:"calorías"};
 // Qué se puede quitar de cada comida pendiente sin tocar la proteína (macros aprox. de lo que se quita)
 const NUTRI_CUTS={
-  A:{n1:[["la granola",141,3,19,6],["1 tortilla",65,2,13,1]],n2:[["½ taza de arroz",103,2,22,0],["el aguacate",64,1,3,6]],n3:[["la crema de cacahuate",118,5,4,10],["el plátano",105,1,27,0],["½ de la avena",95,3,17,2]],n4:[["las tostadas",101,2,19,2],["la mayonesa",39,0,1,4]]},
-  B:{n1:[["la granola",141,3,19,6],["1 rebanada de pan",74,4,12,1]],n2:[["½ de la papa",87,2,20,0],["el aceite",40,0,0,5]],n3:[["la crema de cacahuate",118,5,4,10],["½ de la avena",95,3,17,2]],n4:[["1 tortilla",65,2,13,1]]},
+  A:{n1:[["la granola",71,2,10,3],["1 tortilla",65,2,13,1]],n2:[["½ taza de arroz",103,2,22,0],["½ del aguacate",48,1,3,4]],n3:[["la crema de cacahuate",118,5,4,10],["el plátano",105,1,27,0],["½ de la avena",76,3,14,1]],n4:[["1 tostada",50,1,9,1],["la mayonesa",39,0,1,4]]},
+  B:{n1:[["la granola",71,2,10,3],["1 rebanada de pan",74,4,12,1]],n2:[["½ de la papa",109,2,25,0],["el aceite",88,0,0,10]],n3:[["la crema de cacahuate",118,5,4,10],["½ de la avena",95,3,17,2]],n4:[["1 tortilla",65,2,13,1],["el aguacate",48,1,3,4]]},
 };
 // Elige recortes de las comidas pendientes hasta cubrir el exceso, priorizando el macro que más se pasa
 const pickCuts=(menuKey,pending,over)=>{
