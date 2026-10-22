@@ -294,14 +294,120 @@ const FOOD_DB=[
  {n:"Pizza (rebanada)",kw:"pizza",k:266,p:11,c:33,f:10,pz:107,pzN:"rebanada",def:[1,"pz"]},
  {n:"Hamburguesa",kw:"hamburguesa",k:250,p:13,c:20,f:13,pz:220,def:[1,"pz"]},
  {n:"Sushi (pieza)",kw:"sushi",k:150,p:5,c:28,f:2,pz:30,def:[1,"pz"]},
- {n:"Pan dulce (concha)",kw:"pan dulce|concha|dona|cuernito",k:380,p:7,c:58,f:13,pz:80,def:[1,"pz"]},
+ {n:"Pan dulce (concha)",kw:"pan dulce|concha|dona|donas|oreja|polvor[oó]n",k:380,p:7,c:58,f:13,pz:80,def:[1,"pz"]},
  {n:"Galletas",kw:"galleta|galletas",k:440,p:7,c:73,f:13,pz:8,def:[1,"pz"]},
  {n:"Chocolate",kw:"chocolate",k:535,p:7.7,c:59,f:30,def:[40,"g"]},
  {n:"Helado",kw:"helado|nieve",k:207,p:3.5,c:24,f:11,taza:130,def:[1,"taza"]},
  {n:"Papas fritas (bolsa)",kw:"sabritas|papas fritas|papitas|chips",k:536,p:7,c:53,f:34,pz:45,pzN:"bolsa",def:[1,"pz"]},
  {n:"Refresco",kw:"refresco|coca|soda",k:42,p:0,c:10.6,f:0,pz:355,pzN:"lata",def:[1,"pz"]},
  {n:"Cerveza",kw:"cerveza|chela|chelas",k:43,p:0.5,c:3.6,f:0,pz:355,pzN:"lata",def:[1,"pz"]},
+ // ── Platillos y antojitos mexicanos (porción típica en pz) ──
+ {n:"Pozole rojo de cerdo",kw:"pozole|pozole rojo|pozole de cerdo|pozole de puerco",k:85,p:6.5,c:7.5,f:3.2,pz:500,pzN:"plato",def:[1,"pz"]},
+ {n:"Pozole de pollo/blanco",kw:"pozole de pollo|pozole blanco|pozole verde",k:70,p:6.5,c:7,f:1.8,pz:500,pzN:"plato",def:[1,"pz"]},
+ {n:"Cuernito solo",kw:"cuernito solo|croissant solo|cuerno solo",k:406,p:8.2,c:45.8,f:21,pz:60,pzN:"pieza",def:[1,"pz"]},
+ {n:"Cuernito de jamón y queso",kw:"cuernito|croissant|cuernito de jam[oó]n|cuerno",k:330,p:13,c:25,f:20,pz:130,pzN:"pieza",def:[1,"pz"]},
+ {n:"Chilaquiles con crema y queso",kw:"chilaquiles",k:180,p:5,c:18,f:10,pz:300,pzN:"plato",def:[1,"pz"]},
+ {n:"Enchilada",kw:"enchilada|enchiladas|enfrijolada|enfrijoladas|entomatada",k:190,p:9,c:16,f:10,pz:110,def:[1,"pz"]},
+ {n:"Flauta / taquito dorado",kw:"flauta|flautas|taquito dorado|taquitos dorados|taco dorado|tacos dorados",k:260,p:10,c:24,f:14,pz:50,def:[1,"pz"]},
+ {n:"Sope",kw:"sope|sopes",k:220,p:8,c:25,f:10,pz:120,def:[1,"pz"]},
+ {n:"Huarache",kw:"huarache|huaraches",k:220,p:9,c:25,f:10,pz:250,def:[1,"pz"]},
+ {n:"Gordita de chicharrón",kw:"gordita|gorditas",k:290,p:9,c:32,f:14,pz:120,def:[1,"pz"]},
+ {n:"Tlayuda",kw:"tlayuda",k:230,p:11,c:22,f:11,pz:350,def:[1,"pz"]},
+ {n:"Tostada de tinga",kw:"tostada de tinga|tostadas de tinga|tinga|tostada de pata|tostada de ceviche",k:210,p:11,c:17,f:11,pz:100,def:[1,"pz"]},
+ {n:"Taco de canasta",kw:"taco de canasta|tacos de canasta",k:230,p:6,c:26,f:11,pz:60,pzN:"taco",def:[1,"pz"]},
+ {n:"Taco de bistec / barbacoa",kw:"taco de bistec|tacos de bistec|taco de barbacoa|tacos de barbacoa|taco de asada|tacos de asada",k:200,p:12,c:17,f:9,pz:90,pzN:"taco",def:[1,"pz"]},
+ {n:"Taco de carnitas",kw:"taco de carnitas|tacos de carnitas|taco de suadero|tacos de suadero",k:240,p:13,c:17,f:13,pz:90,pzN:"taco",def:[1,"pz"]},
+ {n:"Quesadilla de maíz con queso",kw:"quesadilla de ma[ií]z|quesadilla de queso|quesadillas de ma[ií]z",k:270,p:12,c:26,f:13,pz:90,def:[1,"pz"]},
+ {n:"Molletes",kw:"mollete|molletes",k:230,p:10,c:28,f:9,pz:100,pzN:"mitad",def:[2,"pz"]},
+ {n:"Torta de tamal (guajolota)",kw:"guajolota|torta de tamal",k:260,p:6,c:40,f:8,pz:250,def:[1,"pz"]},
+ {n:"Atole",kw:"atole|champurrado",k:80,p:2,c:15,f:1.5,pz:240,pzN:"vaso",def:[1,"pz"]},
+ {n:"Elote cocido",kw:"elote",k:96,p:3.4,c:21,f:1.5,pz:150,def:[1,"pz"]},
+ {n:"Esquites (con mayo y queso)",kw:"esquite|esquites",k:150,p:4,c:18,f:7,pz:200,pzN:"vaso",def:[1,"pz"]},
+ {n:"Arroz rojo / a la mexicana",kw:"arroz rojo|arroz a la mexicana",k:150,p:3,c:28,f:3.5,taza:160,def:[1,"taza"]},
+ {n:"Sopa de fideo / pasta",kw:"sopa de fideo|fideo|sopa aguada|sopa de pasta|sopa de letras",k:55,p:2,c:8,f:1.8,taza:240,def:[1,"taza"]},
+ {n:"Frijoles refritos",kw:"refritos|frijoles refritos",k:140,p:7,c:17,f:5,taza:240,def:[0.5,"taza"]},
+ {n:"Frijoles charros",kw:"charros|frijoles charros|frijoles de la olla",k:110,p:7,c:13,f:3.5,taza:240,def:[1,"taza"]},
+ {n:"Caldo de pollo con verduras",kw:"caldo|caldo de pollo|consom[eé]|sopa de verduras",k:45,p:5,c:3,f:1.5,pz:450,pzN:"plato",def:[1,"pz"]},
+ {n:"Pasta cocida",kw:"pasta|espagueti|spaghetti|macarrones|coditos",k:158,p:5.8,c:31,f:0.9,taza:140,def:[1,"taza"]},
+ {n:"Hot cakes",kw:"hot ?cakes?|hotcakes|panqueques|pancakes",k:227,p:6,c:28,f:10,pz:75,def:[2,"pz"]},
+ {n:"Papas a la francesa",kw:"papas a la francesa|papas fritas de|french fries",k:312,p:3.4,c:41,f:15,pz:117,pzN:"orden",def:[1,"pz"]},
+ {n:"Hot dog",kw:"hot ?dog|hotdog|jocho",k:290,p:10,c:25,f:17,pz:100,def:[1,"pz"]},
+ {n:"Milanesa de pollo/res empanizada",kw:"milanesa|empanizad[oa]",k:230,p:22,c:12,f:10,pz:150,def:[1,"pz"]},
+ // ── Carnes, pescados y embutidos ──
+ {n:"Carnitas",kw:"carnitas",k:300,p:25,c:0,f:22,def:[100,"g"]},
+ {n:"Barbacoa de res",kw:"barbacoa",k:230,p:26,c:0,f:14,def:[100,"g"]},
+ {n:"Arrachera",kw:"arrachera",k:220,p:26,c:0,f:13,def:[150,"g"]},
+ {n:"Pollo rostizado con piel",kw:"pollo rostizado|rostizado|pollo asado con piel|pierna de pollo|muslo",k:240,p:26,c:0,f:15,def:[150,"g"]},
+ {n:"Chorizo",kw:"chorizo",k:455,p:24,c:2,f:38,def:[40,"g"]},
+ {n:"Salchicha de pavo",kw:"salchicha|salchichas",k:160,p:11,c:3,f:11,pz:40,def:[1,"pz"]},
+ {n:"Chicharrón de cerdo",kw:"chicharr[oó]n",k:544,p:61,c:0,f:31,def:[30,"g"]},
+ {n:"Camarones cocidos",kw:"camar[oó]n|camarones",k:99,p:24,c:0.2,f:0.3,def:[120,"g"]},
+ {n:"Salmón cocido",kw:"salm[oó]n",k:206,p:22,c:0,f:12,def:[120,"g"]},
+ {n:"Huevo frito",kw:"huevo frito|huevos fritos|huevo estrellado|huevos estrellados",k:196,p:13.6,c:0.8,f:15,pz:46,def:[1,"pz"]},
+ // ── Lácteos ──
+ {n:"Queso Oaxaca / quesillo",kw:"queso oaxaca|quesillo|queso de hebra",k:300,p:22,c:2,f:23,def:[30,"g"]},
+ {n:"Queso manchego / amarillo",kw:"manchego|queso amarillo|queso chihuahua|queso gouda",k:370,p:25,c:1,f:30,pz:20,pzN:"rebanada",def:[1,"pz"]},
+ {n:"Queso cottage",kw:"cottage",k:98,p:11,c:3.4,f:4.3,def:[100,"g"]},
+ {n:"Crema",kw:"crema|crema [aá]cida",k:290,p:2.4,c:3,f:30,def:[1,"cda"]},
+ {n:"Leche light / descremada",kw:"leche light|leche descremada|leche deslactosada light|leche light deslactosada",k:42,p:3.4,c:5,f:1,taza:250,def:[250,"g"]},
+ {n:"Leche de almendra",kw:"leche de almendra|bebida de almendra",k:15,p:0.5,c:0.3,f:1.2,taza:250,def:[250,"g"]},
+ {n:"Yogur bebible",kw:"yogur bebible|yogurt bebible|danup|yakult",k:75,p:2.8,c:12,f:1.6,pz:250,def:[1,"pz"]},
+ // ── Pan y cereales ──
+ {n:"Bolillo / telera",kw:"bolillo|bolillos|telera|teleras",k:270,p:9,c:53,f:2.5,pz:70,def:[1,"pz"]},
+ {n:"Pan blanco de caja",kw:"pan blanco|pan bimbo",k:266,p:8,c:49,f:3.3,pz:25,pzN:"rebanada",def:[2,"pz"]},
+ {n:"Cereal de caja",kw:"cereal|corn flakes|zucaritas|cheerios",k:380,p:7,c:84,f:2,taza:30,def:[1,"taza"]},
+ {n:"Barra de granola",kw:"barra de granola|barrita",k:470,p:7,c:64,f:20,pz:25,def:[1,"pz"]},
+ {n:"Barra de proteína",kw:"barra de prote[ií]na|barra proteica|quest|barra de proteina",k:350,p:33,c:35,f:12,pz:60,def:[1,"pz"]},
+ {n:"Galletas saladas",kw:"galletas saladas|saladitas|crackers",k:420,p:9,c:72,f:10,pz:4,def:[8,"pz"]},
+ {n:"Amaranto / alegría",kw:"amaranto|alegr[ií]a",k:400,p:13,c:70,f:8,pz:30,def:[1,"pz"]},
+ // ── Frutas ──
+ {n:"Naranja",kw:"naranja|naranjas",k:47,p:0.9,c:12,f:0.1,pz:130,def:[1,"pz"]},
+ {n:"Mandarina",kw:"mandarina|mandarinas",k:53,p:0.8,c:13,f:0.3,pz:88,def:[1,"pz"]},
+ {n:"Uvas",kw:"uva|uvas",k:69,p:0.7,c:18,f:0.2,taza:150,def:[1,"taza"]},
+ {n:"Piña",kw:"pi[nñ]a",k:50,p:0.5,c:13,f:0.1,taza:165,def:[1,"taza"]},
+ {n:"Pera",kw:"pera|peras",k:57,p:0.4,c:15,f:0.1,pz:178,def:[1,"pz"]},
+ {n:"Durazno",kw:"durazno|duraznos",k:39,p:0.9,c:10,f:0.3,pz:150,def:[1,"pz"]},
+ {n:"Guayaba",kw:"guayaba|guayabas",k:68,p:2.6,c:14,f:1,pz:55,def:[1,"pz"]},
+ {n:"Kiwi",kw:"kiwi",k:61,p:1.1,c:15,f:0.5,pz:70,def:[1,"pz"]},
+ // ── Botanas, postres y dulces ──
+ {n:"Gelatina de agua",kw:"gelatina|gelatinas|gelatina de agua",k:62,p:1.2,c:14,f:0,pz:125,pzN:"vaso",def:[1,"pz"]},
+ {n:"Gelatina light",kw:"gelatinas? light|gelatinas? sin az[uú]car|gelatinas? diet[eé]ticas?|gelatinas? diet",k:6,p:1,c:0.5,f:0,pz:125,pzN:"vaso",def:[1,"pz"]},
+ {n:"Gelatina de leche",kw:"gelatinas? de leche|gelatinas? de yogur|gelatinas? de mosaico",k:110,p:3,c:20,f:2,pz:125,pzN:"vaso",def:[1,"pz"]},
+ {n:"Flan",kw:"flan",k:145,p:4.5,c:22,f:4.5,pz:120,def:[1,"pz"]},
+ {n:"Arroz con leche",kw:"arroz con leche",k:130,p:3.5,c:22,f:3,taza:240,def:[1,"taza"]},
+ {n:"Pastel (rebanada)",kw:"pastel|pay|cheesecake|tres leches",k:370,p:4.5,c:53,f:16,pz:100,pzN:"rebanada",def:[1,"pz"]},
+ {n:"Churro",kw:"churro|churros",k:450,p:5,c:50,f:25,pz:30,def:[1,"pz"]},
+ {n:"Paleta de hielo",kw:"paleta de hielo|paleta de agua",k:70,p:0,c:18,f:0,pz:70,def:[1,"pz"]},
+ {n:"Paleta de crema / helado de palito",kw:"paleta de crema|magnum|paleta helada",k:180,p:3,c:22,f:9,pz:75,def:[1,"pz"]},
+ {n:"Mazapán",kw:"mazap[aá]n",k:464,p:10,c:61,f:21,pz:28,def:[1,"pz"]},
+ {n:"Nueces / almendras",kw:"nuez|nueces|almendra|almendras|pistache|pistaches",k:600,p:18,c:18,f:55,def:[30,"g"]},
+ {n:"Cacahuates",kw:"cacahuates|cacahuate japon[eé]s|cacahuates japoneses|cacahuates salados",k:567,p:26,c:16,f:49,def:[30,"g"]},
+ {n:"Palomitas",kw:"palomitas",k:500,p:8,c:57,f:28,taza:10,def:[3,"taza"]},
+ {n:"Azúcar",kw:"az[uú]car",k:400,p:0,c:100,f:0,def:[1,"cdita"]},
+ {n:"Miel / maple / mermelada",kw:"miel|maple|jarabe|mermelada|cajeta|nutella",k:300,p:0.3,c:75,f:0,def:[1,"cda"]},
+ {n:"Guacamole",kw:"guacamole",k:160,p:2,c:9,f:14.7,def:[2,"cda"]},
+ // ── Bebidas ──
+ {n:"Jugo de naranja",kw:"jugo|jugo de naranja|jugo natural",k:45,p:0.7,c:10.4,f:0.2,pz:250,pzN:"vaso",def:[1,"pz"]},
+ {n:"Agua de sabor",kw:"agua de sabor|agua de horchata|horchata|agua de jamaica|agua fresca|jamaica",k:30,p:0,c:8,f:0,pz:400,pzN:"vaso",def:[1,"pz"]},
+ {n:"Café con leche",kw:"caf[eé] con leche|latte|capuchino|cappuccino",k:45,p:2.4,c:4,f:2,pz:300,pzN:"taza",def:[1,"pz"]},
+ {n:"Café americano / té",kw:"caf[eé]|americano|caf[eé] negro|t[eé] verde|t[eé] negro|t[eé] de",k:1,p:0.1,c:0,f:0,pz:250,pzN:"taza",def:[1,"pz"]},
+ {n:"Frappé",kw:"frappe|frapp[eé]|frapuccino",k:95,p:1.5,c:16,f:3,pz:400,def:[1,"pz"]},
+ {n:"Bebida deportiva",kw:"gatorade|powerade|electrolit|suero",k:24,p:0,c:6,f:0,pz:600,pzN:"botella",def:[1,"pz"]},
+ {n:"Refresco sin azúcar",kw:"coca zero|coca light|refresco light|refresco sin az[uú]car|coca sin az[uú]car",k:0,p:0,c:0,f:0,pz:355,pzN:"lata",def:[1,"pz"]},
+ {n:"Tequila / mezcal",kw:"tequila|mezcal|shot|caballito",k:231,p:0,c:0,f:0,pz:45,pzN:"shot",def:[1,"pz"]},
+ {n:"Vino",kw:"vino|copa de vino",k:85,p:0.1,c:2.6,f:0,pz:150,pzN:"copa",def:[1,"pz"]}
 ];
+// Recetas: una palabra arma varios alimentos editables ("batido con 100 g de avena" cambia solo la avena)
+const NUTRI_RECIPES=[
+ {kw:"batido|licuado|shake|malteada de prote[ií]na",items:[["Proteína hidrolizada (scoop)",1,"pz"],["Leche entera/deslactosada",250,"g"],["Avena en hojuelas",40,"g"],["Plátano",1,"pz"],["Crema de cacahuate",20,"g"]]},
+ {kw:"s[aá]ndwich|sandwich|sincronizada",items:[["Pan blanco de caja",2,"pz"],["Jamón de pavo",2,"pz"],["Queso manchego / amarillo",1,"pz"],["Mayonesa light",1,"cda"]]},
+ {kw:"huevos a la mexicana|huevos revueltos|huevo revuelto|huevo a la mexicana",items:[["Huevo entero",2,"pz"],["Jitomate / pepino",0.5,"pz"],["Aceite de oliva",1,"cdita"]]},
+ {kw:"omelette|omelet|omellete",items:[["Huevo entero",2,"pz"],["Clara de huevo",2,"pz"],["Champiñones / espinaca",1,"taza"],["Aceite de oliva",1,"cdita"]]},
+ {kw:"ensalada de at[uú]n",items:[["Atún en agua (lata escurrida)",1,"pz"],["Mayonesa light",1,"cda"],["Verduras / ensalada",1,"taza"]]},
+];
+const RECIPE_RE=NUTRI_RECIPES.map(r=>({r,re:new RegExp("(^|[^a-záéíóúñ])((?:"+r.kw+")(?:es|s)?)(?=$|[^a-záéíóúñ])","i")}));
+// Nombres que llevan "con" adentro: no se parten al separar alimentos
+const CON_RE=new RegExp(FOOD_DB.flatMap(x=>x.kw.split("|")).filter(k=>/ con /.test(k)).join("|")||"$^","gi");
 const FOOD_RE=FOOD_DB.map(x=>({x,re:new RegExp("(^|[^a-záéíóúñ])((?:"+x.kw+")(?:es|s)?)(?=$|[^a-záéíóúñ])","i")}));
 const NUM_W={un:1,una:1,uno:1,medio:0.5,media:0.5,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10};
 const UNIT_G={cda:15,cucharada:15,cdita:5,cucharadita:5};
@@ -314,22 +420,31 @@ const foodGrams=(x,q,u)=>{
   return q;
 };
 const foodMacros=(x,g)=>({kcal:x.k*g/100,p:x.p*g/100,c:x.c*g/100,f:x.f*g/100});
-const fmtQty=(x,q,u)=>{const qq=Math.round(q*10)/10;if(u==="pz")return qq+" "+(x.pzN?(x.pzN+(qq!==1?"s":"")):(qq!==1?"pzas":"pza"));if(u==="taza")return qq+" taza"+(qq!==1?"s":"");return qq+" "+u};
+const plu=w=>w==="orden"?"órdenes":/[aeiou]$/.test(w)||w==="shot"?w+"s":w+"es";
+const fmtQty=(x,q,u)=>{const qq=Math.round(q*10)/10;if(u==="pz")return qq+" "+(x.pzN?(qq!==1?plu(x.pzN):x.pzN):(qq!==1?"pzas":"pza"));if(u==="taza")return qq+" taza"+(qq!==1?"s":"");return qq+" "+u};
 // Paso del botón − + según la unidad, y texto de la cantidad
 const unitStep=(u,q,dir=1)=>u==="g"?10:u==="ml"?25:u==="taza"||u==="porción"?0.5:((dir>0?q<1:q<=1)?0.5:1);
-const fmtQ=it=>{const q=Math.round(it.q*100)/100;if(it.u==="pz")return q+" "+(it.pzN?(it.pzN+(q!==1?"s":"")):(q!==1?"pzas":"pza"));if(it.u==="porción")return q+(q!==1?" porciones":" porción");if(it.u==="taza")return q+" taza"+(q!==1?"s":"");return q+" "+it.u};
+const fmtQ=it=>{const q=Math.round(it.q*100)/100;if(it.u==="pz")return q+" "+(it.pzN?(q!==1?plu(it.pzN):it.pzN):(q!==1?"pzas":"pza"));if(it.u==="porción")return q+(q!==1?" porciones":" porción");if(it.u==="taza")return q+" taza"+(q!==1?"s":"");return q+" "+it.u};
 // "2 tortillas, 150 g de pollo y media taza de arroz" → [{x, q, u, g, macros}]
 const parseFoodText=(text)=>{
   const out=[];
-  const parts=String(text||"").toLowerCase().replace(/\s+/g," ").split(/\s*(?:,|;|\+|\by\b|\bcon\b|\bmas\b|\bmás\b)\s*/).map(s=>s.trim()).filter(Boolean);
+  const parts=String(text||"").toLowerCase().replace(/\s+/g," ").replace(CON_RE,m=>m.replace(/ con /g," ¤ ")).split(/\s*(?:,|;|\+|\by\b|\bcon\b|\bmas\b|\bmás\b)\s*/).map(s=>s.trim().replace(/ ¤ /g," con ")).filter(Boolean);
+  let recipe=null;
   for(const part of parts){
+    // ¿es una receta? (batido, sándwich, omelette…): agrega sus alimentos
+    const rm=RECIPE_RE.find(({re})=>re.test(part));
+    if(rm){
+      const mult=(()=>{const m=part.match(/^(\d+(?:[.,]\d+)?)\s/);if(m)return parseFloat(m[1].replace(",","."));const w=part.match(/^(un|una|uno|medio|media|dos|tres)\b/);return w?NUM_W[w[1]]:1})();
+      for(const[n,q,u]of rm.r.items){const x=FOOD_DB.find(f=>f.n===n);if(!x)continue;const qq=q*mult;const g=foodGrams(x,qq,u);out.push({x,q:qq,u,g,m:foodMacros(x,g),label:x.n+" · "+fmtQty(x,qq,u),rec:true})}
+      recipe=rm;continue;
+    }
     // el alimento: el que más texto coincide
     let best=null,bl=0;
     for(const{x,re}of FOOD_RE){const m=part.match(re);if(m&&m[2].length>bl){best=x;bl=m[2].length}}
     if(!best)continue;
     let q=null,u=null;
-    const mNum=part.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|gr|gramos?|ml|l|litros?|pz|pzas?|piezas?|tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|bolsas?|tacos?)?\b/i);
-    const mW=part.match(/\b(un|una|uno|medio|media|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b\s*(tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|piezas?|bolsas?)?/i);
+    const mNum=part.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|gr|gramos?|ml|l|litros?|pz|pzas?|piezas?|tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|bolsas?|tacos?|vasos?|platos?|tazones?|copas?|shots?|caballitos?|[oó]rdenes|orden|botellas?|mitad(?:es)?)?\b/i);
+    const mW=part.match(/\b(un|una|uno|medio|media|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b\s*(tazas?|cdas?|cucharadas?|cditas?|cucharaditas?|scoops?|latas?|rebanadas?|piezas?|bolsas?|vasos?|platos?|tazones?|copas?|[oó]rdenes|orden|botellas?)?/i);
     let unitWord="";
     if(mNum){q=parseFloat(mNum[1].replace(",","."));unitWord=(mNum[2]||"").toLowerCase()}
     else if(mW){q=NUM_W[mW[1].toLowerCase()];unitWord=(mW[2]||"").toLowerCase()}
@@ -347,7 +462,10 @@ const parseFoodText=(text)=>{
       if(best.def[1]==="g"){q=q*best.def[0];u="g"}
     }
     const g=foodGrams(best,q,u);
-    out.push({x:best,q,u,g,m:foodMacros(best,g),label:best.n+" · "+fmtQty(best,q,u)});
+    const row={x:best,q,u,g,m:foodMacros(best,g),label:best.n+" · "+fmtQty(best,q,u)};
+    // dentro de una receta, "con 100 g de avena" reemplaza la cantidad de ese ingrediente
+    const same=recipe&&out.findIndex(o=>o.rec&&o.x===best);
+    if(recipe&&same>=0)out[same]=row;else out.push(row);
   }
   return out;
 };
@@ -358,8 +476,10 @@ const dayFood=(food,nutriLog,date)=>{
   const entries=(food?.days||{})[date]||[];
   const flags=nutriLog[date]||{};
   let tot={...NUTRI_ZERO};const bySlot={};
-  for(const e of entries){
+  for(let e of entries){
     if(e.meal&&!flags[e.meal])continue; // comida desmarcada (p. ej. desde Hoy): no cuenta
+    // Comida del plan palomeada: siempre con los macros vigentes del plan × porción
+    if(e.src==="plan"){const m=menu.meals.find(x=>x.id===e.meal);if(m){const k=e.k||1;e={...e,...roundM({kcal:m.kcal*k,p:m.p*k,c:m.c*k,f:m.f*k})}}}
     tot=addM(tot,e);(bySlot[e.meal||"x"]=bySlot[e.meal||"x"]||[]).push(e);
   }
   for(const m of menu.meals){if(flags[m.id]&&!bySlot[m.id])tot=addM(tot,m)} // palomeada sin detalle = plan tal cual
@@ -403,7 +523,8 @@ const nutriCoach=(tot,menu,flags,nowMin,menuKey="A")=>{
   const overProj=["kcal","c","f"].filter(k=>proj[k]>T[k]*1.08);
   if(overNow.length||overProj.length){
     const base=pending.length?proj:tot;const ks=pending.length?overProj:overNow;
-    const head=(pending.length&&!overNow.length?"Si sigues el plan terminarás con ":"Ya te pasaste: ")+ks.map(k=>"+"+lbl(k,base[k]-T[k])).join(", ")+".";
+    const now=overNow.map(k=>"+"+lbl(k,tot[k]-T[k])).join(", ");
+    const head=pending.length?((overNow.length?"Ya vas "+now+" arriba. ":"")+(ks.length?"Si comes lo que falta del plan ("+pending.map(m=>m.title.toLowerCase()).join(", ")+") terminarás con "+ks.map(k=>"+"+lbl(k,base[k]-T[k])).join(", ")+".":"")):"Ya te pasaste: "+now+".";
     let d="Mañana sigue el plan normal; lo que cuenta es el promedio de la semana.";
     if(pending.length){
       const over={kcal:Math.max(0,base.kcal-T.kcal),c:Math.max(0,base.c-T.c),f:Math.max(0,base.f-T.f)};
@@ -411,7 +532,8 @@ const nutriCoach=(tot,menu,flags,nowMin,menuKey="A")=>{
       if(sel.length){
         const byMeal={};sel.forEach(o=>{(byMeal[o.meal]=byMeal[o.meal]||[]).push(o.n+" (−"+o.kcal+")")});
         d="Para cuadrar sin tocar la proteína: "+Object.entries(byMeal).map(([m,l])=>"en "+m.toLowerCase()+" quita "+l.join(" y ")).join("; ")+".";
-        if(got<over.kcal-60)d+=" Aun así quedarías ~"+Math.round(over.kcal-got)+" kcal arriba: no pasa nada si es un día aislado.";
+        if(got<over.kcal-150)d+=" Aun así quedarías ~"+Math.round(over.kcal-got)+" kcal arriba. Mejor: en "+pending[pending.length-1].title.toLowerCase()+" come solo proteína magra (1 lata de atún o 120 g de pollo con verduras, ~120–200 kcal).";
+        else if(got<over.kcal-60)d+=" Aun así quedarías ~"+Math.round(over.kcal-got)+" kcal arriba: no pasa nada si es un día aislado.";
       }
     }
     tips.push({lvl:"warn",t:head,d});
@@ -3091,6 +3213,7 @@ function CuerpoNutricion({ctx}){
   const[picked,setPicked]=useState([]);         // elegidos de "Mis comidas"
   const[saveAs,setSaveAs]=useState({on:false,name:""});
   const[sq,setSq]=useState("");const[editSaved,setEditSaved]=useState(false);
+  const[off,setOff]=useState(null);             // búsqueda en Open Food Facts {loading,items,err}
   const[showInfo,setShowInfo]=useState(false);
   const addRef=useRef(null);
   // Enlace desde el aviso del asistente: ?comida=n2 abre esa comida lista para registrar
@@ -3132,11 +3255,27 @@ function CuerpoNutricion({ctx}){
     }
     resetAdd();setAddFor(null);setOpenMeal(null);
   };
-  const resetAdd=()=>{setTxt("");setManual(null);setQOv({});setPicked([]);setSaveAs({on:false,name:""});setSq("")};
+  const resetAdd=()=>{setTxt("");setManual(null);setQOv({});setPicked([]);setSaveAs({on:false,name:""});setSq("");setOff(null)};
+  // Buscar producto empacado en Open Food Facts (macros por 100 g de la etiqueta)
+  const searchOFF=async()=>{
+    const q=txt.trim().replace(/^\d+(?:[.,]\d+)?\s*(g|gr|gramos|ml|pz|piezas?)?\s*(de\s+)?/i,"");if(!q)return;
+    setOff({loading:true,items:[]});
+    const F="&search_simple=1&action=process&json=1&page_size=15&fields=product_name,product_name_es,brands,nutriments,serving_quantity,quantity";
+    const get=async extra=>{const r=await fetch("https://world.openfoodfacts.org/cgi/search.pl?search_terms="+encodeURIComponent(q)+F+extra);if(!r.ok)throw new Error("HTTP "+r.status);return(await r.json()).products||[]};
+    try{
+      let ps=await get("&tagtype_0=countries&tag_contains_0=contains&tag_0=mexico");
+      if(ps.filter(x=>x.nutriments&&x.nutriments["energy-kcal_100g"]!=null).length<3)ps=ps.concat(await get(""));
+      const seen=new Set();
+      const items=ps.filter(x=>x.nutriments&&x.nutriments["energy-kcal_100g"]!=null).map(x=>{const n=x.nutriments;return{name:((x.product_name_es||x.product_name||"Producto")+(x.brands?" ("+x.brands.split(",")[0]+")":"")).slice(0,60),k:+n["energy-kcal_100g"]||0,p:+n.proteins_100g||0,c:+n.carbohydrates_100g||0,f:+n.fat_100g||0,sq:+x.serving_quantity||0,qty:x.quantity||""}}).filter(x=>{const key=x.name.toLowerCase();if(seen.has(key))return false;seen.add(key);return true}).slice(0,10);
+      setOff({loading:false,items,err:items.length?"":"Sin resultados con macros. Prueba con la marca o un nombre más corto."});
+    }catch(e){setOff({loading:false,items:[],err:"No pude conectar con la base de productos (revisa tu internet o intenta en un minuto)."})}
+  };
+  const pickOFF=x=>{const q=x.sq>0&&x.sq<1000?Math.round(x.sq):100;setPicked(ps=>[...ps,{k:"o"+Date.now(),name:x.name,q,u:"g",per:{kcal:x.k/100,p:x.p/100,c:x.c/100,f:x.f/100}}]);setOff(null);setTxt("");setQOv({})}; // el producto elegido reemplaza lo escrito (sin contarlo dos veces)
   // Ajustar cantidad de algo ya registrado (recalcula los macros)
   const stepEntry=(e,dir)=>setDay(list=>list.map(x=>{if(x.id!==e.id||!x.per)return x;const q=Math.max(unitStep(x.u,x.q,-1),Math.round((x.q+dir*unitStep(x.u,x.q,dir))*100)/100);const it={...x,q};return{...it,name:x.base+" · "+fmtQ(it),...roundM(addM({...NUTRI_ZERO},x.per,q))}}));
   const delEntry=e=>{setDay(list=>list.filter(x=>x.id!==e.id));if(e.meal&&!(bySlot[e.meal]||[]).some(x=>x.id!==e.id))setFlag(e.meal,false)};
-  const openAdd=slot=>{setAddFor(slot);resetAdd();setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
+  const guessSlot=()=>{const nm=new Date().getHours()*60+new Date().getMinutes();let best="x",bd=1e9;for(const m of menu.meals){if(flags[m.id])continue;const d=nm-mealMin(m.time);if(d>=-45&&d<=60&&Math.abs(d)<bd){bd=Math.abs(d);best=m.id}}return best};
+  const openAdd=slot=>{setAddFor(slot==="x"?guessSlot():slot);resetAdd();setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
 
   // Últimos 7 días
   const week=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));const k=ds(d);return{k,d,t:dayFood(food,nutriLog,k).tot}});
@@ -3217,6 +3356,11 @@ function CuerpoNutricion({ctx}){
     <div className="card" ref={addRef} style={{borderColor:addFor?"rgba(48,209,88,.35)":undefined}}>
       <div className="sect" style={{justifyContent:"space-between"}}><span>➕ {addFor&&addFor!=="x"?"Lo que comí en "+(menu.meals.find(m=>m.id===addFor)?.title||""):"Agregar comida o extra"}</span>{addFor&&<button className="lbs" style={{padding:"3px 9px",fontSize:11}} onClick={()=>{setAddFor(null);resetAdd()}}>✕</button>}</div>
       {!addFor?<button className="lbp" style={{width:"100%",justifyContent:"center",background:"#30d158",color:"#000"}} onClick={()=>openAdd("x")}>Registrar algo fuera del plan</button>:<>
+        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>¿A qué comida corresponde?</div>
+        <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
+          {[["x","Extra (aparte)"],...menu.meals.map(m=>[m.id,m.title.split(" ")[0]+(flags[m.id]?" ✓":"")])].map(([id,l])=><button key={id} style={{...chip(addFor===id),fontSize:11,padding:"5px 10px"}} onClick={()=>setAddFor(id)}>{l}</button>)}
+        </div>
+        {addFor!=="x"&&<div style={{fontSize:10,color:"#6e727a",marginTop:-4,marginBottom:10}}>{flags[addFor]&&(bySlot[addFor]||[]).every(e=>e.src==="plan")?"Reemplaza lo que tenías palomeado del plan en esta comida.":"Cuenta como tu "+(menu.meals.find(m=>m.id===addFor)?.title||"").toLowerCase()+" (el coach ya no la marcará como saltada)."}</div>}
         {!manual?<>
           {/* Mis comidas guardadas */}
           {saved.length>0&&<div style={{marginBottom:10}}>
@@ -3234,7 +3378,18 @@ function CuerpoNutricion({ctx}){
             </div>
           </div>}
           <textarea className="lfi" value={txt} onChange={e=>{setTxt(e.target.value);setQOv({})}} placeholder='Escribe como hablas: "jamón y 2 tortillas", "150 g de pollo con arroz"' style={{height:60,fontSize:13,lineHeight:1.5,resize:"vertical"}}/>
-          {txt.trim()&&!parsed.length&&<div style={{fontSize:11,color:"#FFB800",marginTop:8}}>No reconocí ese alimento. Escríbelo distinto o captura los macros a mano.</div>}
+          {txt.trim()&&!parsed.length&&<div style={{fontSize:11,color:"#FFB800",marginTop:8}}>No lo tengo en mi lista. Búscalo en internet (productos empacados) o captura los macros a mano.</div>}
+          {txt.trim()&&<button className="lbs" style={{marginTop:8,fontSize:11,width:"100%",justifyContent:"center"}} onClick={searchOFF} disabled={off?.loading}>{off?.loading?"Buscando…":"🔎 Buscar \""+txt.trim().slice(0,30)+"\" en internet (etiquetas de productos)"}</button>}
+          {off&&!off.loading&&<div style={{marginTop:8,padding:"8px 10px",background:"#0b0c0e",borderRadius:10}}>
+            {off.err?<div style={{fontSize:11,color:"#FFB800"}}>{off.err}</div>:<>
+              <div style={{fontSize:10,color:"#6e727a",marginBottom:5}}>Toca uno para agregarlo · macros por 100 g de la etiqueta (Open Food Facts)</div>
+              {off.items.map((x,i)=><div key={i} onClick={()=>pickOFF(x)} style={{padding:"6px 0",borderTop:i?"1px solid rgba(255,255,255,.05)":"none",cursor:"pointer"}}>
+                <div style={{fontSize:12}}>{x.name}{x.qty?<span style={{color:"#6e727a"}}> · {x.qty}</span>:null}</div>
+                <div className="lmn" style={{fontSize:10,color:"#6e727a"}}>100 g: {Math.round(x.k)} kcal · {Math.round(x.p)}P · {Math.round(x.c)}C · {Math.round(x.f)}G{x.sq?" · porción "+Math.round(x.sq)+" g":""}</div>
+              </div>)}
+              <button className="lbs" style={{fontSize:10,marginTop:6}} onClick={()=>setOff(null)}>Cerrar</button>
+            </>}
+          </div>}
           {/* Borrador con cantidades editables */}
           {draft.length>0&&<div style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>
             {draft.map(it=>{const m=roundM(addM({...NUTRI_ZERO},it.per,it.q));return(
@@ -3247,7 +3402,7 @@ function CuerpoNutricion({ctx}){
                 <span className="lmn" style={{fontSize:11,minWidth:62,textAlign:"center"}}>{fmtQ(it)}</span>
                 <button className="lbs" style={{padding:"3px 9px",fontSize:14}} onClick={()=>setQ(it,it.q+unitStep(it.u,it.q,1))}>+</button>
               </div>)})}
-            {(()=>{const after=addM(tot,draftTot);return(<div style={{fontSize:11,color:after.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",marginTop:2}}>Total {draftTot.kcal} kcal · {draftTot.p}P · {draftTot.c}C · {draftTot.f}G → quedarías en {Math.round(after.kcal)}/{T.kcal} kcal y {Math.round(after.p)}/{T.p} g de proteína</div>)})()}
+            {(()=>{const repl=addFor&&addFor!=="x"?(bySlot[addFor]||[]).filter(e=>e.src==="plan").reduce((a,e)=>addM(a,e),{...NUTRI_ZERO}):NUTRI_ZERO;const after=addM(addM(tot,draftTot),repl,-1);return(<div style={{fontSize:11,color:after.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",marginTop:2}}>Total {draftTot.kcal} kcal · {draftTot.p}P · {draftTot.c}C · {draftTot.f}G → quedarías en {Math.round(after.kcal)}/{T.kcal} kcal y {Math.round(after.p)}/{T.p} g de proteína</div>)})()}
           </div>}
           {draft.length>0&&<SaveAsRow saveAs={saveAs} setSaveAs={setSaveAs}/>}
           <div style={{display:"flex",gap:8,marginTop:10}}>
@@ -3255,7 +3410,7 @@ function CuerpoNutricion({ctx}){
             <button className="lbs" onClick={()=>setManual({name:txt,kcal:"",p:"",c:"",f:""})}>Macros a mano</button>
           </div>
           <div style={{display:"flex",gap:5,flexWrap:"wrap",marginTop:10}}>
-            {["1 lata de atún","1 scoop de proteína","1 plátano","1 tortilla","1 rebanada de jamón","40 g de aguacate","1 taco al pastor"].map(q=><button key={q} style={{...chip(false),fontSize:11,padding:"4px 9px"}} onClick={()=>{setTxt(t=>t.trim()?t.trim()+", "+q:q)}}>{q}</button>)}
+            {["batido","1 gelatina","1 plátano","1 tortilla","1 rebanada de jamón","1 lata de atún","1 taco al pastor"].map(q=><button key={q} style={{...chip(false),fontSize:11,padding:"4px 9px"}} onClick={()=>{setTxt(t=>t.trim()?t.trim()+", "+q:q)}}>{q}</button>)}
           </div>
         </>:<>
           <input className="lfi" value={manual.name} onChange={e=>setManual({...manual,name:e.target.value})} placeholder="¿Qué comiste? (ej. Sándwich de la oficina)" style={{marginBottom:8}}/>
