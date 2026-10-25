@@ -3200,10 +3200,16 @@ function SaveAsRow({saveAs,setSaveAs,placeholder}){
 }
 function CuerpoNutricion({ctx}){
   const{nutriLog,setNutriLog,checkins,food,setFood,now}=ctx;
-  const tod=td();
+  // Día que se está viendo/registrando: hoy por defecto, se puede regresar a días anteriores
+  const today=td();
+  const[selDay,setSelDay]=useState(today);
+  const tod=selDay>today?today:selDay;const isToday=tod===today;
+  const shiftDay=n=>{const d=new Date(tod+"T12:00:00");d.setDate(d.getDate()+n);const k=ds(d);if(k<=today){setSelDay(k);setOpenMeal(null);setAddFor(null)}};
+  const dayLabel=(()=>{if(isToday)return"hoy";const d=new Date(tod+"T12:00:00");const y=new Date();y.setDate(y.getDate()-1);if(ds(y)===tod)return"ayer";return["dom","lun","mar","mié","jue","vie","sáb"][d.getDay()]+" "+d.getDate()+" "+MN3S[d.getMonth()]})();
   const{tot,entries,bySlot,flags,menu}=dayFood(food,nutriLog,tod);
   const menuKey=NUTRI_MENUS[food?.menu]?food.menu:"A";
-  const nowMin=(now||new Date()).getHours()*60+(now||new Date()).getMinutes();
+  // En días pasados el coach evalúa el día completo (como si ya fuera de noche)
+  const nowMin=isToday?(now||new Date()).getHours()*60+(now||new Date()).getMinutes():24*60;
   const coach=nutriCoach(tot,menu,flags,nowMin,menuKey);
   const[openMeal,setOpenMeal]=useState(null);   // comida con el panel de registro abierto
   const[addFor,setAddFor]=useState(null);       // "x" = extra, "n1".."n4" = cambié esta comida
@@ -3220,7 +3226,7 @@ function CuerpoNutricion({ctx}){
   useEffect(()=>{try{const id=window.__lifeosMeal;if(id&&menu.meals.find(m=>m.id===id)){setOpenMeal(id);window.__lifeosMeal=null;setTimeout(()=>{const el=document.getElementById("meal-"+id);el&&el.scrollIntoView({behavior:"smooth",block:"center"})},250)}}catch{}},[]);
 
   const T={kcal:NUTRI_TARGET.kcal,p:NUTRI_TARGET.protein,c:NUTRI_TARGET.carbs,f:NUTRI_TARGET.fat};
-  const hhmm=()=>{const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
+  const hhmm=()=>{if(!isToday)return"—";const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
   const setDay=fn=>setFood(p=>{const days={...(p?.days||{})};days[tod]=fn(days[tod]||[]);return{...(p||{}),days}});
   const setFlag=(id,v)=>setNutriLog(p=>({...p,[tod]:{...(p[tod]||{}),[id]:v}}));
   // Registrar comida del plan con porción (1 = tal cual)
@@ -3274,7 +3280,7 @@ function CuerpoNutricion({ctx}){
   // Ajustar cantidad de algo ya registrado (recalcula los macros)
   const stepEntry=(e,dir)=>setDay(list=>list.map(x=>{if(x.id!==e.id||!x.per)return x;const q=Math.max(unitStep(x.u,x.q,-1),Math.round((x.q+dir*unitStep(x.u,x.q,dir))*100)/100);const it={...x,q};return{...it,name:x.base+" · "+fmtQ(it),...roundM(addM({...NUTRI_ZERO},x.per,q))}}));
   const delEntry=e=>{setDay(list=>list.filter(x=>x.id!==e.id));if(e.meal&&!(bySlot[e.meal]||[]).some(x=>x.id!==e.id))setFlag(e.meal,false)};
-  const guessSlot=()=>{const nm=new Date().getHours()*60+new Date().getMinutes();let best="x",bd=1e9;for(const m of menu.meals){if(flags[m.id])continue;const d=nm-mealMin(m.time);if(d>=-45&&d<=60&&Math.abs(d)<bd){bd=Math.abs(d);best=m.id}}return best};
+  const guessSlot=()=>{if(!isToday)return"x";const nm=new Date().getHours()*60+new Date().getMinutes();let best="x",bd=1e9;for(const m of menu.meals){if(flags[m.id])continue;const d=nm-mealMin(m.time);if(d>=-45&&d<=60&&Math.abs(d)<bd){bd=Math.abs(d);best=m.id}}return best};
   const openAdd=slot=>{setAddFor(slot==="x"?guessSlot():slot);resetAdd();setTimeout(()=>addRef.current&&addRef.current.scrollIntoView({behavior:"smooth",block:"center"}),80)};
 
   // Últimos 7 días
@@ -3286,9 +3292,20 @@ function CuerpoNutricion({ctx}){
   const chip=(on)=>({padding:"6px 11px",borderRadius:999,border:"1px solid "+(on?"#30d158":"rgba(255,255,255,.1)"),background:on?"rgba(48,209,88,.12)":"transparent",color:on?"#30d158":"#c9ccd1",fontSize:12,cursor:"pointer",fontFamily:"inherit"});
 
   return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
+    {/* Selector de día: para registrar o corregir días anteriores */}
+    <div style={{display:"flex",alignItems:"center",gap:8}}>
+      <button className="lbs" style={{padding:"6px 12px",fontSize:14}} onClick={()=>shiftDay(-1)}>‹</button>
+      <div style={{flex:1,textAlign:"center"}}>
+        <div style={{fontSize:14,fontWeight:700,color:isToday?"#eceef1":"#FFB800"}}>{isToday?"Hoy":dayLabel.charAt(0).toUpperCase()+dayLabel.slice(1)}</div>
+        {!isToday&&<div style={{fontSize:10,color:"#8b8f96"}}>Estás editando un día anterior</div>}
+      </div>
+      <button className="lbs" style={{padding:"6px 12px",fontSize:14,opacity:isToday?.3:1}} disabled={isToday} onClick={()=>shiftDay(1)}>›</button>
+      {!isToday&&<button className="lbs" style={{padding:"6px 10px",fontSize:11}} onClick={()=>{setSelDay(today);setOpenMeal(null);setAddFor(null)}}>Hoy</button>}
+    </div>
+
     {/* Contador del día */}
     <div className="card">
-      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Macros de hoy</span><span style={{color:"#6e727a",fontWeight:500}}>{menu.meals.filter(m=>flags[m.id]).length}/{menu.meals.length} comidas{entries.filter(e=>!e.meal).length?" + "+entries.filter(e=>!e.meal).length+" extra":""}</span></div>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>🔥 Macros {isToday?"de hoy":"de "+dayLabel}</span><span style={{color:"#6e727a",fontWeight:500}}>{menu.meals.filter(m=>flags[m.id]).length}/{menu.meals.length} comidas{entries.filter(e=>!e.meal).length?" + "+entries.filter(e=>!e.meal).length+" extra":""}</span></div>
       <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:4,flexWrap:"wrap"}}>
         <span className="lmn" style={{fontSize:30,fontWeight:700,color:tot.kcal>T.kcal*1.05?"#ff6b6b":"#30d158",letterSpacing:"-1px"}}>{tot.kcal}</span>
         <span style={{fontSize:14,color:"#6e727a"}}>/ {T.kcal} kcal</span>
@@ -3320,7 +3337,7 @@ function CuerpoNutricion({ctx}){
 
     {/* Menú A/B + comidas del plan */}
     <div className="card">
-      <div className="sect" style={{justifyContent:"space-between"}}><span>⏰ Plan de hoy</span></div>
+      <div className="sect" style={{justifyContent:"space-between"}}><span>⏰ Plan {isToday?"de hoy":"de "+dayLabel}</span></div>
       <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
         {Object.entries(NUTRI_MENUS).map(([k,v])=>(<button key={k} style={chip(menuKey===k)} onClick={()=>setFood(p=>({...(p||{}),menu:k}))}>{v.label}</button>))}
       </div>
@@ -3336,7 +3353,7 @@ function CuerpoNutricion({ctx}){
                 <span style={{fontSize:13,fontWeight:700}}>{m.title}</span>
               </div>
               <div className="lmn" style={{fontSize:10,color:"#6e727a",marginTop:3}}>{m.kcal} kcal · {m.p}P · {m.c}C · {m.f}G</div>
-              {done?<div style={{fontSize:11,color:"#30d158",marginTop:4}}>✓ Registrado{regs[0]?.t?" "+regs[0].t:""}: {regs.length&&regs.some(e=>e.src!=="plan")?regs.map(e=>e.name).join(", "):(regs[0]?.k&&regs[0].k!==1?"porción ×"+regs[0].k:"tal cual el plan")} · <span className="lmn">{got.kcal} kcal · {got.p}P</span></div>
+              {done?<div style={{fontSize:11,color:"#30d158",marginTop:4}}>✓ Registrado{regs[0]?.t&&regs[0].t!=="—"?" "+regs[0].t:""}: {regs.length&&regs.some(e=>e.src!=="plan")?regs.map(e=>e.name).join(", "):(regs[0]?.k&&regs[0].k!==1?"porción ×"+regs[0].k:"tal cual el plan")} · <span className="lmn">{got.kcal} kcal · {got.p}P</span></div>
               :<ul style={{margin:"5px 0 0",paddingLeft:16}}>{m.items.map((it,j)=><li key={j} style={{fontSize:11,color:"#999",lineHeight:1.55}}>{it}</li>)}</ul>}
             </div>
           </div>
@@ -3426,7 +3443,7 @@ function CuerpoNutricion({ctx}){
         </>}
       </>}
       {entries.filter(e=>e.src!=="plan"&&(!e.meal||flags[e.meal])).length>0&&<div style={{marginTop:12,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)"}}>
-        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>Registrado hoy fuera del plan · ajusta cantidades con − +</div>
+        <div style={{fontSize:11,color:"#8b8f96",marginBottom:6}}>Registrado {isToday?"hoy":dayLabel} fuera del plan · ajusta cantidades con − +</div>
         {entries.filter(e=>e.src!=="plan"&&(!e.meal||flags[e.meal])).map(e=><div key={e.id} style={{display:"flex",alignItems:"center",gap:7,padding:"5px 0"}}>
           <span className="lmn" style={{fontSize:10,color:"#6e727a",width:34,flexShrink:0}}>{e.t}</span>
           <div style={{flex:1,minWidth:0}}><div style={{fontSize:12,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{e.name}{e.meal?<span style={{color:"#6e727a"}}> · en {(menu.meals.find(m=>m.id===e.meal)?.title||"").toLowerCase()}</span>:null}</div><div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{e.kcal} kcal · {e.p}P · {e.c}C · {e.f}G</div></div>
@@ -3441,13 +3458,13 @@ function CuerpoNutricion({ctx}){
       <div className="sect">📅 Últimos 7 días</div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:5,alignItems:"end"}}>
         {week.map(w=>{const pk=Math.min(1.2,w.t.kcal/T.kcal);const okP=w.t.p>=T.p*0.9;const over=w.t.kcal>T.kcal*1.05;return(
-          <div key={w.k} style={{textAlign:"center"}}>
+          <div key={w.k} style={{textAlign:"center",cursor:"pointer",borderRadius:6,background:w.k===tod?"rgba(255,255,255,.05)":"transparent"}} onClick={()=>{setSelDay(w.k);setOpenMeal(null);setAddFor(null);window.scrollTo({top:0,behavior:"smooth"})}}>
             <div style={{height:56,display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div style={{width:"70%",height:Math.max(3,pk/1.2*56),borderRadius:4,background:w.t.kcal===0?"#222":over?"#ff6b6b":"#30d158",opacity:w.k===tod?1:.75}}/></div>
             <div style={{fontSize:9,color:"#6e727a",marginTop:4}}>{["D","L","M","M","J","V","S"][w.d.getDay()]}</div>
             <div style={{fontSize:9,color:okP?"#64b4f6":"#444"}}>{w.t.p?w.t.p+"P":"—"}</div>
           </div>)})}
       </div>
-      <div style={{fontSize:10,color:"#6e727a",marginTop:8}}>Barra = calorías vs meta (rojo si te pasaste) · azul = proteína ≥ 90% de la meta</div>
+      <div style={{fontSize:10,color:"#6e727a",marginTop:8}}>Toca un día para verlo o corregirlo · barra = calorías vs meta (rojo si te pasaste) · azul = proteína ≥ 90%</div>
       {lastW&&<div style={{marginTop:10,paddingTop:10,borderTop:"1px solid rgba(255,255,255,.06)",fontSize:12,color:"#8b8f96"}}>🎯 Recomposición corporal · último peso <b style={{color:"#30d158"}}>{lastW.weight} kg</b></div>}
     </div>
 

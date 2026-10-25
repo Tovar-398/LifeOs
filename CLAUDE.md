@@ -44,6 +44,7 @@ Retirados de la navegación en oct 2026 (el código y el estado siguen para no p
 - Al registrar fuera del plan se elige a qué comida corresponde (`guessSlot`: la comida sin palomear de −45 a +60 min de la hora actual; si no, Extra). Las entradas `src:"plan"` siempre usan los macros vigentes del plan × porción (`dayFood`).
 - Búsqueda en Open Food Facts (`searchOFF`, solo al tocar el botón; límite 10 búsquedas/min por IP): macros por 100 g de la etiqueta; el producto elegido reemplaza lo escrito.
 - Enlace `?comida=n1`…`n4` abre Comidas con esa comida lista para registrar. Los eventos diarios "🥗 Comida N" del calendario (los crea el asistente) llevan ese enlace.
+- Comidas tiene selector de día (‹ ›, o tocar una barra de "Últimos 7 días") para registrar o corregir días anteriores; en días pasados el coach evalúa el día completo y "Extra" es la opción por defecto.
 - Fechas: `td()`/`ds()` son en hora LOCAL (antes UTC y el día cambiaba a las 6 PM en México).
 
 ### Entreno en curso
