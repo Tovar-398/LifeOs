@@ -269,14 +269,23 @@ const SEED_PLANS=[
 const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
 const NUTRI_TARGET={kcal:2000,protein:160,carbs:210,fat:60};
 // Dieta vigente (25 oct 2026). Macros = suma real de cada alimento en FOOD_DB. Arroz, pollo, papa y verduras en peso COCIDO; avena seca; atún escurrido.
+// Grasa alternada por día: A = día de aguacate (100 g en la comida), B = día de crema de cacahuate (30 g en la colación).
 const NUTRI_MENUS={
- A:{label:"Plan vigente (25 oct)",meals:[
+ A:{label:"Día de aguacate",days:"Lun · Mié · Vie · Dom",meals:[
   {id:"n1",time:"07:00 AM",title:"Desayuno",kcal:489,p:43,c:49,f:14,items:["2 huevos enteros + 150 g de claras", "2 tortillas de maíz", "150 g de papaya + 100 g de yogur griego natural alto en proteína"]},
-  {id:"n2",time:"12:00 PM",title:"Comida",kcal:586,p:55,c:61,f:12,items:["150 g de pechuga de pollo cocida", "180 g de arroz cocido", "200 g de verduras + 40 g de aguacate"]},
+  {id:"n2",time:"12:00 PM",title:"Comida",kcal:682,p:56,c:66,f:21,items:["150 g de pechuga de pollo cocida", "180 g de arroz cocido", "200 g de verduras + 100 g de aguacate (hoy toca más aguacate)"]},
   {id:"n3",time:"04:30 PM",title:"Colación",kcal:429,p:35,c:57,f:9,items:["30 g de proteína en polvo + 40 g de avena (en seco)", "1 banana mediana + 10 g de crema de cacahuate", "Con agua o hielo"]},
   {id:"n4",time:"08:30 PM",title:"Cena",kcal:442,p:37,c:47,f:12,items:["120 g de atún en agua escurrido", "200 g de papa cocida", "200 g de ensalada o verduras + 10 g de aceite de oliva"]},
  ]},
+ B:{label:"Día de crema de cacahuate",days:"Mar · Jue · Sáb",meals:[
+  {id:"n1",time:"07:00 AM",title:"Desayuno",kcal:489,p:43,c:49,f:14,items:["2 huevos enteros + 150 g de claras", "2 tortillas de maíz", "150 g de papaya + 100 g de yogur griego natural alto en proteína"]},
+  {id:"n2",time:"12:00 PM",title:"Comida",kcal:586,p:55,c:61,f:12,items:["150 g de pechuga de pollo cocida", "180 g de arroz cocido", "200 g de verduras + 40 g de aguacate"]},
+  {id:"n3",time:"04:30 PM",title:"Colación",kcal:547,p:40,c:61,f:19,items:["30 g de proteína en polvo + 40 g de avena (en seco)", "1 banana mediana + 30 g de crema de cacahuate (hoy toca más crema)", "Con agua o hielo"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:442,p:37,c:47,f:12,items:["120 g de atún en agua escurrido", "200 g de papa cocida", "200 g de ensalada o verduras + 10 g de aceite de oliva"]},
+ ]},
 };
+// El menú lo decide el día de la semana (no se elige a mano)
+const menuKeyFor=date=>[0,1,3,5].includes(new Date(date+"T12:00:00").getDay())?"A":"B";
 const NUTRI_MEALS=NUTRI_MENUS.A.meals;
 const NUTRI_ZERO={kcal:0,p:0,c:0,f:0};
 const addM=(a,b,k=1)=>({kcal:a.kcal+(b.kcal||0)*k,p:a.p+(b.p||0)*k,c:a.c+(b.c||0)*k,f:a.f+(b.f||0)*k});
@@ -508,7 +517,7 @@ const parseFoodText=(text)=>{
 
 /* ── Totales del día: entradas registradas + comidas del plan palomeadas (también desde Hoy) ── */
 const dayFood=(food,nutriLog,date)=>{
-  const menu=NUTRI_MENUS[food?.menu]||NUTRI_MENUS.A;
+  const menu=NUTRI_MENUS[menuKeyFor(date)]||NUTRI_MENUS.A;
   const entries=(food?.days||{})[date]||[];
   const flags=nutriLog[date]||{};
   let tot={...NUTRI_ZERO};const bySlot={};
@@ -532,7 +541,8 @@ const COACH_ADD={
 const MAC_L={p:"proteína",c:"carbos",f:"grasa",kcal:"calorías"};
 // Qué se puede quitar de cada comida pendiente sin tocar la proteína (macros aprox. de lo que se quita)
 const NUTRI_CUTS={
-  A:{n1:[["1 tortilla",65,2,13,1],["la papaya",65,1,16,0]],n2:[["60 g de arroz",78,2,17,0],["el aguacate",64,1,3,6]],n3:[["½ banana",53,1,13,0],["la crema de cacahuate",59,3,2,5]],n4:[["½ de la papa",87,2,20,0],["½ del aceite",44,0,0,5]]},
+  A:{n1:[["1 tortilla",65,2,13,1],["la papaya",65,1,16,0]],n2:[["60 g de arroz",78,2,17,0],["60 g del aguacate",96,1,5,9]],n3:[["½ banana",53,1,13,0],["la crema de cacahuate",59,3,2,5]],n4:[["½ de la papa",87,2,20,0],["½ del aceite",44,0,0,5]]},
+  B:{n1:[["1 tortilla",65,2,13,1],["la papaya",65,1,16,0]],n2:[["60 g de arroz",78,2,17,0],["el aguacate",64,1,3,6]],n3:[["½ banana",53,1,13,0],["20 g de la crema de cacahuate",118,5,4,10]],n4:[["½ de la papa",87,2,20,0],["½ del aceite",44,0,0,5]]},
 };
 // Elige recortes de las comidas pendientes hasta cubrir el exceso, priorizando el macro que más se pasa
 const pickCuts=(menuKey,pending,over)=>{
@@ -3163,8 +3173,8 @@ const SHOP_BASE=[
   {name:"Huevos — 14 piezas",cat:"prot"},{name:"Claras de huevo — 1.05 kg",cat:"prot"},{name:"Pechuga de pollo — 1.4 kg cruda aprox.",cat:"prot"},{name:"Atún en agua — 7 latas (~120 g escurrido c/u)",cat:"prot"},{name:"Proteína en polvo — 210 g",cat:"prot"},
   {name:"Yogur griego natural alto en proteína — 700 g",cat:"lact"},
   {name:"Arroz — 450 g en seco aprox.",cat:"carb"},{name:"Tortillas de maíz — 14 piezas",cat:"carb"},{name:"Avena — 280 g",cat:"carb"},{name:"Papa — 1.4 kg",cat:"carb"},
-  {name:"Papaya — 1.2 kg aprox.",cat:"fruver"},{name:"Bananas — 7 piezas",cat:"fruver"},{name:"Verduras variadas (comida) — 1.4 kg",cat:"fruver"},{name:"Verduras para ensalada (cena) — 1.4 kg",cat:"fruver"},{name:"Aguacate — 3 piezas medianas",cat:"fruver"},
-  {name:"Crema de cacahuate — 70 g",cat:"otro"},{name:"Aceite de oliva — 70 g aprox.",cat:"otro"},
+  {name:"Papaya — 1.2 kg aprox.",cat:"fruver"},{name:"Bananas — 7 piezas",cat:"fruver"},{name:"Verduras variadas (comida) — 1.4 kg",cat:"fruver"},{name:"Verduras para ensalada (cena) — 1.4 kg",cat:"fruver"},{name:"Aguacate — 4 piezas medianas (~520 g de pulpa)",cat:"fruver"},
+  {name:"Crema de cacahuate — 130 g",cat:"otro"},{name:"Aceite de oliva — 70 g aprox.",cat:"otro"},
 ];
 function ShoppingList({ctx}){
   const{shopping,setShopping}=ctx;
@@ -3274,7 +3284,7 @@ function CuerpoNutricion({ctx}){
   const shiftDay=n=>{const d=new Date(tod+"T12:00:00");d.setDate(d.getDate()+n);const k=ds(d);if(k<=today){setSelDay(k);setOpenMeal(null);setAddFor(null)}};
   const dayLabel=(()=>{if(isToday)return"hoy";const d=new Date(tod+"T12:00:00");const y=new Date();y.setDate(y.getDate()-1);if(ds(y)===tod)return"ayer";return["dom","lun","mar","mié","jue","vie","sáb"][d.getDay()]+" "+d.getDate()+" "+MN3S[d.getMonth()]})();
   const{tot,entries,bySlot,flags,menu}=dayFood(food,nutriLog,tod);
-  const menuKey=NUTRI_MENUS[food?.menu]?food.menu:"A";
+  const menuKey=menuKeyFor(tod);
   // En días pasados el coach evalúa el día completo (como si ya fuera de noche)
   const nowMin=isToday?(now||new Date()).getHours()*60+(now||new Date()).getMinutes():24*60;
   const coach=nutriCoach(tot,menu,flags,nowMin,menuKey);
@@ -3405,9 +3415,10 @@ function CuerpoNutricion({ctx}){
     {/* Menú A/B + comidas del plan */}
     <div className="card">
       <div className="sect" style={{justifyContent:"space-between"}}><span>⏰ Plan {isToday?"de hoy":"de "+dayLabel}</span></div>
-      {Object.keys(NUTRI_MENUS).length>1&&<div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
-        {Object.entries(NUTRI_MENUS).map(([k,v])=>(<button key={k} style={chip(menuKey===k)} onClick={()=>setFood(p=>({...(p||{}),menu:k}))}>{v.label}</button>))}
-      </div>}
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,padding:"7px 11px",background:"rgba(48,209,88,.07)",border:"1px solid rgba(48,209,88,.25)",borderRadius:10}}>
+        <span style={{fontSize:16}}>{menuKey==="A"?"🥑":"🥜"}</span>
+        <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#30d158"}}>{NUTRI_MENUS[menuKey].label}</div><div style={{fontSize:10,color:"#8b8f96"}}>{NUTRI_MENUS[menuKey].days} · se alterna solo según el día</div></div>
+      </div>
       {menu.meals.map((m,i)=>{
         const done=!!flags[m.id];const regs=bySlot[m.id]||[];const open=openMeal===m.id;
         const got=done?(regs.length?roundM(regs.reduce((a,e)=>addM(a,e),{...NUTRI_ZERO})):m):null;
