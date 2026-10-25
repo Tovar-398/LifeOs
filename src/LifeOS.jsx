@@ -141,6 +141,48 @@ const reviewStreak=(reviews)=>{
 };
 // Rutinas oficiales. "hist" = nombre con el que ya hay pesos guardados (el ejercicio se renombró, el historial se conserva).
 const SEED_PLANS=[
+ {id:900003,seedV:1,updated:"2026-10-25",name:"🔥 Recomposición 4 días (L·M·J·V)",daysPerWeek:4,
+  info:{"goal": "Recomposición corporal: perder grasa manteniendo o aumentando masa muscular.", "schedule": "Lunes, martes, jueves y viernes · 5:00–7:00 a. m.", "rest": "Miércoles — descanso activo: caminata de 20–30 min, movilidad ligera si la necesitas, sin entrenamiento intenso.", "weeks": "Mantén esta rutina 6–8 semanas antes de cambiarla por completo.", "goals": ["4 sesiones de fuerza por semana", "7,000–9,000 pasos diarios (objetivo progresivo)", "Subir poco a poco a ~150 min/semana de cardio moderado (cuentan las caminatas)", "Dormir 7–8 horas siempre que sea posible"]},
+  checks:["Calentamiento 5–8 min + series progresivas antes del primer ejercicio pesado", "Series terminadas con 1–3 repeticiones en reserva (anota el RIR)", "Descansos: 2–3 min en compuestos, 1–2 min en aislamientos", "Si llegaste al máximo de reps en todas las series con buena técnica: sube un poco el peso la próxima", "Registré ejercicio, peso, repeticiones y RIR", "Sin dolor agudo ni articular (si apareció, detuve el ejercicio y revisé la técnica)"],
+  days:[
+  {label:"Día 1",name:"TORSO A (Lunes)",exercises:[
+   {id:6101,name:"Press inclinado con mancuernas",hist:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"6-10",rest:"2–3 min (compuesto)"},
+   {id:6102,name:"Jalón al pecho",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6103,name:"Press de pecho en máquina",hist:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6104,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6105,name:"Elevaciones laterales en polea o mancuernas",hist:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6106,name:"Curl de bíceps inclinado",hist:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6107,name:"Extensión de tríceps con cuerda",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6108,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"ritmo moderado",kind:"cardio"}]},
+  {label:"Día 2",name:"PIERNA A (Martes)",exercises:[
+   {id:6201,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6202,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6203,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6204,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6205,name:"Abductores en máquina",hist:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6206,name:"Elevación de pantorrilla de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6207,name:"Crunch en polea",hist:"Crunch en polea alta",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"60 seg",block:"abs"},
+   {id:6208,name:"Plancha",hist:"Plancha frontal",muscle:"Core",emoji:"🔥",tSets:2,tReps:"30-60 s",rest:"60 seg",block:"abs",kind:"time"}]},
+  {label:"Día 3",name:"TORSO B (Jueves)",exercises:[
+   {id:6301,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6302,name:"Press inclinado en máquina",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6303,name:"Jalón unilateral",hist:"Jalón unilateral en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6304,name:"Aperturas de pecho en polea",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:2,tReps:"12-15",rest:"1–2 min (aislamiento)"},
+   {id:6305,name:"Elevaciones laterales",hist:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6306,name:"Pájaros / deltoide posterior en máquina",hist:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6307,name:"Curl martillo",hist:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6308,name:"Extensión de tríceps en polea",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6309,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"ritmo moderado",kind:"cardio"}]},
+  {label:"Día 4",name:"PIERNA B (Viernes)",exercises:[
+   {id:6401,name:"Sentadilla búlgara",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12 x pierna",rest:"2–3 min (compuesto)"},
+   {id:6402,name:"Hip thrust",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
+   {id:6403,name:"Curl femoral",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
+   {id:6404,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:2,tReps:"10-15",rest:"2–3 min (compuesto)"},
+   {id:6405,name:"Abductores en máquina",hist:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6406,name:"Elevación de pantorrilla sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
+   {id:6407,name:"Elevaciones de piernas colgado o en silla romana",hist:"Elevación de piernas colgado",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"60 seg",block:"abs"},
+   {id:6408,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"opcional · ritmo moderado",kind:"cardio"}]}
+ ]},
  {id:900001,seedV:6,updated:"2026-10-21",name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
   {label:"Día 1",name:"UPPER · Torso Completo (Lunes)",exercises:[
    {id:5131,name:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:4,tReps:"8-10",rest:"2.5 min"},
@@ -225,20 +267,14 @@ const SEED_PLANS=[
  ]}
 ];
 const SEED_HIST_NAMES=new Set(SEED_PLANS.flatMap(p=>p.days.flatMap(d=>d.exercises.map(e=>e.hist||e.name))));
-const NUTRI_TARGET={kcal:2030,protein:150,carbs:200,fat:65};
-// Menús recalibrados el 21 oct 2026: macros = suma real de cada alimento (FOOD_DB), carnes en peso cocido.
+const NUTRI_TARGET={kcal:2000,protein:160,carbs:210,fat:60};
+// Dieta vigente (25 oct 2026). Macros = suma real de cada alimento en FOOD_DB. Arroz, pollo, papa y verduras en peso COCIDO; avena seca; atún escurrido.
 const NUTRI_MENUS={
- A:{label:"Opción A · Práctica y clásica",meals:[
-  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:522,p:39,c:55,f:17,items:["2 huevos enteros + 3 claras (a la mexicana, con jitomate y cebolla) + 2 tortillas de maíz", "Bowl: 100 g de papaya o melón + 100 g de yogur griego natural sin azúcar + 15 g de granola"]},
-  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:556,p:43,c:52,f:19,items:["120 g de pechuga de pollo COCIDA (≈160 g en crudo) a la plancha + 1 taza de arroz cocido", "Ensalada o verduras al gusto (pepino, lechuga) + 60 g de aguacate (½ pieza chica) + 1 cdita de aceite de oliva"]},
-  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:641,p:46,c:71,f:22,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche entera o deslactosada", "40 g de avena en hojuelas + 1 plátano mediano + 20 g de crema de cacahuate natural"]},
-  {id:"n4",time:"08:30 PM",title:"Cena",kcal:276,p:29,c:24,f:6,items:["1 lata de atún en agua (escurrido) con 1 cda de mayonesa light", "2 tostadas horneadas de maíz + jitomate y pepino picado"]},
- ]},
- B:{label:"Opción B · Económica y variada",meals:[
-  {id:"n1",time:"07:00 AM",title:"Desayuno Post-Entreno",kcal:531,p:41,c:54,f:17,items:["Omelette de 2 huevos + 2 claras (con champiñones o espinacas) + 2 rebanadas de pan integral", "½ manzana o ½ plátano picado con 100 g de yogur griego natural sin azúcar + 15 g de granola"]},
-  {id:"n2",time:"12:00 PM",title:"Almuerzo",kcal:522,p:39,c:52,f:18,items:["120 g de lomo/pulpa de cerdo o bistec magro COCIDO (≈160 g crudo), o 150 g de tilapia/basa cocida", "250 g de papa cocida o al horno + ensalada verde con 2 cditas de aceite de oliva"]},
-  {id:"n3",time:"04:30 PM",title:"Batido Denso Proteico",kcal:634,p:47,c:65,f:23,items:["1 scoop de proteína hidrolizada (26 g P) + 10 g de creatina + 250 ml de leche", "50 g de avena + 150 g de fresas/frutos rojos (pueden ser congelados) + 20 g de crema de cacahuate"]},
-  {id:"n4",time:"08:30 PM",title:"Cena",kcal:300,p:26,c:30,f:9,items:["Tacos de pollo: 70 g de pechuga COCIDA deshebrada (≈95 g crudo) + 2 tortillas de maíz", "30 g de aguacate, salsa casera y verdura al gusto"]},
+ A:{label:"Plan vigente (25 oct)",meals:[
+  {id:"n1",time:"07:00 AM",title:"Desayuno",kcal:489,p:43,c:49,f:14,items:["2 huevos enteros + 150 g de claras", "2 tortillas de maíz", "150 g de papaya + 100 g de yogur griego natural alto en proteína"]},
+  {id:"n2",time:"12:00 PM",title:"Comida",kcal:586,p:55,c:61,f:12,items:["150 g de pechuga de pollo cocida", "180 g de arroz cocido", "200 g de verduras + 40 g de aguacate"]},
+  {id:"n3",time:"04:30 PM",title:"Colación",kcal:429,p:35,c:57,f:9,items:["30 g de proteína en polvo + 40 g de avena (en seco)", "1 banana mediana + 10 g de crema de cacahuate", "Con agua o hielo"]},
+  {id:"n4",time:"08:30 PM",title:"Cena",kcal:442,p:37,c:47,f:12,items:["120 g de atún en agua escurrido", "200 g de papa cocida", "200 g de ensalada o verduras + 10 g de aceite de oliva"]},
  ]},
 };
 const NUTRI_MEALS=NUTRI_MENUS.A.meals;
@@ -399,7 +435,7 @@ const FOOD_DB=[
 ];
 // Recetas: una palabra arma varios alimentos editables ("batido con 100 g de avena" cambia solo la avena)
 const NUTRI_RECIPES=[
- {kw:"batido|licuado|shake|malteada de prote[ií]na",items:[["Proteína hidrolizada (scoop)",1,"pz"],["Leche entera/deslactosada",250,"g"],["Avena en hojuelas",40,"g"],["Plátano",1,"pz"],["Crema de cacahuate",20,"g"]]},
+ {kw:"batido|licuado|shake|colaci[oó]n|malteada de prote[ií]na",items:[["Proteína hidrolizada (scoop)",1,"pz"],["Avena en hojuelas",40,"g"],["Plátano",1,"pz"],["Crema de cacahuate",10,"g"]]},
  {kw:"s[aá]ndwich|sandwich|sincronizada",items:[["Pan blanco de caja",2,"pz"],["Jamón de pavo",2,"pz"],["Queso manchego / amarillo",1,"pz"],["Mayonesa light",1,"cda"]]},
  {kw:"huevos a la mexicana|huevos revueltos|huevo revuelto|huevo a la mexicana",items:[["Huevo entero",2,"pz"],["Jitomate / pepino",0.5,"pz"],["Aceite de oliva",1,"cdita"]]},
  {kw:"omelette|omelet|omellete",items:[["Huevo entero",2,"pz"],["Clara de huevo",2,"pz"],["Champiñones / espinaca",1,"taza"],["Aceite de oliva",1,"cdita"]]},
@@ -496,8 +532,7 @@ const COACH_ADD={
 const MAC_L={p:"proteína",c:"carbos",f:"grasa",kcal:"calorías"};
 // Qué se puede quitar de cada comida pendiente sin tocar la proteína (macros aprox. de lo que se quita)
 const NUTRI_CUTS={
-  A:{n1:[["la granola",71,2,10,3],["1 tortilla",65,2,13,1]],n2:[["½ taza de arroz",103,2,22,0],["½ del aguacate",48,1,3,4]],n3:[["la crema de cacahuate",118,5,4,10],["el plátano",105,1,27,0],["½ de la avena",76,3,14,1]],n4:[["1 tostada",50,1,9,1],["la mayonesa",39,0,1,4]]},
-  B:{n1:[["la granola",71,2,10,3],["1 rebanada de pan",74,4,12,1]],n2:[["½ de la papa",109,2,25,0],["el aceite",88,0,0,10]],n3:[["la crema de cacahuate",118,5,4,10],["½ de la avena",95,3,17,2]],n4:[["1 tortilla",65,2,13,1],["el aguacate",48,1,3,4]]},
+  A:{n1:[["1 tortilla",65,2,13,1],["la papaya",65,1,16,0]],n2:[["60 g de arroz",78,2,17,0],["el aguacate",64,1,3,6]],n3:[["½ banana",53,1,13,0],["la crema de cacahuate",59,3,2,5]],n4:[["½ de la papa",87,2,20,0],["½ del aceite",44,0,0,5]]},
 };
 // Elige recortes de las comidas pendientes hasta cubrir el exceso, priorizando el macro que más se pasa
 const pickCuts=(menuKey,pending,over)=>{
@@ -685,7 +720,9 @@ export default function LifeOS() {
         ...loadedPlans.filter(p=>!SEED_PLANS.find(sp=>sp.id===p.id))
       ];
       setPlans(merged);
-      setActivePlanId(map.activePlan||merged[0]?.id||null);
+      // Rutina nueva (25 oct): se activa sola la primera vez que llega; después respeta lo que elijas
+      const hadRecomp=loadedPlans.some(p=>p.id===900003);
+      setActivePlanId(hadRecomp?(map.activePlan||merged[0]?.id||null):900003);
       if(map.goals)setSavGoals(map.goals);
       if(map.checkins)setCheckins(map.checkins);
       if(map.budgets)setBudgets(map.budgets);
@@ -2428,7 +2465,7 @@ const sameEx=(a,b)=>a===b||exScore(a,b)>=EX_MATCH;
 const exKind=ex=>{if(ex?.kind)return ex.kind;const n=ex?.name||"";if(ex?.muscle==="Cardio"||/cardio|liss|caminadora|el[ií]ptica|bicicleta/i.test(n))return"cardio";if(/^\s*\d+(\s*[-–]\s*\d+)?\s*(s|seg|segundos?)\b/i.test(ex?.tReps||""))return"time";return"lift"};
 const isAbsEx=ex=>ex?.block==="abs"||ex?.muscle==="Core";
 const firstNum=t=>(String(t||"").match(/\d+/)||[""])[0];
-const fmtSet=s=>s.unit==="min"?(s.reps||"?")+" min"+(s.bpm?" · "+s.bpm+" bpm":""):s.unit==="s"?(s.reps||"?")+" s":(s.weight||"?")+"kg × "+(s.reps||"?");
+const fmtSet=s=>s.unit==="min"?(s.reps||"?")+" min"+(s.bpm?" · "+s.bpm+" bpm":""):s.unit==="s"?(s.reps||"?")+" s":(s.weight||"?")+"kg × "+(s.reps||"?")+(s.rir!==undefined&&s.rir!==""?" @RIR "+s.rir:"");
 const MN3S=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 // Fecha en que se cargó un plan: createdAt (nuevo), id con marca de tiempo (importados antes) o "updated" de la rutina oficial
 const planLoadedAt=p=>{const v=p?.createdAt||p?.updated||(p?.id>1e12?p.id:null);if(!v)return null;const d=new Date(typeof v==="string"&&v.length===10?v+"T12:00:00":v);return isNaN(d)?null:d};
@@ -2804,13 +2841,18 @@ function GymEntrenar({ctx}){
     return Object.keys(gymDraft.sets||{}).length===names.length?gymDraft:null})();
   const[dayIdx,setDayIdx]=useState(draftMatch?draftMatch.dayIdx:null);
   const[sets,setSets]=useState(draftMatch?draftMatch.sets:{});
+  const[chk,setChk]=useState(draftMatch?.chk||{});   // checks de progresión de esta sesión
+  const[showInfo,setShowInfo]=useState(false);
   const restored=useRef(!!draftMatch);
 
   // Autoguarda el entreno en curso (peso/reps) para sobrevivir si Android cierra la app en segundo plano
   useEffect(()=>{
     if(dayIdx===null)return;
-    setGymDraft({planId:activePlanId,dayIdx,sets,names:(plan?.days?.[dayIdx]?.exercises||[]).map(e=>e.name),ts:Date.now()});
-  },[dayIdx,sets]);
+    setGymDraft({planId:activePlanId,dayIdx,sets,chk,names:(plan?.days?.[dayIdx]?.exercises||[]).map(e=>e.name),ts:Date.now()});
+  },[dayIdx,sets,chk]);
+  // Progresión doble: si la última vez llegaste al tope del rango en todas las series → toca subir peso
+  const topReps=t=>{const m=String(t||"").match(/(\d+)\s*[-–]\s*(\d+)/);return m?+m[2]:null};
+  const readyToAdd=ex=>{if(exKind(ex)!=="lift")return false;const top=topReps(ex.tReps);if(!top)return false;const r=findLast(ex);if(!r)return false;const ss=(r.ex.sets||[]).filter(x=>x.weight&&x.reps);return ss.length>=(ex.tSets||1)&&ss.every(x=>+x.reps>=top)};
 
   // Buscar el último registro de cada ejercicio para mostrar referencia
   // Encuentra el ejercicio en una sesión guardada aunque el nombre haya cambiado un poco (o tenga "hist")
@@ -2835,14 +2877,14 @@ function GymEntrenar({ctx}){
     return ex?ex.sets.filter(s=>s.weight||s.reps).map(s=>({reps:s.reps||"",weight:s.weight||"",...(s.unit?{unit:s.unit}:{}),done:false})):null;
   };
   const start=(di)=>{
-    setDayIdx(di);
+    setDayIdx(di);setChk({});
     const init={};
     plan.days[di].exercises.forEach((ex,i)=>{
       const kind=exKind(ex);
       if(kind==="cardio"){init[i]=[{reps:firstNum(ex.tReps)||"15",bpm:"",unit:"min",done:false}];return}
       if(kind==="time"){const ls=lastSetsFor(ex);init[i]=Array.from({length:ex.tSets||1},(_,j)=>({reps:(ls&&ls[j]&&ls[j].reps)||firstNum(ex.tReps),weight:"",unit:"s",done:false}));return}
       const last=lastSetsFor(ex);
-      const n=Math.max(ex.tSets||1,last?last.length:0);
+      const n=ex.tSets||(last?last.length:1); // manda el número de series de la rutina (puedes agregar con + Set)
       const fallback=last&&last.length>0?last[last.length-1]:null;
       init[i]=Array.from({length:n},(_,j)=>
         last&&last[j]?{...last[j],done:false}
@@ -2857,9 +2899,9 @@ function GymEntrenar({ctx}){
   const finish=()=>{
     const day=plan.days[dayIdx];
     const totalSets=Object.values(sets).reduce((a,arr)=>a+arr.filter(s=>s.done).length,0);
-    const log={id:Date.now(),name:plan.name+" · "+day.label+(day.name?" ("+day.name+")":""),planId:plan.id,dayLabel:day.label,dayName:day.name,date:td(),exercises:day.exercises.map((ex,i)=>({name:exHistName(ex),muscle:ex.muscle,sets:(sets[i]||[]).filter(s=>s.done)})),totalSets};
+    const log={id:Date.now(),name:plan.name+" · "+day.label+(day.name?" ("+day.name+")":""),planId:plan.id,dayLabel:day.label,dayName:day.name,date:td(),checks:plan.checks?plan.checks.filter((_,j)=>chk[j]):undefined,exercises:day.exercises.map((ex,i)=>({name:exHistName(ex),muscle:ex.muscle,sets:(sets[i]||[]).filter(s=>s.done)})),totalSets};
     setWkLogs(p=>[...p,log]);
-    setDayIdx(null);setSets({});setGymDraft(null);
+    setDayIdx(null);setSets({});setChk({});setGymDraft(null);
   };
 
   if(!plan)return(<div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -2880,6 +2922,19 @@ function GymEntrenar({ctx}){
       <div style={{fontSize:11,color:"#555",marginTop:2}}>{plan.daysPerWeek} días/semana · {doneThisWeek.length}/{plan.daysPerWeek} completados esta semana{planLoadedAt(plan)?" · "+(isImportedPlan(plan)?"importada "+fmtLoaded(planLoadedAt(plan)):"oficial "+fmtLoaded(planLoadedAt(plan),false)):""}</div>
       <div style={{height:4,background:"#161616",borderRadius:99,marginTop:8}}><div style={{height:"100%",width:`${(doneThisWeek.length/plan.daysPerWeek)*100}%`,background:"#f97316",borderRadius:99,transition:"width .5s"}}/></div>
     </div>
+    {plan.info&&<div className="lc" style={{borderColor:"rgba(249,115,22,.2)",cursor:"pointer"}} onClick={()=>setShowInfo(v=>!v)}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{fontSize:12,fontWeight:700,color:"#f97316"}}>📋 Objetivo, reglas y semana</div><span style={{color:"#6e727a"}}>{showInfo?"▴":"▾"}</span>
+      </div>
+      {(()=>{const st=planLoadedAt(plan);if(!st)return null;const w=Math.floor((Date.now()-st.getTime())/(7*86400000))+1;return<div style={{fontSize:11,color:"#8b8f96",marginTop:4}}>Semana {Math.max(1,w)} de 6–8 · {plan.info.schedule}</div>})()}
+      {showInfo&&<div style={{marginTop:10,display:"flex",flexDirection:"column",gap:8,fontSize:11,color:"#c9ccd1",lineHeight:1.5}}>
+        <div>🎯 {plan.info.goal}</div>
+        <div>🚶 {plan.info.rest}</div>
+        <div>📆 {plan.info.weeks}</div>
+        <div><b style={{color:"#f97316"}}>Objetivos semanales</b>{plan.info.goals.map((g,i)=><div key={i}>• {g}</div>)}</div>
+        {plan.checks&&<div><b style={{color:"#f97316"}}>Reglas de progresión</b> (se palomean en cada sesión){plan.checks.map((g,i)=><div key={i}>• {g}</div>)}</div>}
+      </div>}
+    </div>}
     <div style={{fontSize:10,color:"#444",textTransform:"uppercase",fontWeight:700}}>Elige el día de hoy</div>
     {plan.days.map((day,di)=>{
       const done=doneThisWeek.includes(day.label);
@@ -2905,6 +2960,15 @@ function GymEntrenar({ctx}){
         <button className="lbp" style={{background:"#00FF87",color:"#000",fontSize:12}} onClick={finish}>✓ Terminar</button>
       </div>
     </div>
+    {plan.checks&&<div className="lc" style={{borderColor:"rgba(126,216,246,.25)"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+        <div style={{fontSize:12,fontWeight:700,color:"#7ED8F6"}}>✅ Checks de la sesión</div>
+        <span className="lmn" style={{fontSize:11,color:"#6e727a"}}>{plan.checks.filter((_,j)=>chk[j]).length}/{plan.checks.length}</span>
+      </div>
+      {plan.checks.map((c,j)=><label key={j} style={{display:"flex",gap:9,alignItems:"flex-start",padding:"5px 0",cursor:"pointer",fontSize:12,color:chk[j]?"#6e727a":"#c9ccd1",textDecoration:chk[j]?"line-through":"none",lineHeight:1.4}}>
+        <input type="checkbox" checked={!!chk[j]} onChange={e=>setChk(p=>({...p,[j]:e.target.checked}))} style={{marginTop:2,flexShrink:0}}/>{c}
+      </label>)}
+    </div>}
     {day.exercises.map((ex,i)=>{
       const exSets=sets[i]||[];const anyD=exSets.some(s=>s.done);
       const kind=exKind(ex);const abs=isAbsEx(ex);
@@ -2935,6 +2999,7 @@ function GymEntrenar({ctx}){
           <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>{ex.emoji||"💪"}</span><div><div style={{fontSize:13,fontWeight:700}}>{ex.name}</div><div style={{fontSize:10,color:"#555"}}>{ex.muscle}{ex.tSets?<span style={{color:"#f97316",fontWeight:700}}> · {ex.tSets}×{ex.tReps}</span>:null}{ex.rest&&!/^abs\s*\d/i.test(ex.rest)?<span style={{color:"#444"}}> · desc {ex.rest}</span>:null}</div></div></div>
           <button className="lbs" style={{fontSize:11,padding:"3px 8px"}} onClick={()=>addSet(i)}>+ Set</button>
         </div>
+        {readyToAdd(ex)&&<div style={{fontSize:11,color:"#30d158",marginBottom:6,padding:"5px 9px",background:"rgba(48,209,88,.07)",borderRadius:7,border:".5px solid rgba(48,209,88,.3)"}}>⬆️ La última vez llegaste a {topReps(ex.tReps)} reps en todas las series: sube un poco el peso hoy</div>}
         {last&&<div style={{fontSize:10,color:"#FFB800",marginBottom:8,padding:"5px 9px",background:"rgba(255,183,0,.06)",borderRadius:7,border:".5px solid rgba(255,183,0,.2)"}}>
           📈 Última vez ({fd(last.date)}): <b>{kind==="time"?(last.reps||"?")+" s":(last.weight||"?")+" kg × "+(last.reps||"?")+" reps"}</b> — intenta superarlo
         </div>}
@@ -2945,9 +3010,10 @@ function GymEntrenar({ctx}){
               <input className="lfi" type="number" inputMode="numeric" placeholder="seg" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
               <span style={{fontSize:11,color:"#8b8f96",flex:1}}>segundos</span>
             </>:<>
-              <input className="lfi" type="number" inputMode="decimal" placeholder="kg" value={s.weight} onChange={e=>updSet(i,si,"weight",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
+              <input className="lfi" type="number" inputMode="decimal" placeholder="kg" value={s.weight} onChange={e=>updSet(i,si,"weight",e.target.value)} style={{width:62,fontSize:12,padding:"5px 7px"}}/>
               <span style={{fontSize:10,color:"#444"}}>×</span>
-              <input className="lfi" type="number" inputMode="numeric" placeholder="reps" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:70,fontSize:12,padding:"5px 7px"}}/>
+              <input className="lfi" type="number" inputMode="numeric" placeholder="reps" value={s.reps} onChange={e=>updSet(i,si,"reps",e.target.value)} style={{width:62,fontSize:12,padding:"5px 7px"}}/>
+              <input className="lfi" type="number" inputMode="numeric" placeholder="RIR" value={s.rir??""} onChange={e=>updSet(i,si,"rir",e.target.value)} style={{width:48,fontSize:12,padding:"5px 6px"}} title="Repeticiones en reserva (1–3)"/>
             </>}
             {chk(si,s)}
           </div>
@@ -3092,12 +3158,13 @@ function GymHistorial({ctx}){
 
 /* ══════════ COMIDAS ══════════ */
 const SHOP_CATS=[{id:"prot",icon:"🥩",label:"Proteína"},{id:"carb",icon:"🍚",label:"Carbohidratos"},{id:"fruver",icon:"🥦",label:"Frutas y verduras"},{id:"lact",icon:"🥛",label:"Lácteos"},{id:"otro",icon:"🛒",label:"Otros"}];
+// Lista de compras para 7 días de la dieta vigente (25 oct 2026)
 const SHOP_BASE=[
-  {name:"Huevos (2 cartones)",cat:"prot"},{name:"Claras de huevo",cat:"prot"},{name:"Pechuga de pollo 1kg",cat:"prot"},{name:"Bistec de res magro o lomo/pulpa de cerdo",cat:"prot"},{name:"Filete de pescado (tilapia/basa)",cat:"prot"},{name:"Atún en agua (6 latas)",cat:"prot"},{name:"Proteína hidrolizada",cat:"prot"},{name:"Creatina",cat:"prot"},
-  {name:"Avena en hojuelas 1kg",cat:"carb"},{name:"Arroz 1kg",cat:"carb"},{name:"Papa",cat:"carb"},{name:"Tortillas de maíz",cat:"carb"},{name:"Pan integral",cat:"carb"},{name:"Tostadas horneadas",cat:"carb"},{name:"Granola baja en azúcar",cat:"carb"},
-  {name:"Plátanos",cat:"fruver"},{name:"Papaya o melón",cat:"fruver"},{name:"Manzanas",cat:"fruver"},{name:"Fresas/frutos rojos (congelados)",cat:"fruver"},{name:"Aguacate",cat:"fruver"},{name:"Lechuga y espinaca",cat:"fruver"},{name:"Jitomate, cebolla y pepino",cat:"fruver"},{name:"Champiñones",cat:"fruver"},
-  {name:"Yogur griego natural sin azúcar",cat:"lact"},{name:"Leche entera o deslactosada",cat:"lact"},
-  {name:"Crema de cacahuate natural",cat:"otro"},{name:"Aceite de oliva",cat:"otro"},{name:"Mayonesa baja en grasa",cat:"otro"},
+  {name:"Huevos — 14 piezas",cat:"prot"},{name:"Claras de huevo — 1.05 kg",cat:"prot"},{name:"Pechuga de pollo — 1.4 kg cruda aprox.",cat:"prot"},{name:"Atún en agua — 7 latas (~120 g escurrido c/u)",cat:"prot"},{name:"Proteína en polvo — 210 g",cat:"prot"},
+  {name:"Yogur griego natural alto en proteína — 700 g",cat:"lact"},
+  {name:"Arroz — 450 g en seco aprox.",cat:"carb"},{name:"Tortillas de maíz — 14 piezas",cat:"carb"},{name:"Avena — 280 g",cat:"carb"},{name:"Papa — 1.4 kg",cat:"carb"},
+  {name:"Papaya — 1.2 kg aprox.",cat:"fruver"},{name:"Bananas — 7 piezas",cat:"fruver"},{name:"Verduras variadas (comida) — 1.4 kg",cat:"fruver"},{name:"Verduras para ensalada (cena) — 1.4 kg",cat:"fruver"},{name:"Aguacate — 3 piezas medianas",cat:"fruver"},
+  {name:"Crema de cacahuate — 70 g",cat:"otro"},{name:"Aceite de oliva — 70 g aprox.",cat:"otro"},
 ];
 function ShoppingList({ctx}){
   const{shopping,setShopping}=ctx;
@@ -3338,9 +3405,9 @@ function CuerpoNutricion({ctx}){
     {/* Menú A/B + comidas del plan */}
     <div className="card">
       <div className="sect" style={{justifyContent:"space-between"}}><span>⏰ Plan {isToday?"de hoy":"de "+dayLabel}</span></div>
-      <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
+      {Object.keys(NUTRI_MENUS).length>1&&<div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
         {Object.entries(NUTRI_MENUS).map(([k,v])=>(<button key={k} style={chip(menuKey===k)} onClick={()=>setFood(p=>({...(p||{}),menu:k}))}>{v.label}</button>))}
-      </div>
+      </div>}
       {menu.meals.map((m,i)=>{
         const done=!!flags[m.id];const regs=bySlot[m.id]||[];const open=openMeal===m.id;
         const got=done?(regs.length?roundM(regs.reduce((a,e)=>addM(a,e),{...NUTRI_ZERO})):m):null;
