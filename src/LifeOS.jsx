@@ -141,47 +141,50 @@ const reviewStreak=(reviews)=>{
 };
 // Rutinas oficiales. "hist" = nombre con el que ya hay pesos guardados (el ejercicio se renombró, el historial se conserva).
 const SEED_PLANS=[
- {id:900003,seedV:1,updated:"2026-10-25",name:"🔥 Recomposición 4 días (L·M·J·V)",daysPerWeek:4,
-  info:{"goal": "Recomposición corporal: perder grasa manteniendo o aumentando masa muscular.", "schedule": "Lunes, martes, jueves y viernes · 5:00–7:00 a. m.", "rest": "Miércoles — descanso activo: caminata de 20–30 min, movilidad ligera si la necesitas, sin entrenamiento intenso.", "weeks": "Mantén esta rutina 6–8 semanas antes de cambiarla por completo.", "goals": ["4 sesiones de fuerza por semana", "7,000–9,000 pasos diarios (objetivo progresivo)", "Subir poco a poco a ~150 min/semana de cardio moderado (cuentan las caminatas)", "Dormir 7–8 horas siempre que sea posible"]},
-  checks:["Calentamiento 5–8 min + series progresivas antes del primer ejercicio pesado", "Series terminadas con 1–3 repeticiones en reserva (anota el RIR)", "Descansos: 2–3 min en compuestos, 1–2 min en aislamientos", "Si llegaste al máximo de reps en todas las series con buena técnica: sube un poco el peso la próxima", "Registré ejercicio, peso, repeticiones y RIR", "Sin dolor agudo ni articular (si apareció, detuve el ejercicio y revisé la técnica)"],
+ {id:900003,seedV:2,updated:"2026-10-26",start:"2026-10-25",name:"💪 Plan 4 días (L·M·J·V)",daysPerWeek:4,
+  info:{"goal": "Recomposición corporal: perder grasa manteniendo o aumentando masa muscular.", "schedule": "Lunes, martes, jueves y viernes · 5:00–7:00 a. m.", "rest": "Miércoles — descanso activo: caminata de 25–30 min · movilidad opcional 5–10 min · sin entrenamiento intenso", "weeks": "Bloque inicial: 6–8 semanas.", "sections": [{"t": "Cardio LISS", "items": ["Lunes, martes, jueves y viernes — 20 min", "Miércoles — caminata de 25–30 min", "Sábado — 25–30 min opcionales", "Intensidad: ritmo continuo moderado-bajo, respiración controlada y capacidad de hablar en frases completas"]}, {"t": "Seguimiento semanal", "items": ["Peso registrado al menos 4 mañanas", "Promedio semanal de peso calculado", "Cintura medida una vez bajo las mismas condiciones", "Fotos de progreso cada 2–4 semanas", "Cargas y repeticiones registradas", "Pasos diarios registrados", "Calorías y proteína cumplidas", "Sueño y energía evaluados"]}]},
+  checks:["Calentamiento general de 5–8 min", "Series progresivas de calentamiento antes del primer ejercicio pesado", "Compuestos: normalmente 1–3 RIR", "Aislamientos: normalmente 0–2 RIR, con técnica controlada", "Descanso en compuestos: 2–3 min", "Descanso en aislamientos: 1–2 min", "Registrar carga, repeticiones y RIR", "Aumentar la carga cuando se alcance el máximo del rango en todas las series con buena técnica", "No añadir series automáticamente si se está progresando"],
   days:[
-  {label:"Día 1",name:"TORSO A (Lunes)",exercises:[
-   {id:6101,name:"Press inclinado con mancuernas",hist:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"6-10",rest:"2–3 min (compuesto)"},
-   {id:6102,name:"Jalón al pecho",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6103,name:"Press de pecho en máquina",hist:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6104,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6105,name:"Elevaciones laterales en polea o mancuernas",hist:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6106,name:"Curl de bíceps inclinado",hist:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6107,name:"Extensión de tríceps con cuerda",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6108,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"ritmo moderado",kind:"cardio"}]},
-  {label:"Día 2",name:"PIERNA A (Martes)",exercises:[
-   {id:6201,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6202,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6203,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6204,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6205,name:"Abductores en máquina",hist:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6206,name:"Elevación de pantorrilla de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6207,name:"Crunch en polea",hist:"Crunch en polea alta",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"60 seg",block:"abs"},
-   {id:6208,name:"Plancha",hist:"Plancha frontal",muscle:"Core",emoji:"🔥",tSets:2,tReps:"30-60 s",rest:"60 seg",block:"abs",kind:"time"}]},
-  {label:"Día 3",name:"TORSO B (Jueves)",exercises:[
-   {id:6301,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6302,name:"Press inclinado en máquina",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6303,name:"Jalón unilateral",hist:"Jalón unilateral en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6304,name:"Aperturas de pecho en polea",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:2,tReps:"12-15",rest:"1–2 min (aislamiento)"},
-   {id:6305,name:"Elevaciones laterales",hist:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6306,name:"Pájaros / deltoide posterior en máquina",hist:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6307,name:"Curl martillo",hist:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6308,name:"Extensión de tríceps en polea",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6309,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"ritmo moderado",kind:"cardio"}]},
-  {label:"Día 4",name:"PIERNA B (Viernes)",exercises:[
-   {id:6401,name:"Sentadilla búlgara",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12 x pierna",rest:"2–3 min (compuesto)"},
-   {id:6402,name:"Hip thrust",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"8-12",rest:"2–3 min (compuesto)"},
-   {id:6403,name:"Curl femoral",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min (aislamiento)"},
-   {id:6404,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:2,tReps:"10-15",rest:"2–3 min (compuesto)"},
-   {id:6405,name:"Abductores en máquina",hist:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:2,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6406,name:"Elevación de pantorrilla sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"12-20",rest:"1–2 min (aislamiento)"},
-   {id:6407,name:"Elevaciones de piernas colgado o en silla romana",hist:"Elevación de piernas colgado",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"60 seg",block:"abs"},
-   {id:6408,name:"Caminadora",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"15-20 min",rest:"opcional · ritmo moderado",kind:"cardio"}]}
+  {label:"Día 1",name:"TORSO A + ABDOMEN + LISS (Lunes)",exercises:[
+   {id:6101,name:"Press inclinado con mancuernas",hist:"Press inclinado con mancuernas a 30°",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"6-10",rest:"2–3 min · RIR 1–3"},
+   {id:6102,name:"Jalón al pecho",hist:"Jalón al pecho agarre neutro/cerrado",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6103,name:"Press de pecho en máquina",hist:"Press plano máquina Hammer o Multipower",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6104,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6105,name:"Elevación lateral en polea",hist:"Elevaciones laterales en polea",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-20",rest:"1–2 min · RIR 0–2"},
+   {id:6106,name:"Curl inclinado con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"8-12",rest:"1–2 min · RIR 0–2"},
+   {id:6109,name:"Extensión de tríceps por encima de la cabeza en polea",hist:"Extensión de tríceps por encima de la cabeza",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6110,name:"Crunch en polea",hist:"Crunch en polea alta",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2",block:"abs"},
+   {id:6108,name:"LISS (caminadora)",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"20 min",rest:"ritmo moderado-bajo, puedes hablar en frases",kind:"cardio"}]},
+  {label:"Día 2",name:"PIERNA A + ABDOMEN + LISS (Martes)",exercises:[
+   {id:6201,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"6-10",rest:"2–3 min · RIR 1–3"},
+   {id:6202,name:"Peso muerto rumano",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"6-10",rest:"2–3 min · RIR 1–3"},
+   {id:6203,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6204,name:"Curl femoral sentado",hist:"Curl de pierna sentado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6205,name:"Abductores en máquina",hist:"Máquina de abductores",muscle:"Glúteos",emoji:"🍑",tSets:2,tReps:"12-20",rest:"1–2 min · RIR 0–2"},
+   {id:6206,name:"Elevación de pantorrilla de pie",hist:"Elevación de talones de pie",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"8-15",rest:"1–2 min · RIR 0–2"},
+   {id:6208,name:"Plancha",hist:"Plancha frontal",muscle:"Core",emoji:"🔥",tSets:3,tReps:"30-60 s",rest:"1–2 min · RIR 0–2",block:"abs",kind:"time"},
+   {id:6209,name:"LISS (caminadora)",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"20 min",rest:"ritmo moderado-bajo, puedes hablar en frases",kind:"cardio"}]},
+  {label:"Día 3",name:"TORSO B + LISS (Jueves)",exercises:[
+   {id:6301,name:"Remo con pecho apoyado",hist:"Remo apoyado en banco/máquina (codos 45°)",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6302,name:"Press inclinado en máquina",hist:"Press inclinado en Multipower o Hammer",muscle:"Pecho",emoji:"💪",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6303,name:"Jalón unilateral",hist:"Jalón unilateral en polea",muscle:"Espalda",emoji:"💪",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6304,name:"Aperturas de pecho en polea",hist:"Aperturas inclinadas en polea (cruce bajo)",muscle:"Pecho",emoji:"💪",tSets:2,tReps:"12-15",rest:"1–2 min · RIR 0–2"},
+   {id:6305,name:"Elevación lateral con mancuernas o máquina",hist:"Elevaciones laterales con mancuernas",muscle:"Hombros",emoji:"💪",tSets:4,tReps:"12-20",rest:"1–2 min · RIR 0–2"},
+   {id:6306,name:"Pájaros en máquina o polea",hist:"Pájaros en Pec Deck invertido",muscle:"Hombros",emoji:"💪",tSets:3,tReps:"12-20",rest:"1–2 min · RIR 0–2"},
+   {id:6310,name:"Curl predicador",muscle:"Bíceps",emoji:"💪",tSets:3,tReps:"8-12",rest:"1–2 min · RIR 0–2"},
+   {id:6307,name:"Curl martillo",hist:"Curl martillo con mancuernas",muscle:"Bíceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6308,name:"Extensión de tríceps con cuerda",hist:"Extensión tríceps polea (cuerda)",muscle:"Tríceps",emoji:"💪",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6311,name:"Extensión de tríceps por encima de la cabeza",muscle:"Tríceps",emoji:"💪",tSets:2,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6309,name:"LISS (caminadora)",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"20 min",rest:"ritmo moderado-bajo, puedes hablar en frases",kind:"cardio"}]},
+  {label:"Día 4",name:"PIERNA B + ABDOMEN + LISS (Viernes)",exercises:[
+   {id:6401,name:"Sentadilla búlgara",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"8-12 x pierna",rest:"2–3 min · RIR 1–3"},
+   {id:6402,name:"Hip thrust",muscle:"Glúteos",emoji:"🍑",tSets:3,tReps:"8-12",rest:"2–3 min · RIR 1–3"},
+   {id:6403,name:"Curl femoral tumbado",hist:"Curl de pierna acostado",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2"},
+   {id:6404,name:"Prensa de piernas",muscle:"Piernas",emoji:"🦵",tSets:3,tReps:"10-15",rest:"2–3 min · RIR 1–3"},
+   {id:6409,name:"Extensión de cuádriceps",muscle:"Piernas",emoji:"🦵",tSets:2,tReps:"12-15",rest:"1–2 min · RIR 0–2"},
+   {id:6406,name:"Elevación de pantorrilla sentado",hist:"Elevación de talones sentado",muscle:"Piernas",emoji:"🦵",tSets:4,tReps:"10-20",rest:"1–2 min · RIR 0–2"},
+   {id:6407,name:"Elevaciones de piernas en silla romana",hist:"Elevación de piernas colgado",muscle:"Core",emoji:"🔥",tSets:3,tReps:"10-15",rest:"1–2 min · RIR 0–2",block:"abs"},
+   {id:6408,name:"LISS (caminadora)",muscle:"Cardio",emoji:"🏃",tSets:1,tReps:"20 min",rest:"ritmo moderado-bajo, puedes hablar en frases",kind:"cardio"}]}
  ]},
  {id:900001,seedV:6,updated:"2026-10-21",name:"⚔️ 5 Días · Upper/Lower/Push/Pull/Legs",daysPerWeek:5,days:[
   {label:"Día 1",name:"UPPER · Torso Completo (Lunes)",exercises:[
@@ -2413,7 +2416,7 @@ function CuerpoModule({ctx}){
 
 /* ── Importar rutina pegando texto ── */
 const MUSCLE_KW=[
-  ["Pecho",/press\s+(inclinad|plano|banca|pecho)|apertura|cruce de polea|pec\s*deck(?!\s*invertid)|pullover en banca|fondos?\s+(de\s+)?pecho/i],
+  ["Pecho",/press\s+(de\s+)?(inclinad|plano|banca|pecho)|apertura|cruce de polea|pec\s*deck(?!\s*invertid)|pullover en banca|fondos?\s+(de\s+)?pecho/i],
   ["Espalda",/jal[oó]n|remo|dominada|pull[\s-]*over|pullover|dorsal|t-?bar|gironda|encogimiento|trapecio/i],
   ["Hombros",/elevaci[oó]n(es)?\s+lateral|p[aá]jaro|deltoid|press\s+militar|face\s*pull|pec\s*deck\s*invertid|posterior/i],
   ["Bíceps",/curl(?!\s*(de\s*)?(pierna|femoral))/i],
@@ -2496,13 +2499,18 @@ const findHistMatch=(name,{logNames=[],planNames=[]}={})=>{
    Corta en: encabezados ("OPCIÓN 1", "Rutina de 4 días", "Plan B"…), "Día 1" que reinicia,
    o cuando la semana vuelve a empezar (Viernes → Lunes, o un día repetido). */
 const PLAN_HDR_RE=/^(opci[oó]n|rutina|plan|programa|propuesta|versi[oó]n|alternativa)\b|\b\d+\s*d[ií]as\b/i;
-const NOT_HDR_RE=/^(descanso|nota|recordatorio|objetivo|esquema|tip|consejo)/i;
+const NOT_HDR_RE=/^(descanso|nota|recordatorio|objetivo|esquema|tip|consejo|distribuci[oó]n|duraci[oó]n|horario|intensidad|reglas)/i;
+// "Elevación lateral — 4 × 12–20" → {name:"Elevación lateral",tSets:4,tReps:"12-20"} (para corregir series escribiéndolas en el nombre)
+const splitSpec=txt=>{const m=String(txt||"").match(/^(.*?)\s*[—–:(-]?\s*(\d+)\s*(?:series?\s*)?[x×]\s*(\d+(?:\s*[-–]\s*\d+)?)\s*(s\b|seg|segundos|min|reps?|por pierna|x pierna)?\)?\s*$/i);if(!m||!m[1].trim())return null;const u=(m[4]||"").toLowerCase();return{name:m[1].trim().replace(/[\s—–:-]+$/,""),tSets:+m[2],tReps:m[3].replace(/\s*[-–]\s*/,"-")+(/^s|seg/.test(u)?" s":u==="min"?" min":/pierna/.test(u)?" x pierna":"")}};
 const parseRoutineText=(text)=>{
   const lines=String(text||"").replace(/​/g,"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
   const blocks=[];let cur=null;let idc=Date.now();let looseName="";
-  const newBlock=name=>{cur={name:name||"",days:[],lastWd:null};blocks.push(cur);return cur};
+  const newBlock=name=>{cur={name:name||"",days:[],lastWd:null,checks:[],info:{sections:[]}};blocks.push(cur);return cur};
+  let section=null;   // sección de notas al final ("REGLAS…", "CARDIO LISS", "SEGUIMIENTO…"): ya no son ejercicios
+  let restDay=null;   // día de descanso activo: sus líneas son notas, no ejercicios
+  const SECTION_RE=/^(reglas|progresi[oó]n|ejecuci[oó]n|cardio\b|seguimiento|notas|objetivos|recomendaciones|indicaciones|tips)/i;
   const mkEx=(rawName,sets,reps,rest)=>{
-    let name=rawName.replace(/^[\s\-•*–—]*\d+[.)]\s*/,"").replace(/^[\s\-•*–—]+/,"").replace(/[.:;]+$/,"").trim();
+    let name=rawName.replace(/^[\s\-•*–—]*\d+[.)]\s*/,"").replace(/^[\s\-•*–—]+/,"").replace(/[\s.:;—–-]+$/,"").trim();
     name=name.replace(/\s{2,}/g," ");
     if(!name||name.length<3)return null;
     if(name.length>70)name=name.slice(0,70);
@@ -2526,14 +2534,33 @@ const parseRoutineText=(text)=>{
       }
       continue;
     }
-    const hasSpec=/\d+\s*series?\s*[x×]/i.test(line)||/\(\s*\d+\s*[x×]\s*\d/i.test(line)||/:\s*\d+\s*[x×]\s*\d/.test(line);
+    const isUpper=line===line.toUpperCase()&&/[A-ZÁÉÍÓÚÑ]{4}/.test(line);
+    // Encabezado de sección de notas (en mayúsculas) → lo que sigue se guarda como reglas/objetivos
+    if(isUpper&&SECTION_RE.test(line)&&cur&&cur.days.some(d=>d.exercises.length)){
+      section={t:(line.charAt(0)+line.slice(1).toLowerCase()).replace(/\bliss\b/i,"LISS"),items:[],checks:/regla|progresi|ejecuci/i.test(line)};
+      if(!section.checks)cur.info.sections.push(section);restDay=null;continue;
+    }
+    if(section){const t=line.replace(/[.]+$/,"");if(section.checks)cur.checks.push(t);else section.items.push(t);continue}
+    // Datos generales al inicio ("Horario:", "Distribución:", "Bloque inicial:")
+    if(/^(horario|distribuci[oó]n|bloque inicial|bloque|frecuencia|duraci[oó]n|objetivo)\s*:/i.test(line)){
+      if(!cur)newBlock(looseName);const[k,...v]=line.split(":");const val=v.join(":").trim();
+      if(/horario|distribuci/i.test(k))cur.info.schedule=(cur.info.schedule?cur.info.schedule+" · ":"")+val;
+      else if(/bloque|duraci/i.test(k))cur.info.weeks="Bloque: "+val;else if(/objetivo/i.test(k))cur.info.goal=val;
+      continue;
+    }
+    const hasSpec=/\d+\s*series?\s*[x×]/i.test(line)||/\(\s*\d+\s*[x×]\s*\d/i.test(line)||/:\s*\d+\s*[x×]\s*\d/.test(line)||/[—–-]\s*\d+\s*[x×]\s*\d/.test(line)||/[a-záéíóúñ)]\s+\d+\s*[x×]\s*\d+\s*[-–]\s*\d/i.test(line);
     // 1) Encabezado de rutina → bloque nuevo
     if(!hasSpec&&PLAN_HDR_RE.test(line)&&!NOT_HDR_RE.test(line)&&!/^(d[ií]a|day)\s*\d/i.test(line)&&line.length<110){
       const nm=line.replace(/^(opci[oó]n|alternativa|propuesta|versi[oó]n)\s*[\w\d]*\s*[:.\-–—]\s*/i,"").trim()||line;
       if(cur&&!cur.days.some(d=>d.exercises.length))cur.name=nm;else newBlock(nm);
       continue;
     }
-    const isDay=!hasSpec&&(DAY_RE.test(line)||/^(d[ií]a|day)\s*\d/i.test(line))&&line.length<90;
+    // "Distribución: lunes, martes…" no es un día (menciona varios o es una línea de info)
+    const nDays=(line.match(/(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)/gi)||[]).length;
+    const isDay=!hasSpec&&!NOT_HDR_RE.test(line)&&nDays<=1&&(DAY_RE.test(line)||/^(d[ií]a|day)\s*\d/i.test(line))&&line.length<90;
+    if(isDay&&/descanso/i.test(line)){if(!cur)newBlock(looseName);restDay={t:line.charAt(0)+line.slice(1).toLowerCase(),items:[]};cur.info.rest=restDay;const wd0=wdIndex(line);if(wd0!==null)cur.lastWd=wd0;continue}
+    if(isDay)restDay=null;
+    if(restDay&&!hasSpec){restDay.items.push(line.replace(/[.]+$/,""));continue}
     if(isDay){
       const wd=wdIndex(line);
       const restart=/^(d[ií]a|day)\s*1\b/i.test(line);
@@ -2541,7 +2568,8 @@ const parseRoutineText=(text)=>{
       // 2) La semana reinicia → otra rutina
       if(hasWork&&(restart||(wd!==null&&cur.lastWd!==null&&wd<=cur.lastWd)))newBlock("");
       if(!cur)newBlock(looseName);
-      const nm=line.includes(":")?line.split(":").slice(1).join(":").trim()||line.trim():line.trim();
+      let nm=line.includes(":")?line.split(":").slice(1).join(":").trim()||line.trim():line.trim();
+      nm=nm.replace(/^(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\s*[—–-]\s*/i,"").trim()||nm;
       const dayWord=(line.match(DAY_RE)||[])[0];
       cur.days.push({label:"Día "+(cur.days.length+1),name:(nm+(dayWord&&!nm.toLowerCase().includes(dayWord.toLowerCase())?" ("+dayWord.charAt(0).toUpperCase()+dayWord.slice(1).toLowerCase()+")":"")).replace(/\s{2,}/g," ").trim(),exercises:[]});
       if(wd!==null)cur.lastWd=wd;
@@ -2564,9 +2592,9 @@ const parseRoutineText=(text)=>{
     for(const part0 of parts){
       let part=part0.trim();
       part=part.replace(/^superserie[^:]*:\s*/i,"");
-      const spec=part.match(/(\d+)\s*series?\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/\(\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/:\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/);
+      const spec=part.match(/(\d+)\s*series?\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/\(\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/i)||part.match(/:\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/)||part.match(/[—–-]\s*(\d+)\s*[x×]\s*([\d]+(?:\s*[-–]\s*\d+)?)/)||part.match(/\s(\d+)\s*[x×]\s*(\d+\s*[-–]\s*\d+)/);
       if(!spec)continue;
-      const sets=+spec[1];const tail=part.slice(spec.index+spec[0].length,spec.index+spec[0].length+30);const reps=spec[2].replace(/\s*[-–]\s*/,"-")+(/^\s*pasos/i.test(tail)?" pasos":"")+(/^\s*(reps?\s*|pasos\s*)?(por|x)\s*pierna/i.test(tail)?" x pierna":"");
+      const sets=+spec[1];const tail=part.slice(spec.index+spec[0].length,spec.index+spec[0].length+30);const reps=spec[2].replace(/\s*[-–]\s*/,"-")+(/^\s*pasos/i.test(tail)?" pasos":"")+(/^\s*(s|seg|segundos?)\b/i.test(tail)?" s":"")+(/^\s*(reps?\s*|pasos\s*)?(por|x)\s*pierna/i.test(tail)?" x pierna":"");
       let name=part.slice(0,spec.index);
       if(name.includes(":")){
         const segs=name.split(":");
@@ -2585,7 +2613,9 @@ const parseRoutineText=(text)=>{
   }
   const plans=blocks.map(b=>{
     const days=b.days.filter(d=>d.exercises.length>0).map((d,i)=>({...d,label:"Día "+(i+1)}));
-    return{name:b.name||"",daysPerWeek:days.length,days};
+    const info={...b.info};if(info.rest)info.rest=info.rest.t.replace(/^\S+/,w=>w.charAt(0).toUpperCase()+w.slice(1))+": "+info.rest.items.join(" · ");
+    if(!info.sections.length)delete info.sections;
+    return{name:b.name||"",daysPerWeek:days.length,days,...(b.checks.length?{checks:b.checks}:{}),...(Object.keys(info).length?{info}:{})};
   }).filter(p=>p.days.length>0);
   plans.forEach((p,i)=>{if(!p.name)p.name=(plans.length===1&&looseName)?looseName:"Rutina importada"+(plans.length>1?" "+(i+1):"")+" ("+p.daysPerWeek+" días)"});
   const first=plans[0]||{name:"Rutina importada",daysPerWeek:0,days:[]};
@@ -2611,7 +2641,7 @@ function RoutineImport({ctx,onImported}){
   const guardar=()=>{
     if(!prev)return;
     const base=Date.now();
-    onImported(prev.map((p,i)=>({id:base+i,seedV:99,createdAt:new Date(base).toISOString(),name:(p.name.trim()||"Rutina importada"),daysPerWeek:p.daysPerWeek,days:p.days})));
+    onImported(prev.map((p,i)=>({id:base+i,seedV:99,createdAt:new Date(base).toISOString(),name:(p.name.trim()||"Rutina importada"),daysPerWeek:p.daysPerWeek,days:p.days,...(p.checks?{checks:p.checks}:{}),...(p.info?{info:p.info}:{})})));
     setOpen(false);setTxt("");setPrev(null);
   };
   if(!open)return(
@@ -2697,6 +2727,7 @@ function GymPlanes({ctx}){
       return{...f,days};
     });
   };
+  const updEx=(dayIdx,i,patch)=>setForm(f=>{const days=[...f.days];const d={...days[dayIdx]};const ex=[...d.exercises];ex[i]={...ex[i],...patch};d.exercises=ex;days[dayIdx]=d;return{...f,days}});
   const moveEx=(dayIdx,i,dir)=>{
     setForm(f=>{
       const days=[...f.days];const d={...days[dayIdx]};const ex=[...d.exercises];
@@ -2763,8 +2794,12 @@ function GymPlanes({ctx}){
                       <span className="lmn" style={{fontSize:11,color:"#ff9f45",fontWeight:700,minWidth:16}}>{ei+1}</span>
                       <span style={{fontSize:14}}>{ex.emoji||"💪"}</span>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:12,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ex.name}</div>
-                        {ex.tSets&&<div className="lmn" style={{fontSize:10,color:"#6e727a"}}>{ex.tSets}×{ex.tReps}</div>}
+                        <input className="lfi" value={ex.name} onChange={e=>updEx(di,ei,{name:e.target.value})} onFocus={e=>{e.target.dataset.orig=ex.name}} onBlur={e=>{const v=e.target.value;const sp=splitSpec(v)||{};const nn=sp.name||v;const o=e.target.dataset.orig;if(!ex.hist&&o&&nn!==o)sp.hist=o;if(Object.keys(sp).length)updEx(di,ei,sp)}} title="Puedes escribir: Elevación lateral — 4 × 12–20" style={{fontSize:12,fontWeight:600,padding:"3px 6px"}}/>
+                        <div style={{display:"flex",alignItems:"center",gap:5,marginTop:4}}>
+                          <input className="lfi" type="number" inputMode="numeric" min="1" value={ex.tSets||""} placeholder="series" onChange={e=>updEx(di,ei,{tSets:Math.max(0,parseInt(e.target.value)||0)||""})} style={{width:46,fontSize:11,padding:"3px 6px"}}/>
+                          <span style={{fontSize:10,color:"#6e727a"}}>×</span>
+                          <input className="lfi" value={ex.tReps||""} placeholder="reps" onChange={e=>updEx(di,ei,{tReps:e.target.value})} style={{width:70,fontSize:11,padding:"3px 6px"}}/>
+                        </div>
                       </div>
                       <button className="lbs" style={{padding:"4px 8px",fontSize:12,opacity:ei===0?.3:1}} disabled={ei===0} onClick={()=>moveEx(di,ei,-1)}>↑</button>
                       <button className="lbs" style={{padding:"4px 8px",fontSize:12,opacity:ei===day.exercises.length-1?.3:1}} disabled={ei===day.exercises.length-1} onClick={()=>moveEx(di,ei,1)}>↓</button>
@@ -2843,11 +2878,23 @@ function GymPlanes({ctx}){
 
 /* ── ENTRENAR: sesión del día con registro de pesos/reps ── */
 function GymEntrenar({ctx}){
-  const{plans,activePlanId,wkLogs,setWkLogs,gymDraft,setGymDraft}=ctx;
+  const{plans,setPlans,activePlanId,wkLogs,setWkLogs,gymDraft,setGymDraft}=ctx;
   const plan=plans.find(p=>p.id===activePlanId);
+  // El aviso de "rutina ajustada" sobrevive al cambiar de pestaña (vive en window hasta que lo cierras)
+  const[notice,setNotice0]=useState(()=>window.__lifeosGymNotice?.txt||"");
+  const[undoFix,setUndoFix0]=useState(()=>window.__lifeosGymNotice?.undo||null);   // para deshacer el ajuste automático de series
+  const setNotice=t=>{setNotice0(t);window.__lifeosGymNotice={...(window.__lifeosGymNotice||{}),txt:t};if(!t)window.__lifeosGymNotice=null};
+  const setUndoFix=u=>{setUndoFix0(u);if(window.__lifeosGymNotice)window.__lifeosGymNotice.undo=u};
   // Solo recupera el entreno a medias si el día sigue teniendo los mismos ejercicios (si la rutina cambió, no mezcla pesos)
   const draftMatch=(()=>{if(!gymDraft||gymDraft.planId!==activePlanId)return null;const d=plan?.days?.[gymDraft.dayIdx];if(!d)return null;
-    const names=d.exercises.map(e=>e.name);if(gymDraft.names)return JSON.stringify(gymDraft.names)===JSON.stringify(names)?gymDraft:null;
+    const names=d.exercises.map(e=>e.name);
+    if(gymDraft.names){
+      if(JSON.stringify(gymDraft.names)===JSON.stringify(names))return gymDraft;
+      // La rutina cambió con el entreno a medias: se pasan las series de cada ejercicio por nombre (no se pierde nada)
+      const remap={};let hit=0;names.forEach((n,i)=>{const j=gymDraft.names.indexOf(n);if(j>=0&&gymDraft.sets[j]){remap[i]=gymDraft.sets[j];hit++}
+        else{const ex=d.exercises[i],k=exKind(ex);remap[i]=k==="cardio"?[{reps:firstNum(ex.tReps)||"15",bpm:"",unit:"min",done:false}]:Array.from({length:ex.tSets||1},()=>k==="time"?{reps:firstNum(ex.tReps),weight:"",unit:"s",done:false}:{reps:"",weight:"",done:false})}});
+      return hit?{...gymDraft,sets:remap,names}:null;
+    }
     return Object.keys(gymDraft.sets||{}).length===names.length?gymDraft:null})();
   const[dayIdx,setDayIdx]=useState(draftMatch?draftMatch.dayIdx:null);
   const[sets,setSets]=useState(draftMatch?draftMatch.sets:{});
@@ -2904,6 +2951,7 @@ function GymEntrenar({ctx}){
     setSets(init);
   };
   const addSet=i=>setSets(p=>{const prevS=(p[i]||[]);const u=prevS[0]?.unit;return{...p,[i]:[...prevS,u?{reps:prevS[prevS.length-1]?.reps||"",weight:"",unit:u,done:false}:{reps:"",weight:"",done:false}]}});
+  const delSet=i=>setSets(p=>((p[i]||[]).length>1?{...p,[i]:p[i].slice(0,-1)}:p));
   const updSet=(i,si,f,v)=>setSets(p=>({...p,[i]:p[i].map((s,idx)=>idx===si?{...s,[f]:v}:s)}));
   const toggleSet=(i,si)=>setSets(p=>({...p,[i]:p[i].map((s,idx)=>idx===si?{...s,done:!s.done}:s)}));
   const finish=()=>{
@@ -2911,6 +2959,10 @@ function GymEntrenar({ctx}){
     const totalSets=Object.values(sets).reduce((a,arr)=>a+arr.filter(s=>s.done).length,0);
     const log={id:Date.now(),name:plan.name+" · "+day.label+(day.name?" ("+day.name+")":""),planId:plan.id,dayLabel:day.label,dayName:day.name,date:td(),checks:plan.checks?plan.checks.filter((_,j)=>chk[j]):undefined,exercises:day.exercises.map((ex,i)=>({name:exHistName(ex),muscle:ex.muscle,sets:(sets[i]||[]).filter(s=>s.done)})),totalSets};
     setWkLogs(p=>[...p,log]);
+    // Si agregaste o quitaste series, la rutina se corrige sola (ej. "3×8-12" → "4×8-12")
+    const changes=[];
+    const newEx=day.exercises.map((ex,i)=>{const k=exKind(ex);const n=(sets[i]||[]).length;if(k!=="cardio"&&n>0&&n!==(ex.tSets||0)){changes.push(ex.name+": "+(ex.tSets||"?")+" → "+n+" series");return{...ex,tSets:n}}return ex});
+    if(changes.length){setPlans(ps=>ps.map(p=>p.id!==plan.id?p:{...p,days:p.days.map((d,di)=>di!==dayIdx?d:{...d,exercises:newEx})}));window.__lifeosGymNotice=null;setNotice("📝 Rutina ajustada: "+changes.join(" · "));setUndoFix({planId:plan.id,dayIdx,prev:day.exercises})}
     setDayIdx(null);setSets({});setChk({});setGymDraft(null);
   };
 
@@ -2932,16 +2984,24 @@ function GymEntrenar({ctx}){
       <div style={{fontSize:11,color:"#555",marginTop:2}}>{plan.daysPerWeek} días/semana · {doneThisWeek.length}/{plan.daysPerWeek} completados esta semana{planLoadedAt(plan)?" · "+(isImportedPlan(plan)?"importada "+fmtLoaded(planLoadedAt(plan)):"oficial "+fmtLoaded(planLoadedAt(plan),false)):""}</div>
       <div style={{height:4,background:"#161616",borderRadius:99,marginTop:8}}><div style={{height:"100%",width:`${(doneThisWeek.length/plan.daysPerWeek)*100}%`,background:"#f97316",borderRadius:99,transition:"width .5s"}}/></div>
     </div>
+    {notice&&<div style={{padding:"8px 12px",background:"rgba(48,209,88,.08)",border:".5px solid rgba(48,209,88,.35)",borderRadius:10,fontSize:11,color:"#30d158",lineHeight:1.5}}>
+      {notice}
+      <div style={{display:"flex",gap:8,marginTop:6}}>
+        {undoFix&&<button className="lbs" style={{fontSize:11,padding:"3px 10px"}} onClick={()=>{const u=undoFix;setPlans(ps=>ps.map(p=>p.id!==u.planId?p:{...p,days:p.days.map((d,di)=>di!==u.dayIdx?d:{...d,exercises:u.prev})}));setUndoFix(null);setNotice("↩️ Listo: la rutina quedó como estaba (solo fue hoy)")}}>↩️ Deshacer (solo fue hoy)</button>}
+        <button className="lbs" style={{fontSize:11,padding:"3px 10px"}} onClick={()=>{setNotice("");setUndoFix(null)}}>Cerrar</button>
+      </div>
+    </div>}
     {plan.info&&<div className="lc" style={{borderColor:"rgba(249,115,22,.2)",cursor:"pointer"}} onClick={()=>setShowInfo(v=>!v)}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div style={{fontSize:12,fontWeight:700,color:"#f97316"}}>📋 Objetivo, reglas y semana</div><span style={{color:"#6e727a"}}>{showInfo?"▴":"▾"}</span>
       </div>
-      {(()=>{const st=planLoadedAt(plan);if(!st)return null;const w=Math.floor((Date.now()-st.getTime())/(7*86400000))+1;return<div style={{fontSize:11,color:"#8b8f96",marginTop:4}}>Semana {Math.max(1,w)} de 6–8 · {plan.info.schedule}</div>})()}
+      {(()=>{const st=planLoadedAt(plan);if(!st)return null;const s0=plan.start?new Date(plan.start+"T00:00:00"):st;const w=Math.floor((Date.now()-s0.getTime())/(7*86400000))+1;return<div style={{fontSize:11,color:"#8b8f96",marginTop:4}}>Semana {Math.max(1,w)} de 6–8{plan.info.schedule?" · "+plan.info.schedule:""}</div>})()}
       {showInfo&&<div style={{marginTop:10,display:"flex",flexDirection:"column",gap:8,fontSize:11,color:"#c9ccd1",lineHeight:1.5}}>
-        <div>🎯 {plan.info.goal}</div>
-        <div>🚶 {plan.info.rest}</div>
-        <div>📆 {plan.info.weeks}</div>
-        <div><b style={{color:"#f97316"}}>Objetivos semanales</b>{plan.info.goals.map((g,i)=><div key={i}>• {g}</div>)}</div>
+        {plan.info.goal&&<div>🎯 {plan.info.goal}</div>}
+        {plan.info.rest&&<div>🚶 {plan.info.rest}</div>}
+        {plan.info.weeks&&<div>📆 {plan.info.weeks}</div>}
+        {plan.info.goals&&<div><b style={{color:"#f97316"}}>Objetivos semanales</b>{plan.info.goals.map((g,i)=><div key={i}>• {g}</div>)}</div>}
+        {(plan.info.sections||[]).map((sec,k)=><div key={k}><b style={{color:"#f97316"}}>{sec.t}</b>{sec.items.map((g,i)=><div key={i}>• {g}</div>)}</div>)}
         {plan.checks&&<div><b style={{color:"#f97316"}}>Reglas de progresión</b> (se palomean en cada sesión){plan.checks.map((g,i)=><div key={i}>• {g}</div>)}</div>}
       </div>}
     </div>}
@@ -3007,8 +3067,12 @@ function GymEntrenar({ctx}){
       <div className="lc" style={{borderColor:anyD?"rgba(249,115,22,.3)":abs?"rgba(255,107,107,.2)":"rgba(255,255,255,.06)",...(abs?{marginLeft:8}:{})}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20}}>{ex.emoji||"💪"}</span><div><div style={{fontSize:13,fontWeight:700}}>{ex.name}</div><div style={{fontSize:10,color:"#555"}}>{ex.muscle}{ex.tSets?<span style={{color:"#f97316",fontWeight:700}}> · {ex.tSets}×{ex.tReps}</span>:null}{ex.rest&&!/^abs\s*\d/i.test(ex.rest)?<span style={{color:"#444"}}> · desc {ex.rest}</span>:null}</div></div></div>
-          <button className="lbs" style={{fontSize:11,padding:"3px 8px"}} onClick={()=>addSet(i)}>+ Set</button>
+          <div style={{display:"flex",gap:4}}>
+            {exSets.length>1&&<button className="lbs" style={{fontSize:11,padding:"3px 8px"}} onClick={()=>delSet(i)}>− Set</button>}
+            <button className="lbs" style={{fontSize:11,padding:"3px 8px"}} onClick={()=>addSet(i)}>+ Set</button>
+          </div>
         </div>
+        {exKind(ex)!=="cardio"&&ex.tSets&&exSets.length!==ex.tSets&&<div style={{fontSize:10,color:"#7ED8F6",marginBottom:6}}>📝 Al terminar, la rutina quedará en {exSets.length} series ({ex.tSets} antes)</div>}
         {readyToAdd(ex)&&<div style={{fontSize:11,color:"#30d158",marginBottom:6,padding:"5px 9px",background:"rgba(48,209,88,.07)",borderRadius:7,border:".5px solid rgba(48,209,88,.3)"}}>⬆️ La última vez llegaste a {topReps(ex.tReps)} reps en todas las series: sube un poco el peso hoy</div>}
         {last&&<div style={{fontSize:10,color:"#FFB800",marginBottom:8,padding:"5px 9px",background:"rgba(255,183,0,.06)",borderRadius:7,border:".5px solid rgba(255,183,0,.2)"}}>
           📈 Última vez ({fd(last.date)}): <b>{kind==="time"?(last.reps||"?")+" s":(last.weight||"?")+" kg × "+(last.reps||"?")+" reps"}</b> — intenta superarlo
